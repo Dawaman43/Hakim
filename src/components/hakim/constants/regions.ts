@@ -1,5 +1,3 @@
-"use client";
-
 export const DEFAULT_LOCATION = { lat: 9.0320, lng: 38.7469 };
 
 export const REGION_COORDINATES: Record<string, { lat: number; lng: number }> = {

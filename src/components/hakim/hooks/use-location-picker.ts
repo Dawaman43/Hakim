@@ -21,19 +21,13 @@ export function useLocationPicker({
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
 
-  const getUserLocation = useCallback(async () => {
-    setLocationError(null);
-    setLocationNotice(null);
-
-    if (!navigator.geolocation) {
-      setShowLocationModal(true);
+  const requestLocation = useCallback((forceLowAccuracy: boolean = false) => {
+    if (typeof window !== "undefined" && !window.isSecureContext) {
+      setLocationError("Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.");
+      setLocationLoading(false);
       return;
     }
 
-    setShowLocationModal(true);
-  }, []);
-
-  const requestLocation = useCallback((forceLowAccuracy: boolean = false) => {
     setLocationLoading(true);
     setLocationError(null);
 
@@ -78,6 +72,38 @@ export function useLocationPicker({
         : { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
     );
   }, [onNavigate, setUserLocation]);
+
+  const getUserLocation = useCallback(async () => {
+    setLocationError(null);
+    setLocationNotice(null);
+
+    if (!navigator.geolocation) {
+      setShowLocationModal(true);
+      return;
+    }
+
+    if (typeof window !== "undefined" && !window.isSecureContext) {
+      setLocationError("Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.");
+      setShowLocationModal(true);
+      return;
+    }
+
+    try {
+      if (navigator.permissions?.query) {
+        const status = await navigator.permissions.query({ name: "geolocation" as PermissionName });
+        if (status.state === "denied") {
+          setLocationError("Location permission was denied. Please allow location access in your browser and device settings, or select your region below.");
+          setShowLocationModal(true);
+          return;
+        }
+      }
+    } catch {
+      // Permission API not available; continue to prompt
+    }
+
+    setShowLocationModal(true);
+    requestLocation(false);
+  }, [requestLocation]);
 
   const useSelectedRegion = useCallback(() => {
     const coords = regionCoordinates[selectedRegion] || defaultLocation;
