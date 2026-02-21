@@ -649,7 +649,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     <nav className={`relative z-50 transition-all duration-300 ${transparent ? 'bg-transparent' : darkMode ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-700/50 shadow-sm' : 'bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm'}`}>
       {/* Top accent bar */}
       {!transparent && (
-        <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
+        <div className="h-1 bg-gradient-to-r from-emerald-500 via-emerald-500 to-emerald-500" />
       )}
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -659,10 +659,10 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             onClick={() => navigateTo('landing')}
             className="flex items-center gap-2.5 group"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:shadow-emerald-500/50 group-hover:scale-105 transition-all">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:shadow-emerald-500/50 group-hover:scale-105 transition-all">
               <Heart weight="fill" className="text-white" size={22} />
             </div>
-            <span className={`text-xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent`}>
+            <span className={`text-xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-500 bg-clip-text text-transparent`}>
               Hakim
             </span>
           </button>
@@ -722,7 +722,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   onClick={() => navigateTo('profile')}
                   className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all ${darkMode ? 'text-gray-200 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100/80'}`}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center shadow-sm">
+                  <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center shadow-sm">
                     <User size={16} className="text-white" />
                   </div>
                   <span className="font-medium">{user?.name?.split(' ')[0] || 'User'}</span>
@@ -730,7 +730,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 {user?.role === 'HOSPITAL_ADMIN' && (
                   <button
                     onClick={() => navigateTo('admin-dashboard')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition font-medium border ${darkMode ? 'bg-emerald-900/30 text-emerald-400 hover:bg-emerald-900/50 border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 hover:from-emerald-100 hover:to-teal-100 border-emerald-200/50'}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition font-medium border ${darkMode ? 'bg-emerald-900/30 text-emerald-400 hover:bg-emerald-900/50 border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-emerald-50 text-emerald-600 hover:from-emerald-100 hover:to-emerald-100 border-emerald-200/50'}`}
                   >
                     <Gear size={18} />
                     {tr.dashboard}
@@ -753,7 +753,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 </button>
                 <button
                   onClick={() => { navigateTo('hospitals'); }}
-                  className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-0.5 transition-all"
+                  className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-0.5 transition-all"
                 >
                   {tr.bookQueue}
                 </button>
@@ -798,25 +798,25 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             <div className="px-4 py-4 space-y-1">
               <button 
                 onClick={() => { navigateTo('landing'); setMobileMenuOpen(false); }} 
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'landing' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'landing' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-emerald-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
               >
                 Home
               </button>
               <button 
                 onClick={() => { navigateTo('features'); setMobileMenuOpen(false); }} 
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'features' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'features' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-emerald-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
               >
                 Features
               </button>
               <button 
                 onClick={() => { navigateTo('about'); setMobileMenuOpen(false); }} 
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'about' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'about' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-emerald-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
               >
                 About
               </button>
               <button 
                 onClick={() => { navigateTo('contact'); setMobileMenuOpen(false); }} 
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'contact' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'contact' ? darkMode ? 'bg-emerald-900/30 text-emerald-400 font-medium border border-emerald-700/50' : 'bg-gradient-to-r from-emerald-50 to-emerald-50 text-emerald-600 font-medium border border-emerald-100' : darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100/80'}`}
               >
                 Contact
               </button>
@@ -846,7 +846,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   </button>
                   <button 
                     onClick={() => { navigateTo('hospitals'); setMobileMenuOpen(false); }} 
-                    className="block w-full text-center px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-medium shadow-lg shadow-emerald-500/20"
+                    className="block w-full text-center px-4 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium shadow-lg shadow-emerald-500/20"
                   >
                     Book Queue
                   </button>
@@ -861,12 +861,12 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
   // Hero Section for Landing
   const HeroSection = () => (
-    <section className={`relative min-h-screen flex items-center overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+    <section className={`relative min-h-screen flex items-center overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
       {/* Background Pattern */}
       <div className="absolute inset-0 overflow-hidden">
         <div className={`absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl ${darkMode ? 'bg-emerald-900/20' : 'bg-emerald-300/30'}`} />
-        <div className={`absolute top-1/3 -left-40 w-[500px] h-[500px] rounded-full blur-3xl ${darkMode ? 'bg-teal-900/20' : 'bg-teal-200/30'}`} />
-        <div className={`absolute bottom-0 right-1/4 w-72 h-72 rounded-full blur-3xl ${darkMode ? 'bg-cyan-900/20' : 'bg-cyan-200/20'}`} />
+        <div className={`absolute top-1/3 -left-40 w-[500px] h-[500px] rounded-full blur-3xl ${darkMode ? 'bg-emerald-900/20' : 'bg-emerald-200/30'}`} />
+        <div className={`absolute bottom-0 right-1/4 w-72 h-72 rounded-full blur-3xl ${darkMode ? 'bg-emerald-900/20' : 'bg-emerald-200/20'}`} />
         {/* Grid pattern */}
         <div className={`absolute inset-0 bg-[linear-gradient(to_right,_1px,transparent_1px),linear-gradient(to_bottom,_1px,transparent_1px)] bg-[size:24px_24px] ${darkMode ? 'bg-gray-800/20' : 'bg-gray-400/10'}`} />
       </div>
@@ -884,7 +884,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium mb-8 shadow-sm ${darkMode ? 'bg-emerald-900/50 border border-emerald-700/50 text-emerald-300' : 'bg-gradient-to-r from-emerald-100 to-teal-100 border border-emerald-200/50 text-emerald-700'}`}
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium mb-8 shadow-sm ${darkMode ? 'bg-emerald-900/50 border border-emerald-700/50 text-emerald-300' : 'bg-gradient-to-r from-emerald-100 to-emerald-100 border border-emerald-200/50 text-emerald-700'}`}
             >
               <Sparkle size={16} weight="fill" className={darkMode ? 'text-emerald-400' : 'text-emerald-500'} />
               <span>{tr.madeForEthiopia}</span>
@@ -895,7 +895,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               {tr.skipWait}
               <br />
-              <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-400 via-emerald-400 to-emerald-400 bg-clip-text text-transparent">
                 {tr.getCareFaster}
               </span>
             </h1>
@@ -909,9 +909,9 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <button
                 onClick={() => navigateTo('hospitals')}
-                className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-semibold text-lg hover:shadow-xl hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 overflow-hidden"
+                className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-2xl font-semibold text-lg hover:shadow-xl hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 overflow-hidden"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative flex items-center gap-2">
                   {tr.bookYourToken}
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -920,7 +920,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <button
                 onClick={getUserLocation}
                 disabled={locationLoading}
-                className={`group px-8 py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 border-2 ${darkMode ? 'bg-gray-800 border-gray-700 text-gray-200 hover:border-blue-500 hover:bg-gray-750' : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg'}`}
+                className={`group px-8 py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 border-2 ${darkMode ? 'bg-gray-800 border-gray-700 text-gray-200 hover:border-emerald-500 hover:bg-gray-750' : 'bg-white border-gray-200 text-gray-700 hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-lg'}`}
               >
                 {locationLoading ? (
                   <>
@@ -929,7 +929,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   </>
                 ) : (
                   <>
-                    <Crosshair size={20} className="text-blue-500 group-hover:scale-110 transition-transform" />
+                    <Crosshair size={20} className="text-emerald-500 group-hover:scale-110 transition-transform" />
                     {tr.findNearestHospital}
                   </>
                 )}
@@ -939,15 +939,15 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             {/* Stats */}
             <div className={`grid grid-cols-3 gap-8 pt-8 border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
               <div className="text-center sm:text-left">
-                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">1,600+</p>
+                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">1,600+</p>
                 <p className={darkMode ? 'text-gray-500 text-sm mt-1' : 'text-gray-500 text-sm mt-1'}>Facilities</p>
               </div>
               <div className="text-center sm:text-left">
-                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">8,000+</p>
+                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">8,000+</p>
                 <p className={darkMode ? 'text-gray-500 text-sm mt-1' : 'text-gray-500 text-sm mt-1'}>{tr.departments}</p>
               </div>
               <div className="text-center sm:text-left">
-                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">13</p>
+                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">13</p>
                 <p className={darkMode ? 'text-gray-500 text-sm mt-1' : 'text-gray-500 text-sm mt-1'}>{tr.regions}</p>
               </div>
             </div>
@@ -964,7 +964,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               {/* Main Card */}
               <div className={`absolute inset-0 backdrop-blur-sm rounded-3xl shadow-2xl p-8 flex flex-col justify-center border ${darkMode ? 'bg-gray-900/90 border-gray-700 shadow-emerald-900/20' : 'bg-white/90 border-gray-100 shadow-emerald-500/10'}`}>
                 <div className="text-center mb-6">
-                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4 shadow-inner ${darkMode ? 'bg-gradient-to-br from-emerald-900/50 to-teal-900/50' : 'bg-gradient-to-br from-emerald-100 to-teal-100'}`}>
+                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4 shadow-inner ${darkMode ? 'bg-gradient-to-br from-emerald-900/50 to-emerald-900/50' : 'bg-gradient-to-br from-emerald-100 to-emerald-100'}`}>
                     <Ticket size={40} className="text-emerald-500" weight="duotone" />
                   </div>
                   <p className={darkMode ? 'text-gray-400 text-sm' : 'text-gray-500 text-sm'}>{tr.yourTokenNumber}</p>
@@ -987,8 +987,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
                   <div className={`flex items-center justify-between p-4 rounded-xl transition ${darkMode ? 'bg-gray-800/80 hover:bg-gray-750/80' : 'bg-gray-50/80 hover:bg-gray-100/80'}`}>
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${darkMode ? 'bg-teal-900/50' : 'bg-teal-100'}`}>
-                        <Stethoscope size={20} className="text-teal-500" />
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                        <Stethoscope size={20} className="text-emerald-500" />
                       </div>
                       <div>
                         <p className={darkMode ? 'text-xs text-gray-500' : 'text-xs text-gray-500'}>{tr.departmentLabel}</p>
@@ -998,7 +998,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                     <CaretRight size={18} className={darkMode ? 'text-gray-600' : 'text-gray-400'} />
                   </div>
 
-                  <div className={`flex items-center justify-between p-4 rounded-xl border ${darkMode ? 'bg-gradient-to-r from-emerald-900/30 to-teal-900/30 border-emerald-800/50' : 'bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-100'}`}>
+                  <div className={`flex items-center justify-between p-4 rounded-xl border ${darkMode ? 'bg-gradient-to-r from-emerald-900/30 to-emerald-900/30 border-emerald-800/50' : 'bg-gradient-to-r from-emerald-50 to-emerald-50 border-emerald-100'}`}>
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${darkMode ? 'bg-emerald-800/50' : 'bg-emerald-200/50'}`}>
                         <Timer size={20} className="text-emerald-500" />
@@ -1023,8 +1023,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 className={`absolute -top-4 -right-4 rounded-2xl shadow-xl p-4 border ${darkMode ? 'bg-gray-800 border-gray-700 shadow-gray-900/50' : 'bg-white border-gray-100 shadow-gray-200/50'}`}
               >
                 <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${darkMode ? 'bg-amber-900/50' : 'bg-amber-100'}`}>
-                    <Bell size={16} className="text-amber-500" weight="fill" />
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                    <Bell size={16} className="text-emerald-500" weight="fill" />
                   </div>
                   <span className={darkMode ? 'text-sm font-medium text-gray-200' : 'text-sm font-medium text-gray-700'}>{tr.smsAlert}</span>
                 </div>
@@ -1047,7 +1047,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-                className="absolute top-1/3 -left-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-xl shadow-blue-500/30 p-3"
+                className="absolute top-1/3 -left-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-xl shadow-emerald-500/30 p-3"
               >
                 <div className="flex items-center gap-2 text-white">
                   <Clock size={16} weight="fill" />
@@ -1091,37 +1091,31 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               icon: Ticket,
               title: tr.digitalToken,
               description: tr.digitalTokenDesc,
-              color: 'emerald',
             },
             {
               icon: Clock,
               title: tr.realTimeUpdates,
               description: tr.realTimeUpdatesDesc,
-              color: 'blue',
             },
             {
               icon: CellTower,
               title: tr.smsNotifications,
               description: tr.smsNotificationsDesc,
-              color: 'purple',
             },
             {
               icon: Ambulance,
               title: tr.emergencyAssistFeature,
               description: tr.emergencyAssistDesc,
-              color: 'red',
             },
             {
               icon: Buildings,
               title: tr.multipleHospitals,
               description: tr.multipleHospitalsDesc,
-              color: 'orange',
             },
             {
               icon: Shield,
               title: tr.securePrivate,
               description: tr.securePrivateDesc,
-              color: 'teal',
             },
           ].map((feature, index) => (
             <motion.div
@@ -1129,8 +1123,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               variants={fadeIn}
               className={`group p-8 rounded-3xl transition-all duration-300 ${darkMode ? 'bg-gray-800/50 hover:bg-gray-800' : 'bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50'}`}
             >
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${darkMode ? `bg-${feature.color}-900/50` : `bg-${feature.color}-100`}`}>
-                <feature.icon size={28} className={`text-${feature.color}-500`} />
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                <feature.icon size={28} className="text-emerald-600" />
               </div>
               <h3 className={`text-xl font-bold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>{feature.title}</h3>
               <p className={`leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{feature.description}</p>
@@ -1179,7 +1173,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <div className={`hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 ${darkMode ? 'bg-gradient-to-r from-emerald-800 to-transparent' : 'bg-gradient-to-r from-emerald-300 to-transparent'}`} />
               )}
               
-              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-lg shadow-emerald-500/25 mb-6">
+              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl shadow-lg shadow-emerald-500/25 mb-6">
                 <item.icon size={40} className="text-white" />
                 <span className={`absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-center text-sm font-bold ${darkMode ? 'bg-gray-800 text-emerald-400' : 'bg-white text-emerald-600'}`}>
                   {item.step}
@@ -1196,7 +1190,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
   // CTA Section
   const CTASection = () => (
-    <section className="py-24 bg-gradient-to-r from-emerald-600 to-teal-600 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-r from-emerald-600 to-emerald-600 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
@@ -1241,21 +1235,21 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
       </div>
 
       {/* Top gradient line */}
-      <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
+      <div className="h-1 bg-gradient-to-r from-emerald-500 via-emerald-500 to-emerald-500" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-11 h-11 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+              <div className="w-11 h-11 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
                 <Heart weight="fill" className="text-white" size={24} />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Hakim</span>
+              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">Hakim</span>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
               {tr.footerDesc}
@@ -1290,14 +1284,14 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
           {/* Support */}
           <div>
             <h4 className="font-semibold text-white mb-5 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
               {tr.support}
             </h4>
             <ul className="space-y-3">
-              <li><button onClick={() => navigateTo('contact')} className="text-gray-400 hover:text-teal-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.contactUs}</button></li>
-              <li><button onClick={() => navigateTo('faq')} className="text-gray-400 hover:text-teal-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.faq}</button></li>
-              <li><button onClick={() => navigateTo('privacy')} className="text-gray-400 hover:text-teal-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.privacyPolicy}</button></li>
-              <li><button onClick={() => navigateTo('terms')} className="text-gray-400 hover:text-teal-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.termsOfService}</button></li>
+              <li><button onClick={() => navigateTo('contact')} className="text-gray-400 hover:text-emerald-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.contactUs}</button></li>
+              <li><button onClick={() => navigateTo('faq')} className="text-gray-400 hover:text-emerald-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.faq}</button></li>
+              <li><button onClick={() => navigateTo('privacy')} className="text-gray-400 hover:text-emerald-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.privacyPolicy}</button></li>
+              <li><button onClick={() => navigateTo('terms')} className="text-gray-400 hover:text-emerald-400 transition flex items-center gap-2 group"><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{tr.termsOfService}</button></li>
               <li><button onClick={() => navigateTo('admin-login')} className="text-gray-500 hover:text-emerald-400 transition text-sm mt-2">{tr.hospitalAdminPortal} →</button></li>
             </ul>
           </div>
@@ -1354,15 +1348,15 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         {/* Stats bar */}
         <div className="py-8 border-y border-gray-800/50 grid grid-cols-3 gap-8 mb-8">
           <div className="text-center">
-            <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">1,600+</p>
+            <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">1,600+</p>
             <p className="text-gray-500 text-sm">Facilities</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">8,000+</p>
+            <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">8,000+</p>
             <p className="text-gray-500 text-sm">{tr.departments}</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">13</p>
+            <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">13</p>
             <p className="text-gray-500 text-sm">{tr.regions}</p>
           </div>
         </div>
@@ -1406,7 +1400,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       <Navigation />
       
       {/* Hero */}
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1415,7 +1409,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
           >
             <h1 className={`text-4xl sm:text-5xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               {tr.featuresPageTitle}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">
                 {' '}{tr.featuresPageTitleHighlight}
               </span>
             </h1>
@@ -1461,7 +1455,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 ))}
               </ul>
             </div>
-            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-emerald-900/30 to-teal-900/30' : 'bg-gradient-to-br from-emerald-100 to-teal-100'}`}>
+            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-emerald-900/30 to-emerald-900/30' : 'bg-gradient-to-br from-emerald-100 to-emerald-100'}`}>
               <div className={`rounded-2xl shadow-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                 <div className="text-center mb-6">
                   <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{tr.tokenNumber}</p>
@@ -1488,7 +1482,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             viewport={{ once: true }}
             className="grid lg:grid-cols-2 gap-12 items-center"
           >
-            <div className={`order-2 lg:order-1 rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-blue-900/30 to-purple-900/30' : 'bg-gradient-to-br from-blue-100 to-purple-100'}`}>
+            <div className={`order-2 lg:order-1 rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-emerald-900/30 to-emerald-900/30' : 'bg-gradient-to-br from-emerald-100 to-emerald-100'}`}>
               <div className="space-y-4">
                 {[
                   { title: tr.tokenConfirmed, message: tr.tokenConfirmedMsg },
@@ -1504,8 +1498,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                     className={`rounded-xl shadow-lg p-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}>
-                        <CellTower size={20} className="text-blue-600" />
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                        <CellTower size={20} className="text-emerald-600" />
                       </div>
                       <div>
                         <p className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{sms.title}</p>
@@ -1517,7 +1511,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-blue-900/50 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
                 <CellTower size={16} weight="fill" />
                 {tr.smsSystem}
               </div>
@@ -1535,7 +1529,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   tr.emergencyAlerts,
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <CheckCircle size={20} className="text-blue-500" weight="fill" />
+                    <CheckCircle size={20} className="text-emerald-500" weight="fill" />
                     <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>{item}</span>
                   </li>
                 ))}
@@ -1564,7 +1558,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { level: tr.critical, color: 'bg-red-500', desc: tr.criticalDesc },
-                  { level: tr.high, color: 'bg-orange-500', desc: tr.highDesc },
+                  { level: tr.high, color: 'bg-emerald-500', desc: tr.highDesc },
                   { level: tr.medium, color: 'bg-yellow-500', desc: tr.mediumDesc },
                   { level: tr.low, color: 'bg-green-500', desc: tr.lowDesc },
                 ].map((severity, i) => (
@@ -1586,7 +1580,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 </div>
               </div>
             </div>
-            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-red-900/20 to-orange-900/20' : 'bg-gradient-to-br from-red-50 to-orange-50'}`}>
+            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-red-900/20 to-emerald-900/20' : 'bg-gradient-to-br from-red-50 to-emerald-50'}`}>
               <div className={`rounded-2xl shadow-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                 <h4 className={`font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>{tr.describeSymptoms}</h4>
                 <div className={`rounded-lg p-4 mb-4 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
@@ -1620,7 +1614,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       <Navigation />
       
       {/* Hero */}
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1629,7 +1623,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
           >
             <h1 className={`text-4xl sm:text-5xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               {tr.aboutTitle}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">
                 {' '}Hakim
               </span>
             </h1>
@@ -1672,7 +1666,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-emerald-900/30 to-teal-900/30' : 'bg-gradient-to-br from-emerald-100 to-teal-100'}`}>
+              <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-emerald-900/30 to-emerald-900/30' : 'bg-gradient-to-br from-emerald-100 to-emerald-100'}`}>
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     { icon: Users, value: '120M+', label: tr.populationServed },
@@ -1772,7 +1766,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-white'}`}>
       <Navigation />
       
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1841,7 +1835,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-2"
                 >
                   <PaperPlaneTilt size={20} />
                   {tr.sendButton}
@@ -1913,7 +1907,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                     {getAmbulanceInfo().secondaryNumber && (
                       <a
                         href={`tel:${getAmbulanceInfo().secondaryNumber}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition"
                       >
                         <Phone size={18} />
                         {getAmbulanceInfo().secondaryNumber}
@@ -1944,7 +1938,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-white'}`}>
       <Navigation />
       
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2007,7 +2001,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-white'}`}>
       <Navigation />
       
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2079,7 +2073,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-white'}`}>
       <Navigation />
       
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2154,7 +2148,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
   // Auth Page
   const AuthPage = () => (
-    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -2163,10 +2157,10 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         {/* Logo */}
         <div className="text-center mb-8">
           <button onClick={() => navigateTo('landing')} className="inline-flex items-center gap-2 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
               <Heart weight="fill" className="text-white" size={28} />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">
               Hakim
             </span>
           </button>
@@ -2214,7 +2208,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <button
                 onClick={() => sendOtp(name ? 'REGISTRATION' : 'LOGIN')}
                 disabled={loading || !phone}
-                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <ArrowClockwise className="animate-spin" size={20} />
@@ -2242,7 +2236,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <button
                 onClick={verifyOtp}
                 disabled={loading || otp.length !== 6}
-                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <ArrowClockwise className="animate-spin" size={20} />
@@ -2312,17 +2306,17 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         case 'HOSPITAL':
           return { label: 'Hospital', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'HEALTH_CENTER':
-          return { label: 'Health Center', color: 'bg-blue-100 text-blue-700', darkColor: 'bg-blue-900/50 text-blue-400' };
+          return { label: 'Health Center', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'CLINIC':
-          return { label: 'Clinic', color: 'bg-purple-100 text-purple-700', darkColor: 'bg-purple-900/50 text-purple-400' };
+          return { label: 'Clinic', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'HEALTH_POST':
-          return { label: 'Health Post', color: 'bg-orange-100 text-orange-700', darkColor: 'bg-orange-900/50 text-orange-400' };
+          return { label: 'Health Post', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'SPECIALIZED_CENTER':
-          return { label: 'Specialized', color: 'bg-pink-100 text-pink-700', darkColor: 'bg-pink-900/50 text-pink-400' };
+          return { label: 'Specialized', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'PHARMACY':
-          return { label: 'Pharmacy', color: 'bg-teal-100 text-teal-700', darkColor: 'bg-teal-900/50 text-teal-400' };
+          return { label: 'Pharmacy', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'LABORATORY':
-          return { label: 'Laboratory', color: 'bg-indigo-100 text-indigo-700', darkColor: 'bg-indigo-900/50 text-indigo-400' };
+          return { label: 'Laboratory', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         default:
           return { label: 'Hospital', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
       }
@@ -2332,7 +2326,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
         <Navigation />
         
-        <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+        <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -2364,16 +2358,16 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
                     {hospitals.filter(h => h.facilityType === 'HOSPITAL').length} Hospitals
                   </span>
-                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-purple-900/50 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
+                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
                     {hospitals.filter(h => h.facilityType === 'CLINIC').length} Clinics
                   </span>
-                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-blue-900/50 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
+                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
                     {hospitals.filter(h => h.facilityType === 'HEALTH_CENTER').length} Health Centers
                   </span>
-                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-teal-900/50 text-teal-400' : 'bg-teal-100 text-teal-700'}`}>
+                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
                     {hospitals.filter(h => h.facilityType === 'PHARMACY').length} Pharmacies
                   </span>
-                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-indigo-900/50 text-indigo-400' : 'bg-indigo-100 text-indigo-700'}`}>
+                  <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
                     {hospitals.filter(h => h.facilityType === 'LABORATORY').length} Laboratories
                   </span>
                 </div>
@@ -2502,7 +2496,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                         {viewMode === 'grid' ? (
                           <>
                             <div className="flex items-start justify-between mb-4">
-                              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform ${darkMode ? 'bg-gradient-to-br from-emerald-900/50 to-teal-900/50' : 'bg-gradient-to-br from-emerald-100 to-teal-100'}`}>
+                              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform ${darkMode ? 'bg-gradient-to-br from-emerald-900/50 to-emerald-900/50' : 'bg-gradient-to-br from-emerald-100 to-emerald-100'}`}>
                                 <Hospital size={28} className="text-emerald-600" />
                               </div>
                               <span className={`px-3 py-1 rounded-full text-xs font-medium ${darkMode ? badge.darkColor : badge.color}`}>
@@ -2527,7 +2521,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                           </>
                         ) : (
                           <>
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? 'bg-gradient-to-br from-emerald-900/50 to-teal-900/50' : 'bg-gradient-to-br from-emerald-100 to-teal-100'}`}>
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? 'bg-gradient-to-br from-emerald-900/50 to-emerald-900/50' : 'bg-gradient-to-br from-emerald-100 to-emerald-100'}`}>
                               <Hospital size={24} className="text-emerald-600" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -2569,6 +2563,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     const [mapSelectedRegion, setMapSelectedRegion] = useState<string>('');
     const [regions, setRegions] = useState<{name: string; count: number}[]>([]);
     const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
+    const [locationLoading, setLocationLoading] = useState(false);
+    const [locationError, setLocationError] = useState<string | null>(null);
     const [mapMounted, setMapMounted] = useState(false);
     const [MapComponent, setMapComponent] = useState<React.ComponentType<{
       hospitals: Hospital[];
@@ -2593,21 +2589,27 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       setRegions(regionList);
     }, [hospitals]);
 
-    // Get user location
-    useEffect(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setUserLocation({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-          },
-          (error) => {
-            console.log('Geolocation error:', error);
-          }
-        );
+    const requestUserLocation = useCallback(() => {
+      if (!navigator.geolocation) {
+        setLocationError('Geolocation is not supported on this device.');
+        return;
       }
+      setLocationLoading(true);
+      setLocationError(null);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setLocationLoading(false);
+        },
+        () => {
+          setLocationError('Unable to access your location.');
+          setLocationLoading(false);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      );
     }, []);
 
     // Dynamically load map component
@@ -2635,7 +2637,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       <div className="min-h-screen bg-gray-50">
         <Navigation />
         
-        <section className="pt-8 pb-4 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+        <section className="pt-8 pb-4 bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -2692,9 +2694,30 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   <option key={r.name} value={r.name}>{r.name} ({r.count})</option>
                 ))}
               </select>
+              <button
+                onClick={requestUserLocation}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition"
+              >
+                {locationLoading ? (
+                  <>
+                    <ArrowClockwise size={18} className="animate-spin" />
+                    Locating...
+                  </>
+                ) : (
+                  <>
+                    <Crosshair size={18} />
+                    Find My Location
+                  </>
+                )}
+              </button>
             </div>
+            {locationError && (
+              <div className="mt-3 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+                {locationError}
+              </div>
+            )}
             {filteredHospitals.length > MAX_MAP_MARKERS && (
-              <div className="mt-4 flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+              <div className="mt-4 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
                 <Warning size={16} />
                 <span>
                   Showing the first {MAX_MAP_MARKERS} facilities. Use search or region to narrow results.
@@ -2707,14 +2730,14 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         {/* Map Container */}
         <section className="h-[calc(100vh-300px)] min-h-[500px] relative">
           {!mapMounted || !MapComponent ? (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50">
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-emerald-50">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading interactive map...</p>
               </div>
             </div>
           ) : hospitals.length === 0 ? (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50">
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-emerald-50">
               <div className="text-center">
                 <Hospital size={48} className="text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600">Loading hospitals...</p>
@@ -2779,17 +2802,17 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         case 'HOSPITAL':
           return { label: 'Hospital', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'HEALTH_CENTER':
-          return { label: 'Health Center', color: 'bg-blue-100 text-blue-700', darkColor: 'bg-blue-900/50 text-blue-400' };
+          return { label: 'Health Center', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'CLINIC':
-          return { label: 'Clinic', color: 'bg-purple-100 text-purple-700', darkColor: 'bg-purple-900/50 text-purple-400' };
+          return { label: 'Clinic', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'HEALTH_POST':
-          return { label: 'Health Post', color: 'bg-orange-100 text-orange-700', darkColor: 'bg-orange-900/50 text-orange-400' };
+          return { label: 'Health Post', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'SPECIALIZED_CENTER':
-          return { label: 'Specialized', color: 'bg-pink-100 text-pink-700', darkColor: 'bg-pink-900/50 text-pink-400' };
+          return { label: 'Specialized', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'PHARMACY':
-          return { label: 'Pharmacy', color: 'bg-teal-100 text-teal-700', darkColor: 'bg-teal-900/50 text-teal-400' };
+          return { label: 'Pharmacy', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         case 'LABORATORY':
-          return { label: 'Laboratory', color: 'bg-indigo-100 text-indigo-700', darkColor: 'bg-indigo-900/50 text-indigo-400' };
+          return { label: 'Laboratory', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
         default:
           return { label: 'Hospital', color: 'bg-emerald-100 text-emerald-700', darkColor: 'bg-emerald-900/50 text-emerald-400' };
       }
@@ -2825,7 +2848,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
         <Navigation />
         
-        <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+        <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -2841,7 +2864,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/25 flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/25 flex-shrink-0">
                     <Hospital size={32} className="text-white" />
                   </div>
                   <div>
@@ -2873,7 +2896,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   onClick={openInGoogleMaps}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
                 >
                   <NavigationArrow size={20} />
                   Get Directions
@@ -2953,7 +2976,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
                         <Stethoscope size={24} className="text-emerald-600" />
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-blue-900/50 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
                         {(dept.waitingCount as number) || 0} waiting
                       </span>
                     </div>
@@ -3010,7 +3033,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             </button>
 
             {/* Hospital & Department Info */}
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white mb-6 shadow-xl shadow-emerald-500/25">
+            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl p-6 text-white mb-6 shadow-xl shadow-emerald-500/25">
               <div className="flex items-center gap-3 mb-4">
                 <Hospital size={24} />
                 <span className="font-medium">{selectedHospital?.name}</span>
@@ -3026,14 +3049,14 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <h3 className={`font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Current Queue Status</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className={`rounded-xl p-4 text-center ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
-                  <Users size={24} className="text-blue-500 mx-auto mb-2" />
+                  <Users size={24} className="text-emerald-500 mx-auto mb-2" />
                   <p className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     {departments.find(d => d.id === selectedDepartment?.id)?.currentQueueCount || 0}
                   </p>
                   <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>In Queue</p>
                 </div>
                 <div className={`rounded-xl p-4 text-center ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
-                  <Timer size={24} className="text-amber-500 mx-auto mb-2" />
+                  <Timer size={24} className="text-emerald-500 mx-auto mb-2" />
                   <p className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     {formatWaitTime((departments.find(d => d.id === selectedDepartment?.id)?.currentQueueCount || 0) * 15)}
                   </p>
@@ -3091,7 +3114,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <button
                 onClick={bookAppointment}
                 disabled={loading || (!isAuthenticated && !phone)}
-                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <ArrowClockwise className="animate-spin" size={20} />
@@ -3122,7 +3145,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             className="space-y-6"
           >
             {/* Token Card */}
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-white text-center shadow-2xl shadow-emerald-500/30">
+            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl p-8 text-white text-center shadow-2xl shadow-emerald-500/30">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-4">
                 <Ticket size={32} weight="fill" />
               </div>
@@ -3180,12 +3203,12 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             </div>
 
             {/* Notification Info */}
-            <div className={`rounded-2xl p-4 ${darkMode ? 'bg-blue-900/30 border border-blue-700/50' : 'bg-blue-50 border border-blue-200'}`}>
+            <div className={`rounded-2xl p-4 ${darkMode ? 'bg-emerald-900/30 border border-emerald-700/50' : 'bg-emerald-50 border border-emerald-200'}`}>
               <div className="flex items-start gap-3">
-                <Bell size={20} className={`flex-shrink-0 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                <Bell size={20} className={`flex-shrink-0 ${darkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
                 <div>
-                  <p className={`font-medium ${darkMode ? 'text-blue-300' : 'text-blue-800'}`}>SMS Notifications Active</p>
-                  <p className={`text-sm mt-1 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+                  <p className={`font-medium ${darkMode ? 'text-emerald-300' : 'text-emerald-800'}`}>SMS Notifications Active</p>
+                  <p className={`text-sm mt-1 ${darkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>
                     You'll receive an SMS when you're next in line and when it's your turn.
                   </p>
                 </div>
@@ -3462,9 +3485,9 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
                     <div className="flex items-center justify-between mb-3">
                       <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Waiting</span>
-                      <Timer size={20} className="text-blue-500" />
+                      <Timer size={20} className="text-emerald-500" />
                     </div>
-                    <p className="text-3xl font-bold text-blue-600">
+                    <p className="text-3xl font-bold text-emerald-600">
                       {(adminStats as Record<string, unknown>).summary?.totalWaiting as number || 0}
                     </p>
                   </div>
@@ -3480,7 +3503,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
                     <div className="flex items-center justify-between mb-3">
                       <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Avg Wait</span>
-                      <Clock size={20} className="text-amber-500" />
+                      <Clock size={20} className="text-emerald-500" />
                     </div>
                     <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                       {(adminStats as Record<string, unknown>).summary?.averageWaitTime as number || 0} min
@@ -3512,7 +3535,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                         </div>
                         <div className="flex items-center gap-6 text-sm">
                           <div className="text-center">
-                            <p className="font-bold text-blue-600">{(dept as Record<string, unknown>).totalWaiting as number}</p>
+                            <p className="font-bold text-emerald-600">{(dept as Record<string, unknown>).totalWaiting as number}</p>
                             <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>waiting</p>
                           </div>
                           <div className="text-center">
@@ -3590,7 +3613,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <button
                   onClick={callNextPatient}
                   disabled={loading}
-                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <ArrowClockwise className="animate-spin" size={20} />
@@ -3607,7 +3630,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             {/* Quick Actions */}
             <div className="grid grid-cols-2 gap-4">
               <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
-                <ArrowClockwise size={24} className="text-orange-500 mx-auto mb-2" />
+                <ArrowClockwise size={24} className="text-emerald-500 mx-auto mb-2" />
                 <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Skip Patient</p>
               </button>
               <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
@@ -3619,7 +3642,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Mark Complete</p>
               </button>
               <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
-                <Clock size={24} className="text-blue-500 mx-auto mb-2" />
+                <Clock size={24} className="text-emerald-500 mx-auto mb-2" />
                 <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>View History</p>
               </button>
             </div>
@@ -3642,7 +3665,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
             className="space-y-6"
           >
             {/* Profile Card */}
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-white text-center shadow-xl shadow-emerald-500/25">
+            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl p-8 text-white text-center shadow-xl shadow-emerald-500/25">
               <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <User size={40} />
               </div>
@@ -3678,8 +3701,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               </button>
 
               <button className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? 'hover:bg-gray-800 border-gray-800' : 'hover:bg-gray-50 border-gray-100'}`}>
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}>
-                  <Clock size={20} className="text-blue-600" />
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                  <Clock size={20} className="text-emerald-600" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Appointment History</p>
@@ -3689,8 +3712,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               </button>
 
               <button className={`w-full p-4 flex items-center gap-4 transition ${darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}`}>
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-purple-900/50' : 'bg-purple-100'}`}>
-                  <Bell size={20} className="text-purple-600" />
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                  <Bell size={20} className="text-emerald-600" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Notifications</p>
@@ -3761,15 +3784,15 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     };
 
     return (
-      <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <div className="w-full max-w-2xl">
           {/* Header */}
           <div className="text-center mb-8">
             <button onClick={() => navigateTo('landing')} className="inline-flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Heart weight="fill" className="text-white" size={28} />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">
                 Hakim
               </span>
             </button>
@@ -3936,7 +3959,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <button
                   onClick={() => setRegistrationStep(2)}
                   disabled={!registrationData.hospitalName || !registrationData.hospitalType || !registrationData.region || !registrationData.city || !registrationData.phone}
-                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {tr.continueBtn}
                   <ArrowRight size={20} />
@@ -3991,7 +4014,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                   <button
                     type="button"
                     onClick={() => setRegistrationStep(3)}
-                    className="flex-1 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-2"
+                    className="flex-1 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-2"
                   >
                     {tr.continueBtn}
                     <ArrowRight size={20} />
@@ -4102,7 +4125,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                     type="button"
                     onClick={handleRegister}
                     disabled={loading || !registrationData.adminName || !registrationData.adminPhone || !registrationData.adminPassword}
-                    className="flex-1 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <ArrowClockwise className="animate-spin" size={20} />
@@ -4184,7 +4207,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               className="space-y-6"
             >
               {/* Welcome Banner */}
-              <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-xl">
+              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl">
                 <h2 className="text-2xl font-bold mb-2">{tr.welcomeBack}, {user?.name?.split(' ')[0] || 'Admin'}!</h2>
                 <p className="text-emerald-100">{tr.manageYourHospital}</p>
               </div>
@@ -4194,8 +4217,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                   <div className="flex items-center justify-between mb-3">
                     <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{tr.todayPatients}</span>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}>
-                      <Users size={20} className="text-blue-600" />
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                      <Users size={20} className="text-emerald-600" />
                     </div>
                   </div>
                   <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{dashboardStats.todayPatients}</p>
@@ -4203,11 +4226,11 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                   <div className="flex items-center justify-between mb-3">
                     <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{tr.currentlyWaiting}</span>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-amber-900/50' : 'bg-amber-100'}`}>
-                      <Timer size={20} className="text-amber-600" />
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                      <Timer size={20} className="text-emerald-600" />
                     </div>
                   </div>
-                  <p className="text-3xl font-bold text-amber-600">{dashboardStats.waiting}</p>
+                  <p className="text-3xl font-bold text-emerald-600">{dashboardStats.waiting}</p>
                 </div>
                 <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                   <div className="flex items-center justify-between mb-3">
@@ -4221,8 +4244,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
                   <div className="flex items-center justify-between mb-3">
                     <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{tr.averageWaitTime}</span>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-purple-900/50' : 'bg-purple-100'}`}>
-                      <Clock size={20} className="text-purple-600" />
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                      <Clock size={20} className="text-emerald-600" />
                     </div>
                   </div>
                   <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{dashboardStats.avgWaitTime}<span className="text-lg font-normal">min</span></p>
@@ -4261,7 +4284,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                           <td className="py-4 px-6 text-center">
                             <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                               queue.waiting > 10 ? (darkMode ? 'bg-red-900/50 text-red-400' : 'bg-red-100 text-red-700') :
-                              queue.waiting > 5 ? (darkMode ? 'bg-amber-900/50 text-amber-400' : 'bg-amber-100 text-amber-700') :
+                              queue.waiting > 5 ? (darkMode ? 'bg-emerald-900/50 text-emerald-400' : 'bg-emerald-100 text-emerald-700') :
                               (darkMode ? 'bg-green-900/50 text-green-400' : 'bg-green-100 text-green-700')
                             }`}>
                               {queue.waiting}
@@ -4300,11 +4323,11 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                     <FirstAid size={24} className="mx-auto mb-2" />
                     <span className="text-sm font-medium">{tr.addEmergency}</span>
                   </button>
-                  <button className={`p-4 rounded-xl transition text-center ${darkMode ? 'bg-blue-900/50 text-blue-400 hover:bg-blue-900/70' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}`}>
+                  <button className={`p-4 rounded-xl transition text-center ${darkMode ? 'bg-emerald-900/50 text-emerald-400 hover:bg-emerald-900/70' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'}`}>
                     <Bell size={24} className="mx-auto mb-2" />
                     <span className="text-sm font-medium">{tr.broadcastAlert}</span>
                   </button>
-                  <button onClick={() => setDashboardSection('analytics')} className={`p-4 rounded-xl transition text-center ${darkMode ? 'bg-purple-900/50 text-purple-400 hover:bg-purple-900/70' : 'bg-purple-50 text-purple-700 hover:bg-purple-100'}`}>
+                  <button onClick={() => setDashboardSection('analytics')} className={`p-4 rounded-xl transition text-center ${darkMode ? 'bg-emerald-900/50 text-emerald-400 hover:bg-emerald-900/70' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'}`}>
                     <ChartBar size={24} className="mx-auto mb-2" />
                     <span className="text-sm font-medium">{tr.viewReports}</span>
                   </button>
@@ -4641,10 +4664,10 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
           {/* Logo */}
           <div className="p-6">
             <button onClick={() => navigateTo('landing')} className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Heart weight="fill" className="text-white" size={22} />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-500 bg-clip-text text-transparent">
                 Hakim
               </span>
             </button>
@@ -4671,7 +4694,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
           {/* User Section */}
           <div className={`p-4 border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center shadow-sm">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center shadow-sm">
                 <User size={16} className="text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -4733,7 +4756,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
         <Navigation />
         
-        <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-blue-50 via-white to-emerald-50'}`}>
+        <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -4748,8 +4771,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               </button>
               
               <div className="flex items-center gap-3 mb-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}>
-                  <Crosshair size={24} className="text-blue-600" />
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                  <Crosshair size={24} className="text-emerald-600" />
                 </div>
                 <div>
                   <h1 className={`text-2xl sm:text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -4763,7 +4786,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
               {/* Location Info */}
               {locationNotice ? (
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-700'}`}>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${darkMode ? 'bg-emerald-900/50 text-emerald-300' : 'bg-emerald-50 text-emerald-700'}`}>
                   <Info size={16} />
                   <span>{locationNotice}</span>
                 </div>
@@ -4805,7 +4828,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                 {/* Top 3 Nearest - Featured Cards */}
                 <div className="mb-8">
                   <h2 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                    <NavigationArrow size={20} className="text-blue-600" />
+                    <NavigationArrow size={20} className="text-emerald-600" />
                     Closest to You
                   </h2>
                   <div className="grid md:grid-cols-3 gap-4">
@@ -4820,7 +4843,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
                           loadDepartments(hospital.id);
                           navigateTo('departments');
                         }}
-                        className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-left text-white shadow-xl shadow-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/30 transition-all group relative overflow-hidden"
+                        className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 text-left text-white shadow-xl shadow-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/30 transition-all group relative overflow-hidden"
                       >
                         <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold">
                           {index + 1}
@@ -4879,7 +4902,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     };
 
     return (
-      <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-teal-50'}`}>
+      <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gradient-to-br from-emerald-50 via-white to-emerald-50'}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -4887,10 +4910,10 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         >
           <div className="text-center mb-8">
             <button onClick={() => navigateTo('landing')} className="inline-flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Heart weight="fill" className="text-white" size={28} />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">
                 Hakim
               </span>
             </button>
@@ -4934,7 +4957,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <button
                 onClick={handleAdminLogin}
                 disabled={adminLoading || !adminPhone || !adminPassword}
-                className="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {adminLoading ? (
                   <ArrowClockwise className="animate-spin" size={20} />
@@ -5030,8 +5053,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               className={`rounded-3xl shadow-2xl max-w-md w-full p-8 transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}
             >
               {/* Icon */}
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${darkMode ? 'bg-blue-900/50' : 'bg-blue-100'}`}>
-                <Crosshair size={32} className="text-blue-600" />
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${darkMode ? 'bg-emerald-900/50' : 'bg-emerald-100'}`}>
+                <Crosshair size={32} className="text-emerald-600" />
               </div>
 
               {/* Title */}
@@ -5041,7 +5064,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
               {/* Error message if any */}
               {locationError && (
-                <div className={`mb-4 p-3 border rounded-xl text-sm flex items-start gap-2 ${darkMode ? 'bg-amber-900/30 border-amber-700/50 text-amber-400' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
+                <div className={`mb-4 p-3 border rounded-xl text-sm flex items-start gap-2 ${darkMode ? 'bg-emerald-900/30 border-emerald-700/50 text-emerald-400' : 'bg-emerald-50 border border-emerald-200 text-emerald-700'}`}>
                   <Warning size={18} className="flex-shrink-0 mt-0.5" />
                   <span>{locationError}</span>
                 </div>
@@ -5051,7 +5074,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
               <button
                 onClick={requestLocation}
                 disabled={locationLoading}
-                className="w-full px-4 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 mb-4"
+                className="w-full px-4 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 mb-4"
               >
                 {locationLoading ? (
                   <>
