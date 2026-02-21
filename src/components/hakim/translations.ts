@@ -852,3 +852,4 @@ export const translations = {
   } as const;
 
 export type Language = keyof typeof translations;
+export type TranslationStrings = typeof translations.en;
