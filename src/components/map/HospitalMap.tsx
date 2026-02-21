@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Hospital } from '@/types';
 
 // Import Leaflet CSS - required for map tiles to render
@@ -51,7 +51,6 @@ const getFacilityColor = (facilityType: string | undefined): string => {
   }
 };
 
-// Custom marker icon using divIcon for facility markers
 const createCustomIcon = (facilityType: string | undefined, isSelected: boolean = false) => {
   const color = isSelected ? '#dc2626' : getFacilityColor(facilityType);
   return L.divIcon({
@@ -63,7 +62,7 @@ const createCustomIcon = (facilityType: string | undefined, isSelected: boolean 
         height: ${isSelected ? '32px' : '24px'};
         border-radius: 50%;
         border: 3px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -107,8 +106,20 @@ export default function HospitalMap({
 }: HospitalMapProps) {
   const [isMounted, setIsMounted] = useState(false);
 
-  // Filter hospitals with valid coordinates
-  const validHospitals = hospitals.filter(h => h.latitude && h.longitude);
+  const iconCache = useMemo(() => new Map<string, L.DivIcon>(), []);
+  const getIcon = (facilityType: string | undefined, isSelected: boolean) => {
+    const key = `${facilityType ?? 'default'}:${isSelected ? 'selected' : 'base'}`;
+    const cached = iconCache.get(key);
+    if (cached) return cached;
+    const icon = createCustomIcon(facilityType, isSelected);
+    iconCache.set(key, icon);
+    return icon;
+  };
+
+  const validHospitals = useMemo(
+    () => hospitals.filter(h => h.latitude && h.longitude),
+    [hospitals]
+  );
 
   useEffect(() => {
     // Use requestAnimationFrame to defer setState
@@ -137,6 +148,7 @@ export default function HospitalMap({
         style={{ width: '100%', height: '100%', minHeight: '400px' }}
         className="z-0"
         scrollWheelZoom={true}
+        preferCanvas={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -156,7 +168,7 @@ export default function HospitalMap({
           <Marker
             key={hospital.id}
             position={[hospital.latitude!, hospital.longitude!]}
-            icon={createCustomIcon(hospital.facilityType, selectedHospital?.id === hospital.id)}
+            icon={getIcon(hospital.facilityType, selectedHospital?.id === hospital.id)}
             eventHandlers={{
               click: () => onHospitalSelect(hospital),
             }}
