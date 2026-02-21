@@ -55,7 +55,7 @@ export function LocationPermissionModal({
             </h3>
 
             {locationError && (
-              <div className={`mb-4 p-3 border rounded-xl text-sm flex items-start gap-2 ${darkMode ? "bg-[#2D4B32]/10 border-[#2D4B32]/50 text-[#2D4B32]" : "bg-[#2D4B32] border border-[#2D4B32] text-[#2D4B32]"}`}>
+              <div className={`mb-4 p-3 border rounded-xl text-sm flex items-start gap-2 ${darkMode ? "bg-[#2D4B32]/10 border-[#2D4B32]/50 text-[#283026]" : "bg-[#E7EDDF] border-[#2D4B32]/30 text-[#283026]"}`}>
                 <Warning size={18} className="flex-shrink-0 mt-0.5" />
                 <span>{locationError}</span>
               </div>
