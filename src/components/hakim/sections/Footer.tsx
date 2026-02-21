@@ -15,9 +15,14 @@ interface FooterProps {
   selectedRegion: string;
   getAmbulanceInfo: () => AmbulanceInfo;
   onNavigate: (view: ViewType) => void;
+  stats?: {
+    facilities?: number;
+    departments?: number;
+    regions?: number;
+  };
 }
 
-export function Footer({ t, selectedRegion, getAmbulanceInfo, onNavigate }: FooterProps) {
+export function Footer({ t, selectedRegion, getAmbulanceInfo, onNavigate, stats }: FooterProps) {
   return (
     <footer className="relative bg-background text-gray-900 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -127,15 +132,15 @@ export function Footer({ t, selectedRegion, getAmbulanceInfo, onNavigate }: Foot
 
         <div className="py-8 border-y border-gray-400/60 grid grid-cols-3 gap-8 mb-8">
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">1,600+</p>
+            <p className="text-2xl font-bold text-gray-900">{stats?.facilities ? stats.facilities.toLocaleString() : '1,600+'}</p>
             <p className="text-gray-600 text-sm">Facilities</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">8,000+</p>
+            <p className="text-2xl font-bold text-gray-900">{stats?.departments ? stats.departments.toLocaleString() : '8,000+'}</p>
             <p className="text-gray-600 text-sm">{t.departments}</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">13</p>
+            <p className="text-2xl font-bold text-gray-900">{stats?.regions && stats.regions > 0 ? stats.regions : 13}</p>
             <p className="text-gray-600 text-sm">{t.regions}</p>
           </div>
         </div>

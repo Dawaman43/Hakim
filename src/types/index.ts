@@ -38,6 +38,7 @@ export interface Hospital {
   createdAt: string;
   updatedAt: string;
   departments?: Department[];
+  departmentCount?: number;
 }
 
 export interface Department {

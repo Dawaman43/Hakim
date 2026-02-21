@@ -27,6 +27,7 @@ import { useQueueStatusPolling } from './hooks/use-queue-status-polling';
 import { useListFilters } from './hooks/use-list-filters';
 import { useHospitalRegistration } from './hooks/use-hospital-registration';
 import { useHospitalDashboard } from './hooks/use-hospital-dashboard';
+import { usePagination } from './hooks/use-pagination';
 import { DEFAULT_LOCATION, REGION_AMBULANCE_DATA, REGION_COORDINATES } from './constants/regions';
 
 interface HakimAppProps {
@@ -86,6 +87,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
   // Admin states
   const [adminStats, setAdminStats] = useState<unknown>(null);
   const { viewMode, setViewMode, facilityTypeFilter, setFacilityTypeFilter, searchTerm, setSearchTerm, regionFilter, setRegionFilter } = useListFilters();
+  const { page, setPage, pageSize, setPageSize } = usePagination();
 
   // Location states
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -107,7 +109,14 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     setNewDepartment,
   } = useHospitalDashboard();
 
-  const { hospitals, departments, loadDepartments } = useHospitalsData({ setLoading });
+  const { hospitals, departments, totalHospitals, facilityCounts, totalDepartments, totalRegions, loadDepartments } = useHospitalsData({
+    setLoading,
+    page,
+    pageSize,
+    regionFilter,
+    facilityTypeFilter,
+    searchTerm,
+  });
 
   const { getHospitalsByDistance } = useNearestHospitals({ hospitals, userLocation });
 
@@ -237,6 +246,11 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       selectedRegion={selectedRegion}
       getAmbulanceInfo={getAmbulanceInfo}
       onNavigate={navigateTo}
+      stats={{
+        facilities: totalHospitals,
+        departments: totalDepartments,
+        regions: totalRegions,
+      }}
     />
   );
 
@@ -284,6 +298,14 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     setRegionFilter,
     facilityTypeFilter,
     setFacilityTypeFilter,
+    facilityCounts,
+    totalDepartments,
+    totalRegions,
+    totalHospitals,
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
     selectedHospital,
     setSelectedHospital,
     loadDepartments,

@@ -36,6 +36,14 @@ export interface PublicViewProps {
   sendOtp: (purpose?: "LOGIN" | "REGISTRATION") => void;
   verifyOtp: () => void;
   hospitals: Hospital[];
+  totalHospitals: number;
+  facilityCounts: Record<string, number>;
+  totalDepartments: number;
+  totalRegions: number;
+  page: number;
+  pageSize: number;
+  setPage: (value: number) => void;
+  setPageSize: (value: number) => void;
   viewMode: "grid" | "list";
   setViewMode: (value: "grid" | "list") => void;
   searchTerm: string;

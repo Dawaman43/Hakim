@@ -36,6 +36,14 @@ interface UsePublicViewPropsParams {
   sendOtp: (purpose?: "LOGIN" | "REGISTRATION") => void;
   verifyOtp: () => void;
   hospitals: Hospital[];
+  totalHospitals: number;
+  facilityCounts: Record<string, number>;
+  totalDepartments: number;
+  totalRegions: number;
+  page: number;
+  pageSize: number;
+  setPage: (value: number) => void;
+  setPageSize: (value: number) => void;
   viewMode: "grid" | "list";
   setViewMode: (value: "grid" | "list") => void;
   searchTerm: string;
@@ -100,6 +108,14 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     sendOtp: params.sendOtp,
     verifyOtp: params.verifyOtp,
     hospitals: params.hospitals,
+    totalHospitals: params.totalHospitals,
+    facilityCounts: params.facilityCounts,
+    totalDepartments: params.totalDepartments,
+    totalRegions: params.totalRegions,
+    page: params.page,
+    pageSize: params.pageSize,
+    setPage: params.setPage,
+    setPageSize: params.setPageSize,
     viewMode: params.viewMode,
     setViewMode: params.setViewMode,
     searchTerm: params.searchTerm,
@@ -161,6 +177,14 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     params.sendOtp,
     params.verifyOtp,
     params.hospitals,
+    params.totalHospitals,
+    params.facilityCounts,
+    params.totalDepartments,
+    params.totalRegions,
+    params.page,
+    params.pageSize,
+    params.setPage,
+    params.setPageSize,
     params.viewMode,
     params.setViewMode,
     params.searchTerm,

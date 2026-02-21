@@ -12,6 +12,14 @@ interface HospitalsPageProps {
   darkMode: boolean;
   loading: boolean;
   hospitals: Hospital[];
+  totalHospitals: number;
+  facilityCounts: Record<string, number>;
+  totalDepartments: number;
+  totalRegions: number;
+  page: number;
+  pageSize: number;
+  setPage: (value: number) => void;
+  setPageSize: (value: number) => void;
   viewMode: 'grid' | 'list';
   setViewMode: (mode: 'grid' | 'list') => void;
   searchTerm: string;
@@ -32,6 +40,14 @@ export function HospitalsPage({
   darkMode,
   loading,
   hospitals,
+  totalHospitals,
+  facilityCounts,
+  totalDepartments,
+  totalRegions,
+  page,
+  pageSize,
+  setPage,
+  setPageSize,
   viewMode,
   setViewMode,
   searchTerm,
@@ -47,13 +63,7 @@ export function HospitalsPage({
   footer,
   t,
 }: HospitalsPageProps) {
-  const filteredHospitals = hospitals.filter((hospital) => {
-    const matchesSearch = hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      hospital.address.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRegion = regionFilter === 'All Regions' || hospital.region === regionFilter;
-    const matchesFacilityType = facilityTypeFilter === 'ALL' || hospital.facilityType === facilityTypeFilter;
-    return matchesSearch && matchesRegion && matchesFacilityType;
-  });
+  const totalPages = Math.max(1, Math.ceil(totalHospitals / pageSize));
 
   const getFacilityBadge = (type: string | undefined) => {
     switch (type) {
@@ -107,13 +117,13 @@ export function HospitalsPage({
             ) : (
               <div className={`mt-4 flex flex-wrap gap-3 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
-                  {hospitals.length} total facilities
+                  {totalHospitals} total facilities
                 </span>
                 <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]'}`}>
-                  {hospitals.filter(h => h.facilityType === 'HOSPITAL').length} Hospitals
+                  {facilityCounts.HOSPITAL ?? hospitals.filter(h => h.facilityType === 'HOSPITAL').length} Hospitals
                 </span>
                 <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]'}`}>
-                  {hospitals.filter(h => h.facilityType === 'CLINIC').length} Clinics
+                  {facilityCounts.CLINIC ?? hospitals.filter(h => h.facilityType === 'CLINIC').length} Clinics
                 </span>
               </div>
             )}
@@ -127,13 +137,19 @@ export function HospitalsPage({
                   type="text"
                   placeholder="Search hospitals, clinics, health centers..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setPage(1);
+                  }}
                   className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' : 'bg-white border-gray-200'}`}
                 />
               </div>
               <select
                 value={regionFilter}
-                onChange={(e) => setRegionFilter(e.target.value)}
+                onChange={(e) => {
+                  setRegionFilter(e.target.value);
+                  setPage(1);
+                }}
                 className={`px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
               >
                 <option>All Regions</option>
@@ -187,7 +203,10 @@ export function HospitalsPage({
               ].map((type) => (
                 <button
                   key={type.value}
-                  onClick={() => setFacilityTypeFilter(type.value)}
+                  onClick={() => {
+                    setFacilityTypeFilter(type.value);
+                    setPage(1);
+                  }}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition ${
                     facilityTypeFilter === type.value
                       ? darkMode
@@ -237,18 +256,35 @@ export function HospitalsPage({
             </motion.div>
           ) : (
             <>
-              <p className={`mb-4 text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-                Showing {filteredHospitals.length} of {hospitals.length} facilities
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-sm">
+                <p className={darkMode ? 'text-gray-500' : 'text-gray-500'}>
+                  Showing {hospitals.length} of {totalHospitals} facilities
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className={darkMode ? 'text-gray-500' : 'text-gray-500'}>Per page</span>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => {
+                      setPageSize(Number(e.target.value));
+                      setPage(1);
+                    }}
+                    className={`px-2 py-1 border rounded-lg ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
+                  >
+                    {[12, 24, 36, 48].map((size) => (
+                      <option key={size} value={size}>{size}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
                 className={viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}
               >
-                {filteredHospitals.map((hospital, index) => {
+                {hospitals.map((hospital, index) => {
                   const badge = getFacilityBadge(hospital.facilityType);
-                  const deptCount = hospital.departments?.length || 0;
+                  const deptCount = hospital.departmentCount ?? hospital.departments?.length ?? 0;
 
                   return (
                     <motion.button
@@ -313,6 +349,33 @@ export function HospitalsPage({
                   );
                 })}
               </motion.div>
+              <div className="mt-8 flex items-center justify-center gap-3">
+                <button
+                  onClick={() => setPage(Math.max(1, page - 1))}
+                  disabled={page <= 1}
+                  className={`px-4 py-2 rounded-xl border text-sm transition ${
+                    page <= 1
+                      ? darkMode ? 'bg-gray-900 border-gray-800 text-gray-600' : 'bg-gray-100 border-gray-200 text-gray-400'
+                      : darkMode ? 'bg-gray-900 border-gray-700 text-white hover:border-[#2D4B32]' : 'bg-white border-gray-200 text-gray-700 hover:border-[#2D4B32]'
+                  }`}
+                >
+                  Previous
+                </button>
+                <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setPage(Math.min(totalPages, page + 1))}
+                  disabled={page >= totalPages}
+                  className={`px-4 py-2 rounded-xl border text-sm transition ${
+                    page >= totalPages
+                      ? darkMode ? 'bg-gray-900 border-gray-800 text-gray-600' : 'bg-gray-100 border-gray-200 text-gray-400'
+                      : darkMode ? 'bg-gray-900 border-gray-700 text-white hover:border-[#2D4B32]' : 'bg-white border-gray-200 text-gray-700 hover:border-[#2D4B32]'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
             </>
           )}
         </div>

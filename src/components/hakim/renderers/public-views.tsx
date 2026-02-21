@@ -51,6 +51,14 @@ export function PublicViews(props: PublicViewProps) {
     sendOtp,
     verifyOtp,
     hospitals,
+    totalHospitals,
+    facilityCounts,
+    totalDepartments,
+    totalRegions,
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
     viewMode,
     setViewMode,
     searchTerm,
@@ -169,6 +177,14 @@ export function PublicViews(props: PublicViewProps) {
         onNavigate={onNavigate}
         onSelectHospital={setSelectedHospital}
         onLoadDepartments={loadDepartments}
+        totalHospitals={totalHospitals}
+        facilityCounts={facilityCounts}
+        totalDepartments={totalDepartments}
+        totalRegions={totalRegions}
+        page={page}
+        pageSize={pageSize}
+        setPage={setPage}
+        setPageSize={setPageSize}
         navigation={navigation}
         footer={footer}
         t={t}
