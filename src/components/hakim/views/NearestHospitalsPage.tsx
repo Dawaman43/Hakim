@@ -10,7 +10,9 @@ interface NearestHospitalsPageProps {
   loading: boolean;
   locationNotice: string | null;
   userLocation: { lat: number; lng: number } | null;
-  getHospitalsByDistance: () => Array<Hospital & { distance: number }>;
+  nearestHospitals: Array<Hospital & { distance: number }>;
+  nearestLoading: boolean;
+  nearestError: string | null;
   onNavigate: (view: ViewType) => void;
   onSelectHospital: (hospital: Hospital) => void;
   onLoadDepartments: (hospitalId: string) => void;
@@ -23,14 +25,16 @@ export function NearestHospitalsPage({
   loading,
   locationNotice,
   userLocation,
-  getHospitalsByDistance,
+  nearestHospitals,
+  nearestLoading,
+  nearestError,
   onNavigate,
   onSelectHospital,
   onLoadDepartments,
   navigation,
   footer,
 }: NearestHospitalsPageProps) {
-  const nearestHospitals = getHospitalsByDistance();
+  const loadingNearest = loading || nearestLoading;
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
@@ -81,7 +85,7 @@ export function NearestHospitalsPage({
 
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
+          {loadingNearest ? (
             <div className="flex items-center justify-center p-8">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#2D4B32]" />
             </div>
@@ -92,7 +96,7 @@ export function NearestHospitalsPage({
               </div>
               <h3 className={`text-xl font-semibold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}>No Hospitals Found</h3>
               <p className={`mb-6 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                Unable to find hospitals near your location. Please try searching manually.
+                {nearestError ? nearestError : "Unable to find hospitals near your location. Please try searching manually."}
               </p>
               <button
                 onClick={() => onNavigate("hospitals")}

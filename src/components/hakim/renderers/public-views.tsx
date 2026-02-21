@@ -87,7 +87,9 @@ export function PublicViews(props: PublicViewProps) {
     setCurrentAppointment,
     userLocation,
     locationNotice,
-    getHospitalsByDistance,
+    nearestHospitals,
+    nearestLoading,
+    nearestError,
     navigation,
     footer,
   } = props;
@@ -214,7 +216,9 @@ export function PublicViews(props: PublicViewProps) {
         loading={loading}
         locationNotice={locationNotice}
         userLocation={userLocation}
-        getHospitalsByDistance={getHospitalsByDistance}
+        nearestHospitals={nearestHospitals}
+        nearestLoading={nearestLoading}
+        nearestError={nearestError}
         onNavigate={onNavigate}
         onSelectHospital={setSelectedHospital}
         onLoadDepartments={loadDepartments}

@@ -1,14 +1,18 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Hospital } from "@/types";
+import { api } from "../api";
 
 interface UseNearestHospitalsParams {
-  hospitals: Hospital[];
   userLocation: { lat: number; lng: number } | null;
 }
 
-export function useNearestHospitals({ hospitals, userLocation }: UseNearestHospitalsParams) {
+export function useNearestHospitals({ userLocation }: UseNearestHospitalsParams) {
+  const [nearestHospitals, setNearestHospitals] = useState<Array<Hospital & { distance: number }>>([]);
+  const [nearestLoading, setNearestLoading] = useState(false);
+  const [nearestError, setNearestError] = useState<string | null>(null);
+
   const calculateDistance = useCallback((lat1: number, lng1: number, lat2: number, lng2: number): number => {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -21,22 +25,47 @@ export function useNearestHospitals({ hospitals, userLocation }: UseNearestHospi
     return R * c;
   }, []);
 
-  const getHospitalsByDistance = useCallback(() => {
-    if (!userLocation) return [] as Array<Hospital & { distance: number }>;
+  const loadNearestHospitals = useCallback(async () => {
+    if (!userLocation) {
+      setNearestHospitals([]);
+      setNearestError(null);
+      return;
+    }
+    setNearestLoading(true);
+    setNearestError(null);
+    try {
+      const res = await api.get(`/api/hospitals/nearby?lat=${userLocation.lat}&lng=${userLocation.lng}&limit=50`);
+      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+        setNearestHospitals(res.data || []);
+        return;
+      }
 
-    return hospitals
-      .filter(h => h.latitude && h.longitude)
-      .map(h => ({
-        ...h,
-        distance: calculateDistance(
-          userLocation.lat,
-          userLocation.lng,
-          h.latitude!,
-          h.longitude!
-        ),
-      }))
-      .sort((a, b) => a.distance - b.distance);
-  }, [calculateDistance, hospitals, userLocation]);
+      // Fallback: fetch a larger sample and compute distances client-side
+      const fallback = await api.get(`/api/hospitals?limit=200&page=1`);
+      if (fallback.success && Array.isArray(fallback.data)) {
+        const computed = fallback.data
+          .filter((h: Hospital) => h.latitude && h.longitude)
+          .map((h: Hospital) => ({
+            ...h,
+            distance: calculateDistance(userLocation.lat, userLocation.lng, h.latitude!, h.longitude!),
+          }))
+          .sort((a: any, b: any) => a.distance - b.distance);
+        setNearestHospitals(computed.slice(0, 50));
+      } else {
+        setNearestHospitals([]);
+        setNearestError(res.error || "Unable to load nearby hospitals.");
+      }
+    } catch {
+      setNearestHospitals([]);
+      setNearestError("Unable to load nearby hospitals.");
+    } finally {
+      setNearestLoading(false);
+    }
+  }, [calculateDistance, userLocation]);
 
-  return { getHospitalsByDistance };
+  useEffect(() => {
+    loadNearestHospitals();
+  }, [loadNearestHospitals]);
+
+  return { nearestHospitals, nearestLoading, nearestError, loadNearestHospitals };
 }

@@ -91,6 +91,24 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
 
   // Location states
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (userLocation) {
+      localStorage.setItem("hakim_user_location", JSON.stringify(userLocation));
+      return;
+    }
+    const stored = localStorage.getItem("hakim_user_location");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (typeof parsed?.lat === "number" && typeof parsed?.lng === "number") {
+          setUserLocation(parsed);
+        }
+      } catch {
+        // ignore invalid
+      }
+    }
+  }, [userLocation]);
 
   const { registrationStep, setRegistrationStep, showPassword, setShowPassword, registrationData, setRegistrationData } = useHospitalRegistration();
 
@@ -118,7 +136,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     searchTerm,
   });
 
-  const { getHospitalsByDistance } = useNearestHospitals({ hospitals, userLocation });
+  const { nearestHospitals, nearestLoading, nearestError } = useNearestHospitals({ userLocation });
 
   const {
     showLocationModal,
@@ -139,6 +157,12 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     onNavigate: navigateTo,
     setUserLocation,
   });
+
+  useEffect(() => {
+    if (view === "nearest-hospitals" && !userLocation) {
+      setShowLocationModal(true);
+    }
+  }, [setShowLocationModal, userLocation, view]);
 
   // Get ambulance info based on selected region or user location
   const getAmbulanceInfo = useCallback(() => {
@@ -326,7 +350,9 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     setCurrentAppointment,
     userLocation,
     locationNotice,
-    getHospitalsByDistance,
+    nearestHospitals,
+    nearestLoading,
+    nearestError,
     navigation: <AppNavigation />,
     footer: <AppFooter />,
     adminStats,

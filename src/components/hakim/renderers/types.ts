@@ -72,7 +72,9 @@ export interface PublicViewProps {
   setCurrentAppointment: (appt: Appointment | null) => void;
   userLocation: { lat: number; lng: number } | null;
   locationNotice: string | null;
-  getHospitalsByDistance: (limit?: number) => Array<{ hospital: Hospital; distance: number }>;
+  nearestHospitals: Array<Hospital & { distance: number }>;
+  nearestLoading: boolean;
+  nearestError: string | null;
   navigation: ReactNode;
   footer: ReactNode;
 }

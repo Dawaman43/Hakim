@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 interface UseLocationPickerParams {
   regionCoordinates: Record<string, { lat: number; lng: number }>;
@@ -20,6 +20,56 @@ export function useLocationPicker({
   const [selectedRegion, setSelectedRegion] = useState<string>("Addis Ababa");
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const ipFallbackTriedRef = useRef(false);
+  const watchFallbackTriedRef = useRef(false);
+
+  const tryIpFallback = useCallback(async () => {
+    if (ipFallbackTriedRef.current) return false;
+    ipFallbackTriedRef.current = true;
+    try {
+      const res = await fetch("https://ipapi.co/json/");
+      if (!res.ok) return false;
+      const data = await res.json();
+      if (typeof data?.latitude !== "number" || typeof data?.longitude !== "number") return false;
+      setUserLocation({ lat: data.latitude, lng: data.longitude });
+      setLocationNotice(data?.city ? `Using approximate location near ${data.city}` : "Using approximate location near your area");
+      setShowLocationModal(false);
+      setLocationError(null);
+      onNavigate("nearest-hospitals");
+      return true;
+    } catch {
+      return false;
+    }
+  }, [onNavigate, setUserLocation]);
+
+  const tryWatchPosition = useCallback(() => {
+    return new Promise<boolean>((resolve) => {
+      if (watchFallbackTriedRef.current || !navigator.geolocation) {
+        resolve(false);
+        return;
+      }
+      watchFallbackTriedRef.current = true;
+      const watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          navigator.geolocation.clearWatch(watchId);
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setLocationLoading(false);
+          setShowLocationModal(false);
+          setLocationNotice(null);
+          onNavigate("nearest-hospitals");
+          resolve(true);
+        },
+        () => {
+          navigator.geolocation.clearWatch(watchId);
+          resolve(false);
+        },
+        { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 }
+      );
+    });
+  }, [onNavigate, setUserLocation]);
 
   const requestLocation = useCallback((forceLowAccuracy: boolean = false) => {
     if (typeof window !== "undefined" && !window.isSecureContext) {
@@ -52,6 +102,16 @@ export function useLocationPicker({
           requestLocation(true);
           return;
         }
+        if (error.code === error.POSITION_UNAVAILABLE || error.code === error.TIMEOUT) {
+          tryWatchPosition().then((didWatch) => {
+            if (didWatch) return;
+            tryIpFallback().then((didFallback) => {
+              if (didFallback) {
+                setLocationLoading(false);
+              }
+            });
+          });
+        }
         setLocationLoading(false);
         let errorMsg = "Could not get your location. ";
         if (error.code === error.PERMISSION_DENIED) {
@@ -60,7 +120,7 @@ export function useLocationPicker({
           if (typeof window !== "undefined" && !window.isSecureContext) {
             errorMsg = "Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.";
           } else {
-            errorMsg = "Your device could not determine its location. Make sure location services are enabled, or select your region below.";
+            errorMsg = "Your device could not determine its location (code 2). Try enabling High Accuracy / Precise location in system settings, or select your region below.";
           }
         } else {
           errorMsg = "Location request timed out. Please try again or select your region below.";
@@ -68,14 +128,24 @@ export function useLocationPicker({
         setLocationError(errorMsg);
       },
       forceLowAccuracy
-        ? { enableHighAccuracy: false, timeout: 12000, maximumAge: 120000 }
-        : { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
+        ? { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 }
+        : { enableHighAccuracy: true, timeout: 25000, maximumAge: 0 }
     );
-  }, [onNavigate, setUserLocation]);
+  }, [onNavigate, setUserLocation, tryIpFallback]);
 
   const getUserLocation = useCallback(async () => {
     setLocationError(null);
     setLocationNotice(null);
+    ipFallbackTriedRef.current = false;
+    watchFallbackTriedRef.current = false;
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("hakim_user_location");
+      }
+    } catch {
+      // ignore
+    }
+    setUserLocation(null);
 
     if (!navigator.geolocation) {
       setShowLocationModal(true);

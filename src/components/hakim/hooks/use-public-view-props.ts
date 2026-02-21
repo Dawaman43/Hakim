@@ -72,7 +72,9 @@ interface UsePublicViewPropsParams {
   setCurrentAppointment: (appt: Appointment | null) => void;
   userLocation: { lat: number; lng: number } | null;
   locationNotice: string | null;
-  getHospitalsByDistance: (limit?: number) => Array<{ hospital: Hospital; distance: number }>;
+  nearestHospitals: Array<Hospital & { distance: number }>;
+  nearestLoading: boolean;
+  nearestError: string | null;
   navigation: React.ReactNode;
   footer: React.ReactNode;
 }
@@ -144,7 +146,9 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     setCurrentAppointment: params.setCurrentAppointment,
     userLocation: params.userLocation,
     locationNotice: params.locationNotice,
-    getHospitalsByDistance: params.getHospitalsByDistance,
+    nearestHospitals: params.nearestHospitals,
+    nearestLoading: params.nearestLoading,
+    nearestError: params.nearestError,
     navigation: params.navigation,
     footer: params.footer,
   }), [
@@ -213,7 +217,9 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     params.setCurrentAppointment,
     params.userLocation,
     params.locationNotice,
-    params.getHospitalsByDistance,
+    params.nearestHospitals,
+    params.nearestLoading,
+    params.nearestError,
     params.navigation,
     params.footer,
   ]);

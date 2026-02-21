@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const facilityType = searchParams.get("type");
     const search = searchParams.get("search");
 
-    const cacheKey = `hospitals:v2:page=${page}:limit=${limit}:region=${region ?? "all"}:type=${facilityType ?? "all"}:search=${search ?? ""}`;
+    const cacheKey = `hospitals:v3:page=${page}:limit=${limit}:region=${region ?? "all"}:type=${facilityType ?? "all"}:search=${search ?? ""}`;
     const cached = await redisGet<any[]>(cacheKey);
     if (cached) {
       return NextResponse.json({
@@ -37,42 +37,64 @@ export async function GET(request: Request) {
     }
     const whereClause = conditions.length ? and(...(conditions as any)) : undefined;
 
-    const totalRow = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(hospitals)
-      .where(whereClause);
-    const total = Number(totalRow[0]?.count ?? 0);
+    let total = 0;
+    let facilityCounts: Record<string, number> = {};
+    let totalDepartments = 0;
+    let totalRegions = 0;
 
-    const facilityCountsRows = await db
-      .select({
-        facilityType: hospitals.facilityType,
-        count: sql<number>`count(*)`,
-      })
-      .from(hospitals)
-      .where(whereClause)
-      .groupBy(hospitals.facilityType);
-    const facilityCounts = facilityCountsRows.reduce<Record<string, number>>((acc, row) => {
-      acc[row.facilityType] = Number(row.count);
-      return acc;
-    }, {});
+    try {
+      let totalQuery = db.select({ count: sql<number>`count(*)` }).from(hospitals);
+      if (whereClause) totalQuery = totalQuery.where(whereClause);
+      const totalRow = await totalQuery;
+      total = Number(totalRow[0]?.count ?? 0);
+    } catch (error) {
+      console.error("Failed to count hospitals:", error);
+    }
 
-    const totalDepartmentsRow = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(departments);
-    const totalDepartments = Number(totalDepartmentsRow[0]?.count ?? 0);
+    try {
+      let facilityQuery = db
+        .select({
+          facilityType: hospitals.facilityType,
+          count: sql<number>`count(*)`,
+        })
+        .from(hospitals)
+        .groupBy(hospitals.facilityType);
+      if (whereClause) facilityQuery = facilityQuery.where(whereClause);
+      const facilityCountsRows = await facilityQuery;
+      facilityCounts = facilityCountsRows.reduce<Record<string, number>>((acc, row) => {
+        acc[row.facilityType] = Number(row.count);
+        return acc;
+      }, {});
+    } catch (error) {
+      console.error("Failed to count facilities by type:", error);
+    }
 
-    const totalRegionsRow = await db
-      .select({ count: sql<number>`count(distinct ${hospitals.region})` })
-      .from(hospitals);
-    const totalRegions = Number(totalRegionsRow[0]?.count ?? 0);
+    try {
+      const totalDepartmentsRow = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(departments);
+      totalDepartments = Number(totalDepartmentsRow[0]?.count ?? 0);
+    } catch (error) {
+      console.error("Failed to count departments:", error);
+    }
 
-    const rows = await db
+    try {
+      const totalRegionsRow = await db
+        .select({ count: sql<number>`count(distinct ${hospitals.region})` })
+        .from(hospitals);
+      totalRegions = Number(totalRegionsRow[0]?.count ?? 0);
+    } catch (error) {
+      console.error("Failed to count regions:", error);
+    }
+
+    let rowsQuery = db
       .select()
       .from(hospitals)
-      .where(whereClause)
       .orderBy(hospitals.name)
       .limit(limit)
       .offset((page - 1) * limit);
+    if (whereClause) rowsQuery = rowsQuery.where(whereClause);
+    const rows = await rowsQuery;
     const counts = await db
       .select({
         hospitalId: departments.hospitalId,
@@ -102,6 +124,7 @@ export async function GET(request: Request) {
       updatedAt: hospital.updatedAt.toISOString(),
       departmentCount: countMap.get(hospital.id) ?? 0,
     }));
+    if (!total) total = data.length;
     await redisSet(cacheKey, { data, total, facilityCounts, totalDepartments, totalRegions }, 300);
     return NextResponse.json({
       success: true,
