@@ -87,7 +87,7 @@ export function FeaturesSection() {
  */
 function FeatureCard({ feature }: { feature: typeof features[0] }) {
   const colorClasses: Record<string, string> = {
-    emerald: 'bg-emerald-100 text-emerald-600',
+    emerald: 'bg-[#2D4B32] text-[#2D4B32]',
     blue: 'bg-blue-100 text-blue-600',
     purple: 'bg-purple-100 text-purple-600',
     red: 'bg-red-100 text-red-600',

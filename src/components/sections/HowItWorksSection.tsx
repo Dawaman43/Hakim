@@ -43,12 +43,12 @@ export function HowItWorksSection() {
             >
               {/* Connector Line */}
               {index < 3 && (
-                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-emerald-300 to-transparent" />
+                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-[#2D4B32] to-transparent" />
               )}
               
-              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-lg shadow-emerald-500/25 mb-6">
+              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-[#2D4B32] to-teal-600 rounded-3xl shadow-lg shadow-[#2D4B32]/20 mb-6">
                 <item.icon size={40} className="text-white" />
-                <span className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center text-sm font-bold text-emerald-600">
+                <span className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center text-sm font-bold text-[#2D4B32]">
                   {item.step}
                 </span>
               </div>

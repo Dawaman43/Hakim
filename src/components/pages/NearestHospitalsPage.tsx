@@ -48,7 +48,7 @@ export function NearestHospitalsPage({
         onLogout={onLogout}
       />
 
-      <section className="pt-24 pb-8 bg-gradient-to-br from-blue-50 via-white to-emerald-50">
+      <section className="pt-24 pb-8 bg-gradient-to-br from-blue-50 via-white to-[#2D4B32]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -56,7 +56,7 @@ export function NearestHospitalsPage({
           >
             <button
               onClick={() => onNavigate('landing')}
-              className="flex items-center gap-2 text-gray-600 hover:text-emerald-600 transition mb-6"
+              className="flex items-center gap-2 text-gray-600 hover:text-[#2D4B32] transition mb-6"
             >
               <ArrowLeft size={20} />
               Back to Home
@@ -83,10 +83,10 @@ export function NearestHospitalsPage({
                 <span>{locationNotice}</span>
               </div>
             ) : userLocation && (
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#2D4B32] text-[#2D4B32] rounded-full text-sm font-medium">
                 <MapPin size={16} />
                 <span>Location detected</span>
-                <span className="text-emerald-600">
+                <span className="text-[#2D4B32]">
                   ({userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)})
                 </span>
               </div>
@@ -122,7 +122,7 @@ export function NearestHospitalsPage({
 function LoadingSpinner() {
   return (
     <div className="flex items-center justify-center p-8">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2D4B32]"></div>
     </div>
   );
 }
@@ -142,7 +142,7 @@ function EmptyState({ onNavigate }: { onNavigate: (view: string) => void }) {
       </p>
       <button
         onClick={() => onNavigate('hospitals')}
-        className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition"
+        className="px-6 py-3 bg-[#2D4B32] text-white rounded-xl font-medium hover:bg-[#2D4B32] transition"
       >
         Browse All Hospitals
       </button>
@@ -186,7 +186,7 @@ function HospitalsList({
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="p-4 border-b border-gray-100">
           <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <Hospital size={20} className="text-emerald-600" />
+            <Hospital size={20} className="text-[#2D4B32]" />
             All Nearby Hospitals ({nearestHospitals.length})
           </h2>
         </div>
@@ -206,7 +206,7 @@ function HospitalsList({
       <div className="mt-6 text-center">
         <button
           onClick={() => onNavigate('map')}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-emerald-200 text-emerald-600 rounded-xl font-medium hover:bg-emerald-50 hover:border-emerald-300 transition"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-[#2D4B32] text-[#2D4B32] rounded-xl font-medium hover:bg-[#2D4B32] hover:border-[#2D4B32] transition"
         >
           <MapPin size={20} />
           View All on Map
@@ -234,7 +234,7 @@ function FeaturedHospitalCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: rank * 0.1 }}
       onClick={onClick}
-      className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-left text-white shadow-xl shadow-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/30 transition-all group relative overflow-hidden"
+      className="bg-gradient-to-br from-[#2D4B32] to-teal-600 rounded-2xl p-6 text-left text-white shadow-xl shadow-[#2D4B32]/20 hover:shadow-2xl hover:shadow-[#2D4B32]/20 transition-all group relative overflow-hidden"
     >
       {/* Rank Badge */}
       <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold">
@@ -247,7 +247,7 @@ function FeaturedHospitalCard({
 
       <h3 className="text-lg font-bold mb-1">{hospital.name}</h3>
 
-      <div className="flex items-center gap-2 text-emerald-100 text-sm mb-3">
+      <div className="flex items-center gap-2 text-[#2D4B32] text-sm mb-3">
         <MapPin size={14} />
         <span>{hospital.region}</span>
       </div>
@@ -281,14 +281,14 @@ function HospitalListItem({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.03 }}
       onClick={onClick}
-      className="w-full p-4 flex items-center gap-4 hover:bg-emerald-50 transition text-left group"
+      className="w-full p-4 flex items-center gap-4 hover:bg-[#2D4B32] transition text-left group"
     >
-      <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-200 transition">
-        <Hospital size={24} className="text-emerald-600" />
+      <div className="w-12 h-12 bg-[#2D4B32] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#2D4B32] transition">
+        <Hospital size={24} className="text-[#2D4B32]" />
       </div>
 
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600 transition truncate">
+        <h3 className="font-semibold text-gray-900 group-hover:text-[#2D4B32] transition truncate">
           {hospital.name}
         </h3>
         <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -304,14 +304,14 @@ function HospitalListItem({
       </div>
 
       <div className="text-right flex-shrink-0">
-        <div className="flex items-center gap-1 text-emerald-600 font-bold">
+        <div className="flex items-center gap-1 text-[#2D4B32] font-bold">
           <NavigationArrow size={14} />
           <span>{formatDistance(hospital.distance)}</span>
         </div>
         <p className="text-xs text-gray-400">away</p>
       </div>
 
-      <CaretRight size={20} className="text-gray-300 group-hover:text-emerald-600 transition flex-shrink-0" />
+      <CaretRight size={20} className="text-gray-300 group-hover:text-[#2D4B32] transition flex-shrink-0" />
     </motion.button>
   );
 }

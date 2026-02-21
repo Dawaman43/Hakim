@@ -37,20 +37,20 @@ export function Navigation({
             onClick={() => onNavigate('landing')}
             className="flex items-center gap-2 group"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/25 transition-shadow">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#2D4B32] to-teal-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-[#2D4B32]/20 transition-shadow">
               <Heart weight="fill" className="text-white" size={24} />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-gradient-to-r from-[#2D4B32] to-teal-600 bg-clip-text text-transparent">
               Hakim
             </span>
           </button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => onNavigate('landing')} className="text-gray-600 hover:text-emerald-600 transition font-medium">Home</button>
-            <button onClick={() => onNavigate('features')} className="text-gray-600 hover:text-emerald-600 transition font-medium">Features</button>
-            <button onClick={() => onNavigate('about')} className="text-gray-600 hover:text-emerald-600 transition font-medium">About</button>
-            <button onClick={() => onNavigate('contact')} className="text-gray-600 hover:text-emerald-600 transition font-medium">Contact</button>
+            <button onClick={() => onNavigate('landing')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">Home</button>
+            <button onClick={() => onNavigate('features')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">Features</button>
+            <button onClick={() => onNavigate('about')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">About</button>
+            <button onClick={() => onNavigate('contact')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">Contact</button>
           </div>
 
           {/* Auth Buttons */}
@@ -59,7 +59,7 @@ export function Navigation({
               <>
                 <button
                   onClick={() => onNavigate('profile')}
-                  className="flex items-center gap-2 text-gray-600 hover:text-emerald-600 transition"
+                  className="flex items-center gap-2 text-gray-600 hover:text-[#2D4B32] transition"
                 >
                   <User size={20} />
                   <span>{user?.name?.split(' ')[0] || 'User'}</span>
@@ -67,7 +67,7 @@ export function Navigation({
                 {user?.role === 'HOSPITAL_ADMIN' && (
                   <button
                     onClick={() => onNavigate('admin-dashboard')}
-                    className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#2D4B32] text-[#2D4B32] rounded-lg hover:bg-[#2D4B32] transition font-medium"
                   >
                     <Gear size={20} />
                     Dashboard
@@ -84,13 +84,13 @@ export function Navigation({
               <>
                 <button
                   onClick={() => onNavigate('auth')}
-                  className="text-gray-600 hover:text-emerald-600 transition font-medium"
+                  className="text-gray-600 hover:text-[#2D4B32] transition font-medium"
                 >
                   Sign In
                 </button>
                 <button
                   onClick={() => onNavigate('hospitals')}
-                  className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
+                  className="px-5 py-2.5 bg-gradient-to-r from-[#2D4B32] to-teal-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#2D4B32]/20 transition-all"
                 >
                   Book Queue
                 </button>
@@ -151,7 +151,7 @@ function MobileMenuButton({
                   <button onClick={() => { onLogout(); onNavigate('landing'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 text-red-500">Sign Out</button>
                 </>
               ) : (
-                <button onClick={() => { onNavigate('auth'); setIsOpen(false); }} className="block w-full text-center px-4 py-2 bg-emerald-600 text-white rounded-lg">Sign In</button>
+                <button onClick={() => { onNavigate('auth'); setIsOpen(false); }} className="block w-full text-center px-4 py-2 bg-[#2D4B32] text-white rounded-lg">Sign In</button>
               )}
             </div>
           </motion.div>

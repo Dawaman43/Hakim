@@ -33,21 +33,21 @@ interface HospitalMapProps {
 const getFacilityColor = (facilityType: string | undefined): string => {
   switch (facilityType) {
     case 'HOSPITAL':
-      return '#047857'; // emerald-700
+      return '#2D4B32';
     case 'HEALTH_CENTER':
-      return '#059669'; // emerald-600
+      return '#2D4B32';
     case 'CLINIC':
-      return '#10b981'; // emerald-500
+      return '#2D4B32';
     case 'HEALTH_POST':
-      return '#34d399'; // emerald-400
+      return '#2D4B32';
     case 'SPECIALIZED_CENTER':
-      return '#22c55e'; // green-500
+      return '#2D4B32';
     case 'PHARMACY':
-      return '#16a34a'; // green-600
+      return '#2D4B32';
     case 'LABORATORY':
-      return '#065f46'; // emerald-800
+      return '#2D4B32';
     default:
-      return '#059669'; // emerald-600
+      return '#2D4B32';
   }
 };
 
@@ -133,7 +133,7 @@ export default function HospitalMap({
     return (
       <div className="w-full h-full flex items-center justify-center bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-2"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2D4B32] mx-auto mb-2"></div>
           <p className="text-gray-500">Loading map...</p>
         </div>
       </div>
@@ -175,19 +175,19 @@ export default function HospitalMap({
           >
             <Popup>
               <div className="p-2 min-w-[200px]">
-                <h3 className="font-bold text-emerald-700">{hospital.name}</h3>
+                <h3 className="font-bold text-[#2D4B32]">{hospital.name}</h3>
                 <p className="text-sm text-gray-600">{hospital.region}</p>
                 {hospital.address && (
                   <p className="text-xs text-gray-500 mt-1">{hospital.address}</p>
                 )}
                 {hospital.emergencyContactNumber && (
-                  <p className="text-xs text-emerald-600 mt-2">
+                  <p className="text-xs text-[#2D4B32] mt-2">
                     📞 {hospital.emergencyContactNumber}
                   </p>
                 )}
                 <button
                   onClick={() => onHospitalSelect(hospital)}
-                  className="w-full mt-2 px-3 py-1 bg-emerald-600 text-white text-sm rounded hover:bg-emerald-700 transition"
+                  className="w-full mt-2 px-3 py-1 bg-[#2D4B32] text-white text-sm rounded hover:bg-[#2D4B32] transition"
                 >
                   Select Facility
                 </button>
@@ -201,23 +201,23 @@ export default function HospitalMap({
       <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 z-[1000]">
         <p className="text-xs font-semibold text-gray-700 mb-2">Legend</p>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-emerald-600 rounded-full border-2 border-white shadow"></div>
+          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
           <span className="text-xs text-gray-600">Hospital</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-emerald-600 rounded-full border-2 border-white shadow"></div>
+          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
           <span className="text-xs text-gray-600">Health Center</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-emerald-600 rounded-full border-2 border-white shadow"></div>
+          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
           <span className="text-xs text-gray-600">Clinic</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-emerald-600 rounded-full border-2 border-white shadow"></div>
+          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
           <span className="text-xs text-gray-600">Pharmacy</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-emerald-600 rounded-full border-2 border-white shadow"></div>
+          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
           <span className="text-xs text-gray-600">Laboratory</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
@@ -226,7 +226,7 @@ export default function HospitalMap({
         </div>
         {userLocation && (
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-emerald-500 rounded-full border-2 border-white shadow"></div>
+            <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
             <span className="text-xs text-gray-600">Your Location</span>
           </div>
         )}
@@ -235,7 +235,7 @@ export default function HospitalMap({
       {/* Facility Count */}
       <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg px-3 py-2 z-[1000]">
         <p className="text-xs text-gray-500">Facilities Shown</p>
-        <p className="text-lg font-bold text-emerald-600">{validHospitals.length}</p>
+        <p className="text-lg font-bold text-[#2D4B32]">{validHospitals.length}</p>
       </div>
     </div>
   );
