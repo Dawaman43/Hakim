@@ -7,18 +7,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
-if (!token) {
-  // If no token is set, we return a 404 or a simple message
-  // This avoids errors during build time if environment variables aren't injected yet
-  console.warn("TELEGRAM_BOT_TOKEN not set for webhook route");
-}
-
 // Create the bot instance for the webhook
-const bot = token ? new Bot(token) : null;
+let bot: Bot | null = null;
 
-// Initialize bot logic if bot exists
-if (bot) {
+if (token) {
+  bot = new Bot(token);
   setupBot(bot);
+  console.log("🤖 Telegram Bot initialized for Webhook");
+} else {
+  console.warn("⚠️ TELEGRAM_BOT_TOKEN not set for webhook route");
 }
 
 export async function POST(req: NextRequest) {
@@ -45,15 +42,24 @@ export async function GET(req: NextRequest) {
 
   console.log("🔍 Webhook GET status check triggered");
 
+  const status = {
+    status: "alive",
+    mode: "webhook",
+    hasToken: !!token,
+    tokenPrefix: token ? `${token.substring(0, 10)}...` : "NONE",
+    nodeEnv: process.env.NODE_ENV,
+    vercelEnv: process.env.VERCEL_ENV || "unknown",
+  };
+
   if (register === "true") {
     if (!bot) {
       console.error("❌ Registration failed: TELEGRAM_BOT_TOKEN not set");
-      return NextResponse.json({ success: false, error: "TOKEN_MISSING" }, { status: 500 });
+      return NextResponse.json({ ...status, success: false, error: "TOKEN_MISSING" }, { status: 500 });
     }
     
     try {
-      const host = req.headers.get("host");
-      const protocol = host?.includes("localhost") ? "http" : "https";
+      const host = req.headers.get("host") || "hakim-gray.vercel.app";
+      const protocol = host.includes("localhost") ? "http" : "https";
       const webhookUrl = `${protocol}://${host}/api/webhook/telegram`;
       
       console.log(`📡 Attempting to register webhook: ${webhookUrl}`);
@@ -61,13 +67,14 @@ export async function GET(req: NextRequest) {
       console.log("✅ Webhook successfully registered with Telegram");
       
       return NextResponse.json({ 
+        ...status,
         success: true, 
         message: `Webhook registered to ${webhookUrl}`,
-        mode: "webhook"
       });
     } catch (err: any) {
       console.error("❌ Webhook registration failed:", err.message);
       return NextResponse.json({ 
+        ...status,
         success: false, 
         error: err.message 
       }, { status: 500 });
@@ -75,10 +82,8 @@ export async function GET(req: NextRequest) {
   }
 
   return NextResponse.json({ 
-    status: "alive", 
-    mode: "webhook",
-    configured: !!token,
-    token_prefix: token ? `${token.substring(0, 4)}...` : "NONE",
+    ...status,
     tip: "Add ?register=true to this URL to link your bot to this endpoint"
   });
 }
+
