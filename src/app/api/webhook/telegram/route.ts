@@ -35,11 +35,36 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Optional: You can also add a GET route to easily check if the webhook is "available"
-export async function GET() {
+// Optional: Check status or register the webhook
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const register = searchParams.get("register");
+
+  if (register === "true" && bot) {
+    try {
+      // Get the current domain from the request headers
+      const host = req.headers.get("host");
+      const protocol = host?.includes("localhost") ? "http" : "https";
+      const webhookUrl = `${protocol}://${host}/api/webhook/telegram`;
+      
+      await bot.api.setWebhook(webhookUrl);
+      return NextResponse.json({ 
+        success: true, 
+        message: `Webhook registered to ${webhookUrl}`,
+        mode: "webhook"
+      });
+    } catch (err: any) {
+      return NextResponse.json({ 
+        success: false, 
+        error: err.message 
+      }, { status: 500 });
+    }
+  }
+
   return NextResponse.json({ 
     status: "alive", 
     mode: "webhook",
-    configured: !!token 
+    configured: !!token,
+    tip: "Add ?register=true to this URL to link your bot to this endpoint"
   });
 }
