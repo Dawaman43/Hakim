@@ -8,6 +8,13 @@
       "when": 1771703909673,
       "tag": "0000_friendly_power_pack",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771745414259,
+      "tag": "0001_nervous_arclight",
+      "breakpoints": true
     }
   ]
 }
