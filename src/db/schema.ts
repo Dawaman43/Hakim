@@ -5,6 +5,7 @@ export const users = pgTable("users", {
   phone: text("phone").notNull().unique(),
   name: text("name"),
   telegramId: text("telegram_id"),
+  language: text("language").notNull().default("en"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
