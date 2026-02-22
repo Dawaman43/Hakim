@@ -46,3 +46,28 @@ export const departments = pgTable("departments", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const appointments = pgTable("appointments", {
+  id: text("id").primaryKey(),
+  patientId: text("patient_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  hospitalId: text("hospital_id").notNull().references(() => hospitals.id, { onDelete: "cascade" }),
+  departmentId: text("department_id").notNull().references(() => departments.id, { onDelete: "cascade" }),
+  tokenNumber: integer("token_number").notNull(),
+  status: text("status", { enum: ["WAITING", "SERVING", "COMPLETED", "CANCELLED", "SKIPPED", "EMERGENCY"] }).notNull().default("WAITING"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  servedAt: timestamp("served_at", { withTimezone: true }),
+});
+
+export const notifications = pgTable("notifications", {
+  id: text("id").primaryKey(),
+  appointmentId: text("appointment_id").references(() => appointments.id, { onDelete: "set null" }),
+  type: text("type").notNull(), // e.g., TOKEN_BOOKED, YOUR_TURN
+  channel: text("channel").notNull(), // SMS, PUSH, EMAIL
+  recipient: text("recipient").notNull(),
+  message: text("message").notNull(),
+  status: text("status").notNull().default("PENDING"),
+  sentAt: timestamp("sent_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
