@@ -19,19 +19,30 @@ if (token) {
 }
 
 export async function POST(req: NextRequest) {
-  console.log("📥 Received Telegram Webhook POST request");
+  const requestId = Math.random().toString(36).substring(7);
+  console.log(`📥 [${requestId}] Received Telegram Webhook POST request`);
   
   if (!bot) {
-    console.error("❌ Webhook error: TELEGRAM_BOT_TOKEN is missing or bot not initialized");
+    console.error(`❌ [${requestId}] Webhook error: bot not initialized`);
     return NextResponse.json({ error: "Bot not initialized" }, { status: 500 });
   }
 
   try {
+    // Read the body for logging (clone the request because we can only read body once)
+    const clonedReq = req.clone();
+    const body = await clonedReq.json();
+    console.log(`📦 [${requestId}] Update body:`, JSON.stringify(body).substring(0, 500));
+
     // Grammy handles the request parsing and response
-    return await webhookCallback(bot, "std/http")(req);
+    // For Next.js App Router, "std/http" is usually correct as it takes a standard Request
+    const response = await webhookCallback(bot, "std/http")(req);
+    console.log(`✅ [${requestId}] Webhook processed successfully, status: ${response.status}`);
+    return response;
   } catch (err: any) {
-    console.error("❌ Webhook processing error:", err.message);
-    return NextResponse.json({ error: "Webhook failed" }, { status: 500 });
+    console.error(`❌ [${requestId}] Webhook processing error:`, err.message);
+    // Always return 200 to Telegram to stop retries if it's a logic error,
+    // but here it might be a connectivity error.
+    return NextResponse.json({ error: "Internal processing error", message: err.message }, { status: 200 });
   }
 }
 

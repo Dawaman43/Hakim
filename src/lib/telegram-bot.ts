@@ -90,6 +90,7 @@ export function setupBot(bot: Bot) {
   // --- HELPERS ---
   const getLang = async (telegramId: string): Promise<"en" | "am"> => {
     try {
+      if (!telegramId) return "en";
       const u = await db.select().from(users).where(eq(users.telegramId, telegramId)).limit(1);
       return (u[0]?.language as "en" | "am") || "en";
     } catch {
@@ -113,22 +114,6 @@ export function setupBot(bot: Bot) {
     return p;
   };
 
-  // --- MIDDLEWARE / INTERCEPT ---
-  bot.on("message:text", async (ctx, next) => {
-    const lang = await getLang(ctx.from.id.toString());
-    const s = strings[lang];
-    
-    // Handle Menu Buttons
-    if (ctx.message.text === s.bookBtn) return ctx.reply(s.chooseHosp, { reply_markup: await getHospKeyboard() });
-    if (ctx.message.text === s.statusBtn) return bot.handleUpdate({ ...ctx.update, message: { ...ctx.message, text: "/status" } } as any);
-    if (ctx.message.text === s.nearbyBtn) return ctx.reply(lang === "en" ? "Send location" : "ቦታዎን ይላኩ", { reply_markup: { keyboard: [[{ text: "📍 Share Location", request_location: true }]], resize_keyboard: true, one_time_keyboard: true } });
-    if (ctx.message.text === s.emergencyBtn) return ctx.reply(s.emergencyStart);
-    if (ctx.message.text === s.langBtn) return bot.handleUpdate({ ...ctx.update, message: { ...ctx.message, text: "/language" } } as any);
-    if (ctx.message.text === s.meBtn) return bot.handleUpdate({ ...ctx.update, message: { ...ctx.message, text: "/me" } } as any);
-
-    await next();
-  });
-
   const getHospKeyboard = async () => {
     const hList = await db.select().from(hospitals).where(eq(hospitals.isActive, true)).limit(5);
     const keyboard = new InlineKeyboard();
@@ -136,47 +121,18 @@ export function setupBot(bot: Bot) {
     return keyboard;
   };
 
-  // --- COMMANDS ---
-  bot.command("start", async (ctx) => {
+  // --- REUSABLE LOGIC ---
+  const showMe = async (ctx: any) => {
     const tid = ctx.from?.id.toString();
-    const existing = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
-    const lang = (existing[0]?.language as "en" | "am") || "en";
-    const s = strings[lang];
+    if (!tid) return;
+    const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
+    if (!u[0]) return ctx.reply("Please /start first.");
+    await ctx.reply(`👤 Profile:\nName: ${u[0].name || "N/A"}\nPhone: ${u[0].phone}\nLang: ${u[0].language}`);
+  };
 
-    if (existing[0]) {
-      await ctx.reply(s.welcome, { reply_markup: getMainKeyboard(lang) });
-      return;
-    }
-
-    await ctx.reply(s.welcome + "\n\n" + s.shareContact, {
-      reply_markup: {
-        keyboard: [[{ text: s.shareContactBtn, request_contact: true }]],
-        resize_keyboard: true,
-        one_time_keyboard: true,
-      },
-    });
-  });
-
-  bot.on("message:contact", async (ctx) => {
-    if (ctx.message.contact.user_id !== ctx.from.id) return;
-    const phone = scrubPhone(ctx.message.contact.phone_number);
-    const tid = ctx.from.id.toString();
-
-    try {
-      const existing = await db.select().from(users).where(eq(users.phone, phone)).limit(1);
-      if (existing[0]) {
-        await db.update(users).set({ telegramId: tid }).where(eq(users.id, existing[0].id));
-      } else {
-        await db.insert(users).values({ id: uuidv4(), phone, telegramId: tid, name: ctx.message.contact.first_name });
-      }
-      await ctx.reply(strings.en.verifySuccess + " / " + strings.am.verifySuccess, { reply_markup: getMainKeyboard("en") });
-    } catch (err) {
-      ctx.reply("Error linking account.");
-    }
-  });
-
-  bot.command("language", async (ctx) => {
+  const toggleLanguage = async (ctx: any) => {
     const tid = ctx.from?.id.toString();
+    if (!tid) return;
     const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
     if (!u[0]) return ctx.reply("Please /start first.");
 
@@ -187,13 +143,12 @@ export function setupBot(bot: Bot) {
     await ctx.reply(newLang === "en" ? "Language set to English" : "ቋንቋ ወደ አማርኛ ተቀይሯል", {
       reply_markup: getMainKeyboard(newLang)
     });
-  });
+  };
 
-  bot.command("status", async (ctx) => {
+  const showStatus = async (ctx: any, lang: "en" | "am") => {
     const tid = ctx.from?.id.toString();
-    const lang = await getLang(tid);
+    if (!tid) return;
     const s = strings[lang];
-
     const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
     if (!u[0]) return;
 
@@ -215,42 +170,145 @@ export function setupBot(bot: Bot) {
       res += `🏥 *${a.hosp}*\n🔹 ${a.dept}\n🎟 ${s.tokenNum}: **${a.token}**\n\n`;
       const kb = new InlineKeyboard().text(s.cancelBtn, `cancel_${a.id}`);
       await ctx.reply(res, { parse_mode: "Markdown", reply_markup: kb });
-      res = ""; // Reset for next
+      res = ""; 
+    }
+  };
+
+  // --- MIDDLEWARE / INTERCEPT ---
+  bot.on("message", async (ctx, next) => {
+    console.log(`💬 Incoming message from ${ctx.from?.id}: ${ctx.message?.text || "[non-text]"}`);
+    await next();
+  });
+
+  bot.on("message:text", async (ctx, next) => {
+    const text = ctx.message.text;
+    const tid = ctx.from?.id.toString();
+    if (!tid) return await next();
+    
+    // Quick Debug Commands (No DB)
+    if (text === "/ping") {
+      console.log("🏓 Ping received");
+      return ctx.reply("pong 🏓");
+    }
+
+    const lang = await getLang(tid);
+    const s = strings[lang];
+    
+    // Handle Menu Buttons
+    if (text === s.bookBtn) return ctx.reply(s.chooseHosp, { reply_markup: await getHospKeyboard() });
+    if (text === s.statusBtn) return showStatus(ctx, lang);
+    if (text === s.nearbyBtn) return ctx.reply(lang === "en" ? "Send location" : "ቦታዎን ይላኩ", { reply_markup: { keyboard: [[{ text: "📍 Share Location", request_location: true }]], resize_keyboard: true, one_time_keyboard: true } });
+    if (text === s.emergencyBtn) return ctx.reply(s.emergencyStart);
+    if (text === s.langBtn) return toggleLanguage(ctx);
+    if (text === s.meBtn) return showMe(ctx);
+
+    await next();
+  });
+
+  // --- COMMANDS ---
+  bot.command("start", async (ctx) => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+
+    const existing = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
+    const lang = (existing[0]?.language as "en" | "am") || "en";
+    const s = strings[lang];
+
+    if (existing[0]) {
+      await ctx.reply(s.welcome, { reply_markup: getMainKeyboard(lang) });
+      return;
+    }
+
+    await ctx.reply(s.welcome + "\n\n" + s.shareContact, {
+      reply_markup: {
+        keyboard: [[{ text: s.shareContactBtn, request_contact: true }]],
+        resize_keyboard: true,
+        one_time_keyboard: true,
+      },
+    });
+  });
+
+  bot.on("message:contact", async (ctx) => {
+    const tid = ctx.from?.id.toString();
+    if (!ctx.message.contact || ctx.message.contact.user_id !== ctx.from?.id || !tid) return;
+    const phone = scrubPhone(ctx.message.contact.phone_number);
+
+    try {
+      const existing = await db.select().from(users).where(eq(users.phone, phone)).limit(1);
+      if (existing[0]) {
+        await db.update(users).set({ telegramId: tid }).where(eq(users.id, existing[0].id));
+      } else {
+        await db.insert(users).values({ id: uuidv4(), phone, telegramId: tid, name: ctx.message.contact.first_name });
+      }
+      await ctx.reply(strings.en.verifySuccess + " / " + strings.am.verifySuccess, { reply_markup: getMainKeyboard("en") });
+    } catch (err) {
+      console.error("Link error:", err);
+      ctx.reply("Error linking account.");
     }
   });
 
+  bot.command("language", toggleLanguage);
+  bot.command("status", async (ctx) => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
+    await showStatus(ctx, lang);
+  });
+  bot.command("me", showMe);
+
+  bot.command("health", async (ctx) => {
+    try {
+      await db.select().from(users).limit(1);
+      await ctx.reply("✅ Status: Online\nDB: Connected");
+    } catch (e: any) {
+      await ctx.reply("❌ Status: Error\nDB: " + e.message);
+    }
+  });
+
+  // --- CALLBACKS & EVENTS ---
   bot.callbackQuery(/^cancel_(.+)$/, async (ctx) => {
     const aid = ctx.match[1];
-    const lang = await getLang(ctx.from.id.toString());
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
     await db.update(appointments).set({ status: "CANCELLED" }).where(eq(appointments.id, aid));
     await ctx.editMessageText(`✅ ${strings[lang].cancelled}`);
   });
 
   bot.on("message:location", async (ctx) => {
     const { latitude: lat, longitude: lng } = ctx.message.location;
-    const lang = await getLang(ctx.from.id.toString());
+    console.log(`📍 Received location from ${ctx.from?.id}: ${lat}, ${lng}`);
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
     const s = strings[lang];
 
-    const distanceSql = sql<number>`
-      (6371 * 2 * asin(sqrt(
-        power(sin(radians(${lat} - ${hospitals.latitude}) / 2), 2) +
-        cos(radians(${lat})) * cos(radians(${hospitals.latitude})) *
-        power(sin(radians(${lng} - ${hospitals.longitude}) / 2), 2)
-      )))
-    `;
+    try {
+      const distanceSql = sql<number>`
+        (6371 * 2 * asin(sqrt(
+          power(sin(radians(${lat} - ${hospitals.latitude}) / 2), 2) +
+          cos(radians(${lat})) * cos(radians(${hospitals.latitude})) *
+          power(sin(radians(${lng} - ${hospitals.longitude}) / 2), 2)
+        )))
+      `;
 
-    const rows = await db.select({ h: hospitals, d: distanceSql.as("dist") }).from(hospitals).orderBy(sql`dist`).limit(3);
+      const rows = await db.select({ h: hospitals, d: distanceSql.as("dist") }).from(hospitals).orderBy(sql`dist`).limit(3);
 
-    let res = s.hospFound + "\n\n";
-    rows.forEach(r => {
-      res += `🔹 *${r.h.name}*\n📍 ${r.h.address}\n📏 ${r.d.toFixed(1)} km\n🔗 [Maps](https://www.google.com/maps?q=${r.h.latitude},${r.h.longitude})\n\n`;
-    });
-    await ctx.reply(res, { parse_mode: "Markdown", reply_markup: getMainKeyboard(lang) });
+      let res = s.hospFound + "\n\n";
+      rows.forEach(r => {
+        res += `🔹 *${r.h.name}*\n📍 ${r.h.address}\n📏 ${r.d.toFixed(1)} km\n🔗 [Maps](https://www.google.com/maps?q=${r.h.latitude},${r.h.longitude})\n\n`;
+      });
+      await ctx.reply(res, { parse_mode: "Markdown", reply_markup: getMainKeyboard(lang) });
+    } catch (e) {
+      console.error("Location error:", e);
+      ctx.reply("Error finding hospitals.");
+    }
   });
 
-  // --- EMERGENCY TRIAGE ---
   bot.on("message:text", async (ctx) => {
-    const lang = await getLang(ctx.from.id.toString());
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
     const s = strings[lang];
     const text = ctx.message.text.toLowerCase();
     
@@ -263,7 +321,7 @@ export function setupBot(bot: Bot) {
       }
     }
 
-    if (severity === "LOW" && text.length < 10) return; // Ignore short chatter
+    if (severity === "LOW" && text.length < 10) return; 
 
     const msg = severity === "CRITICAL" ? s.emergencyCrit : 
                 severity === "HIGH" ? s.emergencyHigh : 
@@ -273,10 +331,11 @@ export function setupBot(bot: Bot) {
     await ctx.reply(msg, { reply_markup: kb });
   });
 
-  // --- BOT CALLBACKS (Booking) ---
   bot.callbackQuery(/^book_hosp_(.+)$/, async (ctx) => {
     const hid = ctx.match[1];
-    const lang = await getLang(ctx.from.id.toString());
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
     const dList = await db.select().from(departments).where(and(eq(departments.hospitalId, hid), eq(departments.isActive, true)));
     
     if (dList.length === 0) return ctx.answerCallbackQuery("No departments.");
@@ -288,7 +347,8 @@ export function setupBot(bot: Bot) {
 
   bot.callbackQuery(/^book_dept_(.+)_(.+)$/, async (ctx) => {
     const [_, hid, did] = ctx.match;
-    const tid = ctx.from.id.toString();
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
     const lang = await getLang(tid);
     const s = strings[lang];
 
@@ -305,23 +365,6 @@ export function setupBot(bot: Bot) {
       await ctx.editMessageText(`${s.tokenIssued}\n\n${s.tokenNum}: **${token}**\n${s.estWait}: ${token * d.averageServiceTimeMin} mins.`, { parse_mode: "Markdown" });
     } catch (err) {
       await ctx.answerCallbackQuery("Failed");
-    }
-  });
-
-  // --- UTILS ---
-  bot.command("me", async (ctx) => {
-    const tid = ctx.from?.id.toString();
-    const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
-    if (!u[0]) return;
-    await ctx.reply(`👤 Profile:\nName: ${u[0].name || "N/A"}\nPhone: ${u[0].phone}\nLang: ${u[0].language}`);
-  });
-
-  bot.command("health", async (ctx) => {
-    try {
-      await db.select().from(users).limit(1);
-      await ctx.reply("✅ Status: Online\nDB: Connected");
-    } catch (e: any) {
-      await ctx.reply("❌ Status: Error\nDB: " + e.message);
     }
   });
 
