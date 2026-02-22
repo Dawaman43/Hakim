@@ -17,13 +17,16 @@ export function setupBot(bot: Bot) {
 
   // --- HEALTH & DEBUG ---
   bot.command("health", async (ctx) => {
+    console.log("🛠 Bot health check command received");
     try {
       const start = Date.now();
-      await db.select({ count: sql<number>`count(*)` }).from(users).limit(1);
+      const userCount = await db.select({ count: sql<number>`count(*)` }).from(users).limit(1);
       const latency = Date.now() - start;
-      await ctx.reply(`✅ System healthy\nLatency: ${latency}ms\nMode: ${process.env.NODE_ENV}`);
+      console.log(`✅ DB Health check success: ${latency}ms`);
+      await ctx.reply(`✅ System healthy\nLatency: ${latency}ms\nUsers in DB: ${userCount[0].count}\nMode: ${process.env.NODE_ENV}`);
     } catch (err: any) {
-      await ctx.reply(`❌ System unhealthy\nError: ${err.message}`);
+      console.error(`❌ DB Health check failed: ${err.message}`);
+      await ctx.reply(`❌ System unhealthy\nDatabase error: ${err.message}`);
     }
   });
 

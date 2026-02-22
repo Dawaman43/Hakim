@@ -22,15 +22,18 @@ if (bot) {
 }
 
 export async function POST(req: NextRequest) {
+  console.log("📥 Received Telegram Webhook POST request");
+  
   if (!bot) {
+    console.error("❌ Webhook error: TELEGRAM_BOT_TOKEN is missing or bot not initialized");
     return NextResponse.json({ error: "Bot not initialized" }, { status: 500 });
   }
 
   try {
     // Grammy handles the request parsing and response
     return await webhookCallback(bot, "std/http")(req);
-  } catch (err) {
-    console.error("Webhook error:", err);
+  } catch (err: any) {
+    console.error("❌ Webhook processing error:", err.message);
     return NextResponse.json({ error: "Webhook failed" }, { status: 500 });
   }
 }
@@ -40,20 +43,30 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const register = searchParams.get("register");
 
-  if (register === "true" && bot) {
+  console.log("🔍 Webhook GET status check triggered");
+
+  if (register === "true") {
+    if (!bot) {
+      console.error("❌ Registration failed: TELEGRAM_BOT_TOKEN not set");
+      return NextResponse.json({ success: false, error: "TOKEN_MISSING" }, { status: 500 });
+    }
+    
     try {
-      // Get the current domain from the request headers
       const host = req.headers.get("host");
       const protocol = host?.includes("localhost") ? "http" : "https";
       const webhookUrl = `${protocol}://${host}/api/webhook/telegram`;
       
+      console.log(`📡 Attempting to register webhook: ${webhookUrl}`);
       await bot.api.setWebhook(webhookUrl);
+      console.log("✅ Webhook successfully registered with Telegram");
+      
       return NextResponse.json({ 
         success: true, 
         message: `Webhook registered to ${webhookUrl}`,
         mode: "webhook"
       });
     } catch (err: any) {
+      console.error("❌ Webhook registration failed:", err.message);
       return NextResponse.json({ 
         success: false, 
         error: err.message 
@@ -65,6 +78,7 @@ export async function GET(req: NextRequest) {
     status: "alive", 
     mode: "webhook",
     configured: !!token,
+    token_prefix: token ? `${token.substring(0, 4)}...` : "NONE",
     tip: "Add ?register=true to this URL to link your bot to this endpoint"
   });
 }
