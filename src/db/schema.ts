@@ -1,5 +1,24 @@
 import { pgTable, text, timestamp, boolean, integer, real } from "drizzle-orm/pg-core";
 
+export const users = pgTable("users", {
+  id: text("id").primaryKey(),
+  phone: text("phone").notNull().unique(),
+  name: text("name"),
+  telegramId: text("telegram_id"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const otpCodes = pgTable("otp_codes", {
+  id: text("id").primaryKey(),
+  phone: text("phone").notNull(),
+  code: text("code").notNull(),
+  purpose: text("purpose").notNull(), // LOGIN or REGISTRATION
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  verified: boolean("verified").notNull().default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const hospitals = pgTable("hospitals", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),

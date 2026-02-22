@@ -32,7 +32,10 @@ export function useAuthOtp({
       if (res.success) {
         setOtpSent(true);
         if (res.otpCode) {
-          alert(`Development mode: Your OTP is ${res.otpCode}`);
+          // Delay alert slightly to let React render the OTP input field first
+          setTimeout(() => {
+            alert(`Development mode: Your OTP is ${res.otpCode}`);
+          }, 100);
         }
       } else {
         alert(res.error || "Failed to send OTP");

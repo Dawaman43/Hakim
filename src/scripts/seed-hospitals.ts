@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { db, pool } from "@/db/node-client";
+import { db, pool } from "../db/client";
 import { hospitals, departments } from "@/db/schema";
 import { MOCK_HOSPITALS } from "@/lib/mock-hospitals";
 

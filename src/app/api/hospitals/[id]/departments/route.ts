@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db/node-client";
+import { db } from "@/db/client";
 import { departments } from "@/db/schema";
 import { eq } from "drizzle-orm";
 

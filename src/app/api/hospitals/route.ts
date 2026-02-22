@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db/node-client";
+import { db } from "@/db/client";
 import { hospitals, departments } from "@/db/schema";
 import { and, eq, ilike, or, sql } from "drizzle-orm";
 import { redisGet, redisSet } from "@/lib/upstash";

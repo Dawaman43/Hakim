@@ -63,10 +63,17 @@ export function AuthPage({
             </span>
           </button>
           <h2 className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-            {otpSent ? t.verifyOTP : t.signIn}
+            {otpSent ? "Check Telegram" : t.signIn}
           </h2>
           <p className={`mt-2 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-            {otpSent ? `${t.weSentCode} ${phone}` : t.signInPhone}
+            {otpSent 
+              ? (
+                <>
+                  We&apos;ve generated a code for your phone number. <br />
+                  Please open our Telegram Bot <strong className="text-[#2D4B32]">@HakimBot</strong> to get your verification code.
+                </>
+              )
+              : t.signInPhone}
           </p>
         </div>
 
@@ -136,7 +143,7 @@ export function AuthPage({
                   <ArrowClockwise className="animate-spin" size={20} />
                 ) : (
                   <>
-                    {t.verifySignInBtn}
+                    Verify & Login
                     <Check size={20} />
                   </>
                 )}
