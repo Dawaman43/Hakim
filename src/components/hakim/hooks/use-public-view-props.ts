@@ -20,6 +20,7 @@ interface UsePublicViewPropsParams {
   onToggleDarkMode: () => void;
   onLogout: () => void;
   onFindNearest: () => void;
+  onChangeLocation: () => void;
   locationLoading: boolean;
   t: TranslationStrings;
   selectedRegion: string | null;
@@ -94,6 +95,7 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     onToggleDarkMode: params.onToggleDarkMode,
     onLogout: params.onLogout,
     onFindNearest: params.onFindNearest,
+    onChangeLocation: params.onChangeLocation,
     locationLoading: params.locationLoading,
     t: params.t,
     selectedRegion: params.selectedRegion,
@@ -165,6 +167,7 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     params.onToggleDarkMode,
     params.onLogout,
     params.onFindNearest,
+    params.onChangeLocation,
     params.locationLoading,
     params.t,
     params.selectedRegion,

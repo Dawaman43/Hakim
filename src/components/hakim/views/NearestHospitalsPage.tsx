@@ -9,13 +9,14 @@ interface NearestHospitalsPageProps {
   darkMode: boolean;
   loading: boolean;
   locationNotice: string | null;
-  userLocation: { lat: number; lng: number } | null;
+  userLocation: { lat: number; lng: number; city?: string } | null;
   nearestHospitals: Array<Hospital & { distance: number }>;
   nearestLoading: boolean;
   nearestError: string | null;
   onNavigate: (view: ViewType) => void;
   onSelectHospital: (hospital: Hospital) => void;
   onLoadDepartments: (hospitalId: string) => void;
+  onChangeLocation: () => void;
   navigation: React.ReactNode;
   footer: React.ReactNode;
 }
@@ -31,6 +32,7 @@ export function NearestHospitalsPage({
   onNavigate,
   onSelectHospital,
   onLoadDepartments,
+  onChangeLocation,
   navigation,
   footer,
 }: NearestHospitalsPageProps) {
@@ -57,7 +59,7 @@ export function NearestHospitalsPage({
               </div>
               <div>
                 <h1 className={`text-2xl sm:text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-                  Nearest Hospitals
+                  Nearest Hospitals {userLocation?.city ? `in ${userLocation.city}` : ''}
                 </h1>
                 <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
                   Hospitals sorted by distance from your location
@@ -66,17 +68,23 @@ export function NearestHospitalsPage({
             </div>
 
             {locationNotice ? (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-[#2D4B32]"}`}>
-                <Info size={16} />
-                <span>{locationNotice}</span>
+              <div className="flex items-center gap-3">
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-[#2D4B32]"}`}>
+                  <Info size={16} />
+                  <span>{locationNotice}</span>
+                </div>
+                <button onClick={onChangeLocation} className={`text-sm font-medium underline ${darkMode ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-gray-900"}`}>Change Location</button>
               </div>
             ) : userLocation && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-[#2D4B32]"}`}>
-                <MapPin size={16} />
-                <span>Location detected</span>
-                <span className="text-[#2D4B32]">
-                  ({userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)})
-                </span>
+              <div className="flex items-center gap-3">
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-[#2D4B32]"}`}>
+                  <MapPin size={16} />
+                  <span>Location detected</span>
+                  <span className="text-[#2D4B32]">
+                    ({userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)})
+                  </span>
+                </div>
+                <button onClick={onChangeLocation} className={`text-sm font-medium underline ${darkMode ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-gray-900"}`}>Change Location</button>
               </div>
             )}
           </motion.div>

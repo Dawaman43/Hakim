@@ -19,7 +19,8 @@ export interface PublicViewProps {
   onToggleLanguage: () => void;
   onToggleDarkMode: () => void;
   onLogout: () => void;
-  onFindNearest: () => void;
+  onFindNearest: (shouldNavigate?: boolean) => void;
+  onChangeLocation: () => void;
   locationLoading: boolean;
   t: TranslationStrings;
   selectedRegion: string | null;
@@ -70,7 +71,7 @@ export interface PublicViewProps {
   reportEmergency: () => void;
   apiGet: (path: string, token?: string) => Promise<any>;
   setCurrentAppointment: (appt: Appointment | null) => void;
-  userLocation: { lat: number; lng: number } | null;
+  userLocation: { lat: number; lng: number; city?: string } | null;
   locationNotice: string | null;
   nearestHospitals: Array<Hospital & { distance: number }>;
   nearestLoading: boolean;

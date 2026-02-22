@@ -13,6 +13,9 @@ interface MapPageProps {
   setSelectedHospital: (hospital: Hospital | null) => void;
   loadDepartments: (hospitalId: string) => void;
   onNavigate: (view: ViewType) => void;
+  userLocation: { lat: number; lng: number } | null;
+  locationLoading: boolean;
+  onFindNearest: (shouldNavigate?: boolean) => void;
   navigation: React.ReactNode;
   footer: React.ReactNode;
 }
@@ -24,15 +27,15 @@ export function MapPage({
   setSelectedHospital,
   loadDepartments,
   onNavigate,
+  userLocation,
+  locationLoading,
+  onFindNearest,
   navigation,
   footer,
 }: MapPageProps) {
   const [mapSearchTerm, setMapSearchTerm] = useState('');
   const [mapSelectedRegion, setMapSelectedRegion] = useState<string>('');
   const [regions, setRegions] = useState<{ name: string; count: number }[]>([]);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [locationLoading, setLocationLoading] = useState(false);
-  const [locationError, setLocationError] = useState<string | null>(null);
   const [mapMounted, setMapMounted] = useState(false);
   const [MapComponent, setMapComponent] = useState<React.ComponentType<{
     hospitals: Hospital[];
@@ -52,26 +55,6 @@ export function MapPage({
       .sort((a, b) => a.name.localeCompare(b.name));
     setRegions(regionList);
   }, [hospitals]);
-
-  const requestUserLocation = () => {
-    if (!navigator.geolocation) {
-      setLocationError('Geolocation is not supported on this device.');
-      return;
-    }
-    setLocationLoading(true);
-    setLocationError(null);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setUserLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
-        setLocationLoading(false);
-      },
-      () => {
-        setLocationError('Unable to access your location.');
-        setLocationLoading(false);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-    );
-  };
 
   useEffect(() => {
     setMapMounted(true);
@@ -150,7 +133,7 @@ export function MapPage({
               ))}
             </select>
             <button
-              onClick={requestUserLocation}
+              onClick={() => onFindNearest(false)}
               className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#2D4B32] text-white rounded-xl hover:bg-[#2D4B32] transition"
             >
               {locationLoading ? (
@@ -166,11 +149,6 @@ export function MapPage({
               )}
             </button>
           </div>
-          {locationError && (
-            <div className="mt-3 text-sm text-[#2D4B32] bg-[#2D4B32]/10 border border-[#2D4B32]/20 rounded-lg px-3 py-2">
-              {locationError}
-            </div>
-          )}
           {filteredHospitals.length > MAX_MAP_MARKERS && (
             <div className="mt-4 flex items-center gap-2 text-sm text-[#2D4B32] bg-[#2D4B32]/10 border border-[#2D4B32]/20 rounded-lg px-3 py-2">
               <Warning size={16} />

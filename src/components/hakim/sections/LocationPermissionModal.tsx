@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowClockwise, Crosshair, MapPin, NavigationArrow, Warning } from "@phosphor-icons/react";
+import { ArrowClockwise, Crosshair, MapPin, MagnifyingGlass, NavigationArrow, Warning } from "@phosphor-icons/react";
 
 interface LocationPermissionModalProps {
   open: boolean;
@@ -14,6 +15,7 @@ interface LocationPermissionModalProps {
   onSelectRegion: (region: string) => void;
   onUseSelectedRegion: () => void;
   onUseDefaultLocation: () => void;
+  onSearchLocation: (query: string) => void;
   onClose: () => void;
 }
 
@@ -28,8 +30,17 @@ export function LocationPermissionModal({
   onSelectRegion,
   onUseSelectedRegion,
   onUseDefaultLocation,
+  onSearchLocation,
   onClose,
 }: LocationPermissionModalProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      onSearchLocation(searchQuery);
+    }
+  };
   return (
     <AnimatePresence>
       {open && (
@@ -102,11 +113,34 @@ export function LocationPermissionModal({
 
             <button
               onClick={onUseSelectedRegion}
-              className="w-full px-4 py-3 bg-[#2D4B32] text-white rounded-xl font-semibold hover:bg-[#2D4B32] transition flex items-center justify-center gap-2 cursor-pointer mb-3"
+              className="w-full px-4 py-3 bg-[#2D4B32] text-white rounded-xl font-semibold hover:bg-[#2D4B32] transition flex items-center justify-center gap-2 cursor-pointer mb-6"
             >
               <MapPin size={20} />
               Show Hospitals in {selectedRegion}
             </button>
+
+            <div className="flex items-center gap-3 my-4">
+              <div className={`flex-1 h-px ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}></div>
+              <span className="text-sm text-[#2D4B32]">or type a city/address</span>
+              <div className={`flex-1 h-px ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}></div>
+            </div>
+
+            <form onSubmit={handleSearch} className="mb-6 flex gap-2">
+              <input 
+                type="text" 
+                placeholder="e.g. Bishoftu, Adama..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={`flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "bg-gray-50 border-gray-200 placeholder-gray-400"}`}
+              />
+              <button 
+                type="submit"
+                disabled={!searchQuery.trim() || locationLoading}
+                className="px-4 py-3 bg-[#2D4B32] text-white rounded-xl font-semibold hover:bg-opacity-90 transition disabled:opacity-60 flex items-center justify-center cursor-pointer"
+              >
+                {locationLoading ? <ArrowClockwise className="animate-spin" /> : <MagnifyingGlass size={20} />}
+              </button>
+            </form>
 
             <button
               onClick={onUseDefaultLocation}

@@ -90,7 +90,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
   const { page, setPage, pageSize, setPageSize } = usePagination();
 
   // Location states
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number; city?: string } | null>(null);
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (userLocation) {
@@ -150,6 +150,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     requestLocation,
     useSelectedRegion,
     useDefaultLocation,
+    searchCustomLocation,
     setLocationError,
   } = useLocationPicker({
     regionCoordinates: REGION_COORDINATES,
@@ -298,6 +299,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     onLogout: logout,
     onLogin: login,
     onFindNearest: getUserLocation,
+    onChangeLocation: () => setShowLocationModal(true),
     locationLoading,
     t: tr,
     selectedRegion,
@@ -448,6 +450,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
         onSelectRegion={setSelectedRegion}
         onUseSelectedRegion={useSelectedRegion}
         onUseDefaultLocation={useDefaultLocation}
+        onSearchLocation={searchCustomLocation}
         onClose={() => {
           setShowLocationModal(false);
           setLocationError(null);
