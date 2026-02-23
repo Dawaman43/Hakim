@@ -8,6 +8,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  Eye,
+  EyeSlash,
   Phone,
   User,
 } from "@phosphor-icons/react";
@@ -59,6 +61,7 @@ export function AuthPage({
   t,
 }: AuthPageProps) {
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [showPassword, setShowPassword] = useState(false);
   const telegramBotUsername = "Hakim_bet_bot";
   const telegramLink = `https://t.me/${telegramBotUsername}?start=${encodeURIComponent(normalizeEthiopianPhone(phone) || "")}`;
 
@@ -106,42 +109,49 @@ export function AuthPage({
               </TabsList>
               <TabsContent value="signin" className="space-y-6">
                 <p className="text-sm text-muted-foreground">
-                  Use either email or phone. Only one is required.
+                  Enter your email or phone and password.
                 </p>
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Email</label>
-                  <input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={!!phone}
-                    className={`w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
-                  />
-                </div>
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.phoneNumberLabel}</label>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Email or Phone</label>
                   <div className="relative">
                     <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
                     <input
-                      type="tel"
-                      placeholder="09XXXXXXXXX"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      disabled={!!email}
+                      type="text"
+                      placeholder="you@example.com or 09XXXXXXXXX"
+                      value={email || phone}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.includes("@")) {
+                          setEmail(value);
+                          setPhone("");
+                        } else {
+                          setPhone(value);
+                          setEmail("");
+                        }
+                      }}
                       className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
                     />
                   </div>
                 </div>
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Password</label>
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={`w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={`w-full px-4 py-4 pr-12 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <EyeSlash size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </div>
                 <button
                   onClick={() => {
