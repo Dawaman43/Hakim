@@ -9,8 +9,8 @@ import {
   Timer,
   Users,
 } from "@phosphor-icons/react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from "recharts";
+import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import type { Hospital, Department } from "@/types";
 import type { ViewType } from "../routes";
 
@@ -41,6 +41,25 @@ export function AdminDashboardPage({
   onNavigate,
   navigation,
 }: AdminDashboardPageProps) {
+  const summary = (adminStats as Record<string, any>)?.summary || {};
+  const departmentStats = ((adminStats as Record<string, any>)?.departmentStats as any[]) || [];
+  const totalWaiting = summary.totalWaiting || 0;
+  const totalServed = summary.totalServed || 0;
+  const totalPatientsToday = summary.totalPatientsToday || 0;
+  const statusBreakdown = [
+    { key: "waiting", name: "Waiting", value: totalWaiting },
+    { key: "served", name: "Served", value: totalServed },
+    {
+      key: "inProgress",
+      name: "In Progress",
+      value: Math.max(totalPatientsToday - totalWaiting - totalServed, 0),
+    },
+  ];
+  const deptVolume = departmentStats.map((dept) => ({
+    ...dept,
+    totalVolume: (dept.totalWaiting || 0) + (dept.totalServed || 0),
+  }));
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       {navigation}
@@ -121,6 +140,98 @@ export function AdminDashboardPage({
                   </div>
                 </div>
 
+                <div className="grid lg:grid-cols-3 gap-4 mb-6">
+                  <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
+                    <h3 className={`font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>Status Breakdown</h3>
+                    <ChartContainer
+                      className="h-72 w-full"
+                      config={{
+                        waiting: { label: "Waiting", color: "hsl(var(--primary))" },
+                        served: { label: "Served", color: "hsl(var(--muted-foreground))" },
+                        inProgress: { label: "In Progress", color: "hsl(var(--secondary))" },
+                      }}
+                    >
+                      <PieChart>
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Pie
+                          data={statusBreakdown}
+                          dataKey="value"
+                          nameKey="key"
+                          innerRadius={55}
+                          outerRadius={90}
+                          paddingAngle={3}
+                        >
+                          {statusBreakdown.map((entry) => (
+                            <Cell
+                              key={entry.key}
+                              fill={`var(--color-${entry.key})`}
+                            />
+                          ))}
+                        </Pie>
+                        <ChartLegend content={<ChartLegendContent nameKey="name" />} />
+                      </PieChart>
+                    </ChartContainer>
+                  </div>
+
+                  <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 lg:col-span-2 ${darkMode ? "bg-background" : "bg-background"}`}>
+                    <h3 className={`font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>Department Load</h3>
+                    <ChartContainer
+                      className="h-72 w-full"
+                      config={{
+                        waiting: { label: "Waiting", color: "hsl(var(--primary))" },
+                        served: { label: "Served", color: "hsl(var(--muted-foreground))" },
+                      }}
+                    >
+                      <BarChart data={departmentStats}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="departmentName" tickLine={false} axisLine={false} interval={0} />
+                        <YAxis tickLine={false} axisLine={false} />
+                        <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+                        <Bar dataKey="totalWaiting" name="waiting" fill="var(--color-waiting)" radius={[6, 6, 0, 0]} />
+                        <Bar dataKey="totalServed" name="served" fill="var(--color-served)" radius={[6, 6, 0, 0]} />
+                      </BarChart>
+                    </ChartContainer>
+                  </div>
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-4 mb-6">
+                  <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
+                    <h3 className={`font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>Department Volume</h3>
+                    <ChartContainer
+                      className="h-72 w-full"
+                      config={{
+                        totalVolume: { label: "Total Volume", color: "hsl(var(--primary))" },
+                      }}
+                    >
+                      <BarChart data={deptVolume}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="departmentName" tickLine={false} axisLine={false} interval={0} />
+                        <YAxis tickLine={false} axisLine={false} />
+                        <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+                        <Bar dataKey="totalVolume" name="totalVolume" fill="var(--color-totalVolume)" radius={[6, 6, 0, 0]} />
+                      </BarChart>
+                    </ChartContainer>
+                  </div>
+
+                  <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
+                    <h3 className={`font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>Average Service Time</h3>
+                    <ChartContainer
+                      className="h-72 w-full"
+                      config={{
+                        averageServiceTimeMin: { label: "Avg Service (min)", color: "hsl(var(--secondary))" },
+                      }}
+                    >
+                      <BarChart data={departmentStats}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis dataKey="departmentName" tickLine={false} axisLine={false} interval={0} />
+                        <YAxis tickLine={false} axisLine={false} />
+                        <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+                        <Bar dataKey="averageServiceTimeMin" name="averageServiceTimeMin" fill="var(--color-averageServiceTimeMin)" radius={[6, 6, 0, 0]} />
+                      </BarChart>
+                    </ChartContainer>
+                  </div>
+                </div>
+
                 <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
                   <h3 className={`font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>Department Queue Status</h3>
                   <div className="space-y-3">
@@ -164,26 +275,6 @@ export function AdminDashboardPage({
                       </div>
                     ))}
                   </div>
-                </div>
-
-                <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
-                  <h3 className={`font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>Department Load</h3>
-                  <ChartContainer
-                    className="h-72 w-full"
-                    config={{
-                      waiting: { label: "Waiting", color: "hsl(var(--primary))" },
-                      served: { label: "Served", color: "hsl(var(--muted-foreground))" },
-                    }}
-                  >
-                    <BarChart data={((adminStats as Record<string, unknown>).departmentStats as any[]) || []}>
-                      <CartesianGrid vertical={false} />
-                      <XAxis dataKey="departmentName" tickLine={false} axisLine={false} interval={0} />
-                      <YAxis tickLine={false} axisLine={false} />
-                      <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
-                      <Bar dataKey="totalWaiting" name="waiting" fill="var(--color-waiting)" radius={[6, 6, 0, 0]} />
-                      <Bar dataKey="totalServed" name="served" fill="var(--color-served)" radius={[6, 6, 0, 0]} />
-                    </BarChart>
-                  </ChartContainer>
                 </div>
               </>
             )}

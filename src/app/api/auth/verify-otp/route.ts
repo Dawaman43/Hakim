@@ -3,6 +3,7 @@ import { db } from "@/db/client";
 import { users, otpCodes } from "@/db/schema";
 import { eq, and, desc, or } from "drizzle-orm";
 import { signToken } from "@/lib/jwt";
+import { hashPassword } from "@/lib/password";
 import { v4 as uuidv4 } from "uuid";
 import { normalizeEthiopianPhone } from "@/lib/phone";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Too many requests. Try again shortly." }, { status: 429 });
     }
 
-    const { phone, otpCode, name } = await req.json();
+    const { phone, otpCode, name, password } = await req.json();
     const normalizedPhone = normalizeEthiopianPhone(phone);
 
     if (!normalizedPhone || !otpCode) {
@@ -63,6 +64,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Invalid OTP code" }, { status: 400 });
     }
 
+    if (latestChallenge.purpose === "REGISTRATION" && (!password || password.length < 6)) {
+      return NextResponse.json({ success: false, error: "Password is required" }, { status: 400 });
+    }
+
     await db.update(otpCodes).set({ verified: true }).where(eq(otpCodes.id, latestChallenge.id));
 
     let userList = await db.select().from(users).where(eq(users.phone, normalizedPhone)).limit(1);
@@ -74,6 +79,7 @@ export async function POST(req: Request) {
         id: newUserId,
         phone: normalizedPhone,
         name: name || null,
+        passwordHash: password ? hashPassword(password) : null,
         role: "PATIENT",
         isVerified: true,
       });
@@ -83,6 +89,10 @@ export async function POST(req: Request) {
     } else if (name && !user.name) {
       await db.update(users).set({ name }).where(eq(users.id, user.id));
       user.name = name;
+    }
+
+    if (password && !user?.passwordHash) {
+      await db.update(users).set({ passwordHash: hashPassword(password) }).where(eq(users.id, user.id));
     }
 
     const token = await signToken({ userId: user.id, phone: user.phone });

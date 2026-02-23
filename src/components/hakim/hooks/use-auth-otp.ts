@@ -5,12 +5,14 @@ interface UseAuthOtpParams {
   phone: string;
   otp: string;
   name: string;
+  password: string;
   login: (user: any, token: string) => void;
   navigateTo: (view: string) => void;
   setPhone: (value: string) => void;
   setOtp: (value: string) => void;
   setOtpSent: (value: boolean) => void;
   setLoading: (value: boolean) => void;
+  setPassword: (value: string) => void;
 }
 
 export function useAuthOtp({
@@ -18,12 +20,14 @@ export function useAuthOtp({
   phone,
   otp,
   name,
+  password,
   login,
   navigateTo,
   setPhone,
   setOtp,
   setOtpSent,
   setLoading,
+  setPassword,
 }: UseAuthOtpParams) {
   const sendOtp = async (purpose: "LOGIN" | "REGISTRATION" = "LOGIN") => {
     setLoading(true);
@@ -51,7 +55,7 @@ export function useAuthOtp({
   const verifyOtp = async () => {
     setLoading(true);
     try {
-      const res = await api.post("/api/auth/verify-otp", { phone, otpCode: otp, name });
+      const res = await api.post("/api/auth/verify-otp", { phone, otpCode: otp, name, password });
       if (res.success) {
         login(res.user, res.token);
         if (res.user?.role === "SUPER_ADMIN") {
@@ -63,6 +67,7 @@ export function useAuthOtp({
         }
         setPhone("");
         setOtp("");
+        setPassword("");
         setOtpSent(false);
       } else {
         alert(res.error || "Invalid OTP");

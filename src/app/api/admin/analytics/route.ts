@@ -67,13 +67,14 @@ export async function GET(request: Request) {
         },
         departmentStats: deptRows.map((d) => ({
           departmentId: d.departmentId,
-          departmentName: d.departmentName,
-          totalWaiting: d.totalWaiting || 0,
-          totalServed: d.totalServed || 0,
-          currentToken: d.currentToken || 0,
-        })),
-      },
-    });
+        departmentName: d.departmentName,
+        totalWaiting: d.totalWaiting || 0,
+        totalServed: d.totalServed || 0,
+        currentToken: d.currentToken || 0,
+        averageServiceTimeMin: d.avgTime || 0,
+      })),
+    },
+  });
   } catch (error) {
     console.error("Admin analytics error:", error);
     return NextResponse.json({ success: false, error: "Failed to load analytics" }, { status: 500 });

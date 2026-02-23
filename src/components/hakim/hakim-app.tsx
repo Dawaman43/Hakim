@@ -321,12 +321,14 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     phone,
     otp,
     name,
+    password,
     login,
     navigateTo,
     setPhone,
     setOtp,
     setOtpSent,
     setLoading,
+    setPassword,
   });
 
   const { bookAppointment } = useBooking({

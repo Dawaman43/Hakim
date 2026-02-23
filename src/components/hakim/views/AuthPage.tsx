@@ -62,6 +62,9 @@ export function AuthPage({
 }: AuthPageProps) {
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const [showPassword, setShowPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showSignupConfirm, setShowSignupConfirm] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const telegramBotUsername = "Hakim_bet_bot";
   const telegramLink = `https://t.me/${telegramBotUsername}?start=${encodeURIComponent(normalizeEthiopianPhone(phone) || "")}`;
 
@@ -100,6 +103,7 @@ export function AuthPage({
                 setAuthMode(value as "signin" | "signup");
                 setOtpSent(false);
                 setOtp("");
+                setConfirmPassword("");
               }}
               className="space-y-6"
             >
@@ -189,6 +193,49 @@ export function AuthPage({
                   </div>
                 </div>
                 <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Password</label>
+                  <div className="relative">
+                    <input
+                      type={showSignupPassword ? "text" : "password"}
+                      placeholder="Create a password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={`w-full pl-4 pr-12 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignupPassword((prev) => !prev)}
+                      className={`absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg ${darkMode ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                      aria-label={showSignupPassword ? "Hide password" : "Show password"}
+                    >
+                      {showSignupPassword ? <EyeSlash size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Confirm Password</label>
+                  <div className="relative">
+                    <input
+                      type={showSignupConfirm ? "text" : "password"}
+                      placeholder="Confirm your password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className={`w-full pl-4 pr-12 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignupConfirm((prev) => !prev)}
+                      className={`absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg ${darkMode ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                      aria-label={showSignupConfirm ? "Hide password" : "Show password"}
+                    >
+                      {showSignupConfirm ? <EyeSlash size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                  {confirmPassword && confirmPassword !== password && (
+                    <p className="mt-2 text-sm text-destructive">Passwords do not match.</p>
+                  )}
+                </div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.nameOptionalLabel}</label>
                   <div className="relative">
                     <User size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
@@ -203,10 +250,10 @@ export function AuthPage({
                 </div>
                 <button
                   onClick={() => {
-                    if (!phone) return;
+                    if (!phone || password.length < 6 || password !== confirmPassword) return;
                     setOtpSent(true);
                   }}
-                  disabled={loading || !phone}
+                  disabled={loading || !phone || password.length < 6 || password !== confirmPassword}
                   className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
