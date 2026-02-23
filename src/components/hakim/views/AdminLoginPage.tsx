@@ -23,6 +23,7 @@ export function AdminLoginPage({
   onNavigate,
 }: AdminLoginPageProps) {
   const [adminPhone, setAdminPhone] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
   const [adminLoading, setAdminLoading] = useState(false);
 
@@ -32,7 +33,7 @@ export function AdminLoginPage({
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: adminPhone, password: adminPassword }),
+        body: JSON.stringify({ phone: adminPhone, email: adminEmail, password: adminPassword }),
       });
       const data = await res.json();
       if (!data?.success) {
@@ -76,6 +77,18 @@ export function AdminLoginPage({
           <div className="space-y-4">
             <div>
               <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="admin@hospital.et"
+                value={adminEmail}
+                onChange={(e) => setAdminEmail(e.target.value)}
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+              />
+            </div>
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
                 Phone Number
               </label>
               <div className="relative">
@@ -103,7 +116,7 @@ export function AdminLoginPage({
             </div>
             <button
               onClick={handleAdminLogin}
-              disabled={adminLoading || !adminPhone || !adminPassword}
+              disabled={adminLoading || (!adminPhone && !adminEmail) || !adminPassword}
               className="w-full py-3 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {adminLoading ? (

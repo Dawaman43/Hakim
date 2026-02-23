@@ -29,6 +29,8 @@ export interface PublicViewProps {
   otpSent: boolean;
   phone: string;
   setPhone: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
   name: string;
   setName: (value: string) => void;
   otp: string;
@@ -36,6 +38,7 @@ export interface PublicViewProps {
   setOtpSent: (value: boolean) => void;
   sendOtp: (purpose?: "LOGIN" | "REGISTRATION") => void;
   verifyOtp: () => void;
+  loginWithPassword: (phone: string, password: string) => Promise<void>;
   hospitals: Hospital[];
   totalHospitals: number;
   facilityCounts: Record<string, number>;

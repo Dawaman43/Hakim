@@ -186,6 +186,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
   const [notes, setNotes] = useState('');
   const [symptoms, setSymptoms] = useState('');
   const [triageResult, setTriageResult] = useState<TriageResult | null>(null);
+  const [password, setPassword] = useState('');
   
   // Admin states
   const [adminStats, setAdminStats] = useState<unknown>(null);
@@ -352,6 +353,30 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     setLoading,
   });
 
+  const loginWithPassword = async (phoneValue: string, passwordValue: string) => {
+    setLoading(true);
+    try {
+      const res = await api.post("/api/auth/login", { phone: phoneValue, password: passwordValue });
+      if (res?.success) {
+        login(res.user, res.token);
+        if (res.user?.role === "SUPER_ADMIN") {
+          navigateTo("admin-dashboard");
+        } else if (res.user?.role === "HOSPITAL_ADMIN") {
+          navigateTo("hospital-dashboard");
+        } else {
+          navigateTo("dashboard");
+        }
+        setPassword("");
+        setOtpSent(false);
+        setOtp("");
+      } else {
+        alert(res?.error || "Invalid credentials");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const { loadAdminQueue, callNextPatient } = useAdminQueue({
     api,
     token,
@@ -451,6 +476,8 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     otpSent,
     phone,
     setPhone,
+    password,
+    setPassword,
     name,
     setName,
     otp,
@@ -458,6 +485,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     setOtpSent,
     sendOtp,
     verifyOtp,
+    loginWithPassword,
     hospitals,
     viewMode,
     setViewMode,

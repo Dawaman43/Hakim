@@ -21,6 +21,8 @@ interface AuthPageProps {
   otpSent: boolean;
   phone: string;
   setPhone: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
   name: string;
   setName: (value: string) => void;
   otp: string;
@@ -28,6 +30,7 @@ interface AuthPageProps {
   setOtpSent: (value: boolean) => void;
   sendOtp: (type: "REGISTRATION" | "LOGIN") => void;
   verifyOtp: () => void;
+  loginWithPassword: (phone: string, password: string) => Promise<void>;
   onNavigate: (view: ViewType) => void;
   t: Record<string, string>;
 }
@@ -38,6 +41,8 @@ export function AuthPage({
   otpSent,
   phone,
   setPhone,
+  password,
+  setPassword,
   name,
   setName,
   otp,
@@ -45,6 +50,7 @@ export function AuthPage({
   setOtpSent,
   sendOtp,
   verifyOtp,
+  loginWithPassword,
   onNavigate,
   t,
 }: AuthPageProps) {
@@ -108,20 +114,39 @@ export function AuthPage({
                     />
                   </div>
                 </div>
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                  />
+                </div>
                 <button
-                  onClick={() => sendOtp("LOGIN")}
-                  disabled={loading || !phone}
+                  onClick={() => {
+                    if (password) {
+                      loginWithPassword(phone, password);
+                      return;
+                    }
+                    sendOtp("LOGIN");
+                  }}
+                  disabled={loading || !phone || (!!password && password.length < 6)}
                   className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <ArrowClockwise className="animate-spin" size={20} />
                   ) : (
                     <>
-                      {t.continue}
+                      {password ? "Sign In" : t.continue}
                       <ArrowRight size={20} />
                     </>
                   )}
                 </button>
+                <p className="text-sm text-muted-foreground text-center">
+                  {password ? "Or remove password to use OTP sign in." : "Or enter a password to sign in directly."}
+                </p>
               </TabsContent>
               <TabsContent value="signup" className="space-y-6">
                 <div>

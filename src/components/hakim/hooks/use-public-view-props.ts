@@ -29,6 +29,8 @@ interface UsePublicViewPropsParams {
   otpSent: boolean;
   phone: string;
   setPhone: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
   name: string;
   setName: (value: string) => void;
   otp: string;
@@ -36,6 +38,7 @@ interface UsePublicViewPropsParams {
   setOtpSent: (value: boolean) => void;
   sendOtp: (purpose?: "LOGIN" | "REGISTRATION") => void;
   verifyOtp: () => void;
+  loginWithPassword: (phone: string, password: string) => Promise<void>;
   hospitals: Hospital[];
   totalHospitals: number;
   facilityCounts: Record<string, number>;
@@ -105,6 +108,8 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     otpSent: params.otpSent,
     phone: params.phone,
     setPhone: params.setPhone,
+    password: params.password,
+    setPassword: params.setPassword,
     name: params.name,
     setName: params.setName,
     otp: params.otp,
@@ -112,6 +117,7 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     setOtpSent: params.setOtpSent,
     sendOtp: params.sendOtp,
     verifyOtp: params.verifyOtp,
+    loginWithPassword: params.loginWithPassword,
     hospitals: params.hospitals,
     totalHospitals: params.totalHospitals,
     facilityCounts: params.facilityCounts,
@@ -178,6 +184,8 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     params.otpSent,
     params.phone,
     params.setPhone,
+    params.password,
+    params.setPassword,
     params.name,
     params.setName,
     params.otp,
@@ -185,6 +193,7 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     params.setOtpSent,
     params.sendOtp,
     params.verifyOtp,
+    params.loginWithPassword,
     params.hospitals,
     params.totalHospitals,
     params.facilityCounts,

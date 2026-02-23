@@ -48,6 +48,8 @@ export function PublicViews(props: PublicViewProps) {
     otpSent,
     phone,
     setPhone,
+    password,
+    setPassword,
     name,
     setName,
     otp,
@@ -55,6 +57,7 @@ export function PublicViews(props: PublicViewProps) {
     setOtpSent,
     sendOtp,
     verifyOtp,
+    loginWithPassword,
     hospitals,
     totalHospitals,
     facilityCounts,
@@ -175,6 +178,8 @@ export function PublicViews(props: PublicViewProps) {
         otpSent={otpSent}
         phone={phone}
         setPhone={setPhone}
+        password={password}
+        setPassword={setPassword}
         name={name}
         setName={setName}
         otp={otp}
@@ -182,6 +187,7 @@ export function PublicViews(props: PublicViewProps) {
         setOtpSent={setOtpSent}
         sendOtp={sendOtp}
         verifyOtp={verifyOtp}
+        loginWithPassword={loginWithPassword}
         onNavigate={onNavigate}
         t={t}
       />

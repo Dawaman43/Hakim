@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { verifyPassword } from "@/lib/password";
 import { signToken } from "@/lib/jwt";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
@@ -14,12 +14,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Too many attempts. Try again shortly." }, { status: 429 });
     }
 
-    const { phone, password } = await req.json();
-    if (!phone || !password) {
-      return NextResponse.json({ success: false, error: "Phone and password are required" }, { status: 400 });
+    const { phone, email, password } = await req.json();
+    if ((!phone && !email) || !password) {
+      return NextResponse.json({ success: false, error: "Email or phone and password are required" }, { status: 400 });
     }
 
-    const rows = await db.select().from(users).where(eq(users.phone, phone)).limit(1);
+    const rows = await db
+      .select()
+      .from(users)
+      .where(or(
+        phone ? eq(users.phone, phone) : eq(users.email, email),
+        email ? eq(users.email, email) : eq(users.phone, phone),
+      ))
+      .limit(1);
     const user = rows[0];
     if (!user || !user.passwordHash) {
       return NextResponse.json({ success: false, error: "Invalid credentials" }, { status: 401 });
