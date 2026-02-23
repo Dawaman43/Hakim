@@ -13,7 +13,7 @@ type TriagePayload = {
 };
 
 const OPENAI_MODEL = "gpt-4o-mini";
-const GEMINI_MODEL = "gemini-1.5-flash";
+const GEMINI_MODEL = "gemini-2.0-flash-lite";
 
 const SYSTEM_PROMPT = [
   "You are a medical triage assistant for a queue management app in Ethiopia.",
@@ -28,36 +28,6 @@ const SYSTEM_PROMPT = [
 function extractJson(text: string) {
   const match = text.match(/\{[\s\S]*\}/);
   return match ? match[0] : null;
-}
-
-async function callOpenAI(symptomsText: string): Promise<TriagePayload | null> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return null;
-
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: OPENAI_MODEL,
-      temperature: 0.2,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: `Symptoms: ${symptomsText}` },
-      ],
-    }),
-  });
-
-  if (!res.ok) return null;
-  const data = await res.json();
-  const content = data?.choices?.[0]?.message?.content;
-  if (!content) return null;
-  const json = extractJson(content);
-  if (!json) return null;
-  return JSON.parse(json) as TriagePayload;
 }
 
 async function callGemini(symptomsText: string): Promise<TriagePayload | null> {
@@ -90,6 +60,35 @@ async function callGemini(symptomsText: string): Promise<TriagePayload | null> {
   return JSON.parse(json) as TriagePayload;
 }
 
+async function callOpenAI(symptomsText: string): Promise<TriagePayload | null> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return null;
+
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: `Symptoms: ${symptomsText}` },
+      ],
+    }),
+  });
+
+  if (!res.ok) return null;
+  const data = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (!content) return null;
+  const json = extractJson(content);
+  if (!json) return null;
+  return JSON.parse(json) as TriagePayload;
+}
 function fallbackTriage(symptomsText: string): TriagePayload {
   const keywords = ["chest", "breath", "blood", "heart", "stroke", "accident", "unconscious", "seizure"];
   const found = keywords.filter((k) => symptomsText?.toLowerCase().includes(k));

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const OPENAI_MODEL = "gpt-4o-mini";
-const GEMINI_MODEL = "gemini-1.5-flash";
+const GEMINI_MODEL = "gemini-2.0-flash-lite";
 
 const SYSTEM_PROMPT = [
   "You are a medical triage assistant for a queue management app in Ethiopia.",
@@ -15,6 +15,26 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 
 function buildTranscript(messages: ChatMessage[]) {
   return messages.map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`).join("\n");
+}
+
+async function callGemini(messages: ChatMessage[]) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+  const text = `${SYSTEM_PROMPT}\n${buildTranscript(messages)}\nAssistant:`;
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text }] }],
+        generationConfig: { temperature: 0.2 },
+      }),
+    }
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
 }
 
 async function callOpenAI(messages: ChatMessage[]) {
@@ -38,26 +58,6 @@ async function callOpenAI(messages: ChatMessage[]) {
   if (!res.ok) return null;
   const data = await res.json();
   return data?.choices?.[0]?.message?.content?.trim() || null;
-}
-
-async function callGemini(messages: ChatMessage[]) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return null;
-  const text = `${SYSTEM_PROMPT}\n${buildTranscript(messages)}\nAssistant:`;
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text }] }],
-        generationConfig: { temperature: 0.2 },
-      }),
-    }
-  );
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
 }
 
 export async function POST(req: NextRequest) {
