@@ -40,7 +40,7 @@ export function HeroSection({ darkMode, t, onNavigate, onFindNearest, locationLo
               <span className="text-lg">🇪🇹</span>
             </motion.div>
 
-            <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-foreground">
               {t.skipWait}
               <br />
               <span className="bg-gradient-to-r from-[#2D4B32] via-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">
@@ -48,8 +48,8 @@ export function HeroSection({ darkMode, t, onNavigate, onFindNearest, locationLo
               </span>
             </h1>
 
-            <p className={`text-lg sm:text-xl mb-10 leading-relaxed max-w-xl ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              {t.heroDesc} <span className={darkMode ? 'text-[#2D4B32] font-medium' : 'text-[#2D4B32] font-medium'}>{t.noMoreWaiting}</span>
+            <p className="text-lg sm:text-xl mb-10 leading-relaxed max-w-xl text-foreground/80">
+              {t.heroDesc} <span className="text-foreground font-semibold">{t.noMoreWaiting}</span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -82,18 +82,18 @@ export function HeroSection({ darkMode, t, onNavigate, onFindNearest, locationLo
               </button>
             </div>
 
-            <div className={`grid grid-cols-3 gap-8 pt-8 border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
               <div className="text-center sm:text-left">
                 <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">1,600+</p>
-                <p className={darkMode ? 'text-gray-500 text-sm mt-1' : 'text-gray-500 text-sm mt-1'}>Facilities</p>
+                <p className="text-sm mt-1 text-muted-foreground">Facilities</p>
               </div>
               <div className="text-center sm:text-left">
                 <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">8,000+</p>
-                <p className={darkMode ? 'text-gray-500 text-sm mt-1' : 'text-gray-500 text-sm mt-1'}>{t.departments}</p>
+                <p className="text-sm mt-1 text-muted-foreground">{t.departments}</p>
               </div>
               <div className="text-center sm:text-left">
                 <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">13</p>
-                <p className={darkMode ? 'text-gray-500 text-sm mt-1' : 'text-gray-500 text-sm mt-1'}>{t.regions}</p>
+                <p className="text-sm mt-1 text-muted-foreground">{t.regions}</p>
               </div>
             </div>
           </motion.div>

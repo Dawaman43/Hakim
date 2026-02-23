@@ -63,11 +63,11 @@ export function HomeView() {
         <Badge className="mb-4 bg-teal-100 text-teal-700 hover:bg-teal-100">
           🇪🇹 Ethiopian Healthcare System
         </Badge>
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
           Skip the Wait,{' '}
           <span className="text-teal-600">Not Your Health</span>
         </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+        <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
           Book queue tokens, track your position in real-time, and access emergency 
           medical guidance at Ethiopian public hospitals.
         </p>
@@ -116,10 +116,10 @@ export function HomeView() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
         {stats.map((stat, i) => (
-          <Card key={i} className="text-center border-teal-100">
+          <Card key={i} className="text-center border-border">
             <CardContent className="pt-4 pb-4">
               <p className="text-2xl font-bold text-teal-600">{stat.value}</p>
-              <p className="text-xs text-gray-500">{stat.label}</p>
+              <p className="text-xs text-muted-foreground">{stat.label}</p>
             </CardContent>
           </Card>
         ))}
@@ -130,9 +130,9 @@ export function HomeView() {
         {features.map((feature, i) => {
           const Icon = feature.icon;
           return (
-            <Card 
+            <Card
               key={i} 
-              className="cursor-pointer hover:shadow-lg transition-shadow border-gray-100"
+              className="cursor-pointer hover:shadow-lg transition-shadow border-border"
               onClick={feature.action}
             >
               <CardContent className="p-6">
@@ -141,10 +141,10 @@ export function HomeView() {
                     <Icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 mb-1">{feature.title}</h3>
-                    <p className="text-sm text-gray-600">{feature.description}</p>
+                    <h3 className="font-semibold text-foreground mb-1">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">{feature.description}</p>
                   </div>
-                  <ArrowRight className="h-5 w-5 text-gray-400 mt-1" />
+                  <ArrowRight className="h-5 w-5 text-muted-foreground mt-1" />
                 </div>
               </CardContent>
             </Card>
@@ -169,8 +169,8 @@ export function HomeView() {
                 <div className="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center mx-auto mb-3 font-bold">
                   {item.step}
                 </div>
-                <h4 className="font-medium text-gray-900">{item.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
+                <h4 className="font-medium text-foreground">{item.title}</h4>
+                <p className="text-sm text-muted-foreground mt-1">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -178,7 +178,7 @@ export function HomeView() {
       </Card>
 
       {/* Admin Access */}
-      <Card className="border-gray-200 bg-gray-50">
+      <Card className="border-border bg-muted">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -186,8 +186,8 @@ export function HomeView() {
                 <Shield className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Hospital Administrator?</h3>
-                <p className="text-sm text-gray-600">Access the admin portal to manage queues</p>
+                <h3 className="font-semibold text-foreground">Hospital Administrator?</h3>
+                <p className="text-sm text-muted-foreground">Access the admin portal to manage queues</p>
               </div>
             </div>
             <Button 

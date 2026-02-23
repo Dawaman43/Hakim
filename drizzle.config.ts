@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
@@ -5,6 +6,7 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL!,
+    // Prefer direct (non-pooler) URL for migrations to avoid DNS/pooler issues
+    url: (process.env.DATABASE_URL_DIRECT ?? process.env.DATABASE_URL)!,
   },
 });

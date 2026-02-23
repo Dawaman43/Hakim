@@ -13,6 +13,7 @@ import { NotificationsPage } from "../views/NotificationsPage";
 import { FeaturesPage } from "../views/FeaturesPage";
 import { DashboardPage } from "../views/DashboardPage";
 import { AboutPage } from "../views/AboutPage";
+import { DownloadPage } from "../views/DownloadPage";
 import { AuthPage } from "../views/AuthPage";
 import { EmergencyPage } from "../views/EmergencyPage";
 import { ContactPage } from "../views/ContactPage";
@@ -123,6 +124,10 @@ export function PublicViews(props: PublicViewProps) {
 
   if (view === "features") {
     return <FeaturesPage darkMode={darkMode} t={t} navigation={navigation} footer={footer} cta={<CTASection t={t} onNavigate={onNavigate} darkMode={darkMode} />} />;
+  }
+
+  if (view === "download") {
+    return <DownloadPage darkMode={darkMode} navigation={navigation} footer={footer} />;
   }
 
   if (view === "dashboard") {
@@ -256,6 +261,7 @@ export function PublicViews(props: PublicViewProps) {
       <DepartmentsPage
         darkMode={darkMode}
         loading={loading}
+        isAuthenticated={isAuthenticated}
         selectedHospital={selectedHospital}
         departments={departments}
         onNavigate={onNavigate}
@@ -274,10 +280,6 @@ export function PublicViews(props: PublicViewProps) {
         loading={loading}
         selectedHospital={selectedHospital}
         selectedDepartment={selectedDepartment}
-        phone={phone}
-        setPhone={setPhone}
-        name={name}
-        setName={setName}
         notes={notes}
         setNotes={setNotes}
         isAuthenticated={isAuthenticated}

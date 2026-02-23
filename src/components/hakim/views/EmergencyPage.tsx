@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
 import {
   Ambulance,
@@ -13,6 +12,12 @@ import {
 } from "@phosphor-icons/react";
 import type { Hospital, TriageResult } from "@/types";
 import type { ViewType } from "../routes";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 interface EmergencyPageProps {
   darkMode: boolean;
@@ -91,39 +96,37 @@ export function EmergencyPage({
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className="min-h-screen transition-colors duration-300 bg-background">
       {navigation}
 
       <section className="pt-8 pb-8">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <button
+          <div>
+            <Button
               onClick={() => onNavigate("landing")}
-              className={`flex items-center gap-2 transition mb-6 ${darkMode ? "text-gray-400 hover:text-[#2D4B32]" : "text-gray-600 hover:text-[#2D4B32]"}`}
+              variant="ghost"
+              className="flex items-center gap-2 transition mb-6 text-muted-foreground hover:text-primary"
             >
               <ArrowLeft size={20} />
               Back to Home
-            </button>
+            </Button>
 
             <div className="flex items-center gap-3 mb-6">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? "bg-red-900/50" : "bg-red-100"}`}>
-                <Ambulance size={24} className="text-red-600" />
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-destructive/15 border border-destructive/30">
+                <Ambulance size={24} className="text-destructive" />
               </div>
               <div>
-                <h1 className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>Emergency Assist</h1>
-                <p className={darkMode ? "text-gray-400" : "text-gray-600"}>Get triage guidance for your symptoms</p>
+                <h1 className="text-2xl font-bold text-foreground">Emergency Assist</h1>
+                <p className="text-muted-foreground">Get triage guidance for your symptoms</p>
               </div>
             </div>
 
-            <div className={`rounded-2xl p-4 mb-6 ${darkMode ? "bg-red-900/30 border border-red-700/50" : "bg-red-50 border border-red-200"}`}>
+            <div className="rounded-2xl p-4 mb-6 bg-destructive/10 border border-destructive/30">
               <div className="flex items-start gap-3">
-                <Warning size={24} className="text-red-600 flex-shrink-0" />
+                <Warning size={24} className="text-destructive flex-shrink-0" />
                 <div>
-                  <p className={`font-bold ${darkMode ? "text-red-300" : "text-red-800"}`}>IMPORTANT DISCLAIMER</p>
-                  <p className={`text-sm mt-1 ${darkMode ? "text-red-400" : "text-red-700"}`}>
+                  <p className="font-bold text-destructive">IMPORTANT DISCLAIMER</p>
+                  <p className="text-sm mt-1 text-destructive/90">
                     This system does NOT replace emergency services. If this is a life-threatening
                     emergency, call <strong>911</strong> immediately or proceed to the nearest emergency room.
                   </p>
@@ -133,69 +136,85 @@ export function EmergencyPage({
 
             {!triageResult ? (
               <>
-                <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
-                  <label className={`block font-semibold mb-3 ${darkMode ? "text-white" : "text-gray-900"}`}>Describe Your Symptoms</label>
-                  <textarea
+                <div className="rounded-2xl border border-border bg-card p-6 mb-6 transition-colors duration-300">
+                  <Label className="block font-semibold mb-3" htmlFor="emergency-symptoms">
+                    Describe Your Symptoms
+                  </Label>
+                  <Textarea
+                    id="emergency-symptoms"
                     placeholder="Please describe your symptoms in detail. For example: 'I have severe chest pain and difficulty breathing for the past 30 minutes'"
                     value={symptoms}
                     onChange={(e) => setSymptoms(e.target.value)}
                     rows={5}
-                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                    className="w-full px-4 py-3 rounded-xl"
                   />
-                  <p className={`text-sm mt-2 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                  <p className="text-sm mt-2 text-muted-foreground">
                     Be as specific as possible for better triage assessment.
                   </p>
                 </div>
 
                 {!isAuthenticated && (
-                  <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
-                    <h3 className={`font-semibold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>Your Contact Information</h3>
+                  <div className="rounded-2xl border border-border bg-card p-6 mb-6 transition-colors duration-300">
+                    <h3 className="font-semibold mb-4 text-foreground">Your Contact Information</h3>
                     <div className="space-y-4">
                       <div>
-                        <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>Phone Number *</label>
-                        <input
+                        <Label className="block text-sm font-medium mb-2" htmlFor="emergency-phone">
+                          Phone Number *
+                        </Label>
+                        <Input
+                          id="emergency-phone"
                           type="tel"
                           placeholder="09XXXXXXXXX"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                          className="w-full px-4 py-3 rounded-xl"
                         />
                       </div>
                       <div>
-                        <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>Your Name</label>
-                        <input
+                        <Label className="block text-sm font-medium mb-2" htmlFor="emergency-name">
+                          Your Name
+                        </Label>
+                        <Input
+                          id="emergency-name"
                           type="text"
                           placeholder="Your name"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                          className="w-full px-4 py-3 rounded-xl"
                         />
                       </div>
                     </div>
                   </div>
                 )}
 
-                <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
-                  <label className={`block font-semibold mb-3 ${darkMode ? "text-white" : "text-gray-900"}`}>Nearest Hospital (Optional)</label>
-                  <select
+                <div className="rounded-2xl border border-border bg-card p-6 mb-6 transition-colors duration-300">
+                  <Label className="block font-semibold mb-3" htmlFor="emergency-hospital">
+                    Nearest Hospital (Optional)
+                  </Label>
+                  <Select
                     value={selectedHospital?.id || ""}
-                    onChange={(e) => {
-                      const hospital = hospitals.find(h => h.id === e.target.value);
+                    onValueChange={(value) => {
+                      const hospital = hospitals.find(h => h.id === value);
                       setSelectedHospital(hospital || null);
                     }}
-                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
                   >
-                    <option value="">Select hospital (optional)</option>
-                    {hospitals.map(h => (
-                      <option key={h.id} value={h.id}>{h.name}</option>
-                    ))}
-                  </select>
+                    <SelectTrigger id="emergency-hospital" className="h-12 rounded-xl">
+                      <SelectValue placeholder="Select hospital (optional)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {hospitals.map(h => (
+                        <SelectItem key={h.id} value={h.id}>{h.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                <button
+                <Button
                   onClick={reportEmergency}
                   disabled={loading || symptoms.length < 10}
-                  className="w-full py-4 bg-red-600 text-white rounded-xl font-semibold text-lg hover:bg-red-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                  variant="destructive"
+                  size="lg"
+                  className="w-full rounded-xl text-lg flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <ArrowClockwise className="animate-spin" size={20} />
@@ -205,14 +224,10 @@ export function EmergencyPage({
                       Get Triage Assessment
                     </>
                   )}
-                </button>
+                </Button>
               </>
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-6"
-              >
+              <div className="space-y-6">
                 <div className={`rounded-2xl p-6 ${getSeverityColor(triageResult.severityLevel)}`}>
                   <div className="text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-background rounded-2xl mb-4">
@@ -230,17 +245,17 @@ export function EmergencyPage({
                   </div>
                 </div>
 
-                <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
-                  <h3 className={`font-semibold mb-3 ${darkMode ? "text-white" : "text-gray-900"}`}>Recommendation</h3>
-                  <p className={`leading-relaxed ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{triageResult.recommendation}</p>
+                <div className="rounded-2xl border border-border bg-card p-6 transition-colors duration-300">
+                  <h3 className="font-semibold mb-3 text-foreground">Recommendation</h3>
+                  <p className="leading-relaxed text-muted-foreground">{triageResult.recommendation}</p>
                   {triageResult.keywords.length > 0 && (
-                    <div className={`mt-4 pt-4 border-t ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
-                      <p className={`text-sm mb-2 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Identified keywords:</p>
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <p className="text-sm mb-2 text-muted-foreground">Identified keywords:</p>
                       <div className="flex flex-wrap gap-2">
                         {triageResult.keywords.map((keyword, i) => (
-                          <span key={i} className={`px-2 py-1 rounded-full text-sm ${darkMode ? "bg-gray-950 text-gray-300" : "bg-gray-100 text-gray-600"}`}>
+                          <Badge key={i} variant="secondary">
                             {keyword}
-                          </span>
+                          </Badge>
                         ))}
                       </div>
                     </div>
@@ -248,43 +263,49 @@ export function EmergencyPage({
                 </div>
 
                 {triageResult.isEmergency && (
-                  <a
+                  <Button
                     href="tel:911"
-                    className="block w-full py-4 bg-red-600 text-white rounded-xl font-semibold text-lg text-center hover:bg-red-700 transition"
+                    asChild
+                    variant="destructive"
+                    size="lg"
+                    className="w-full rounded-xl text-lg"
                   >
-                    <Phone size={20} className="inline mr-2" />
-                    Call Emergency Services (911)
-                  </a>
+                    <a>
+                      <Phone size={20} className="inline mr-2" />
+                      Call Emergency Services (911)
+                    </a>
+                  </Button>
                 )}
 
-                <button
+                <Button
                   onClick={() => {
                     setTriageResult(null);
                     setSymptoms("");
                   }}
-                  className={`w-full py-3 border rounded-xl transition flex items-center justify-center gap-2 ${darkMode ? "border-gray-700 text-gray-300 hover:bg-gray-950" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                  variant="outline"
+                  className="w-full rounded-xl flex items-center justify-center gap-2"
                 >
                   <ArrowCounterClockwise size={16} />
                   Report Another Symptom
-                </button>
-              </motion.div>
+                </Button>
+              </div>
             )}
 
-            <div className={`mt-8 rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
-              <h3 className={`text-lg font-semibold mb-3 ${darkMode ? "text-white" : "text-gray-900"}`}>
+            <div className="mt-8 rounded-2xl border border-border bg-card p-6 transition-colors duration-300">
+              <h3 className="text-lg font-semibold mb-3 text-foreground">
                 AI Emergency Chat
               </h3>
-              <p className={`text-sm mb-4 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+              <p className="text-sm mb-4 text-muted-foreground">
                 Ask follow-up questions about your symptoms or next steps.
               </p>
-              <div className={`rounded-xl p-4 mb-4 h-56 overflow-y-auto ${darkMode ? "bg-gray-950 border border-gray-800" : "bg-gray-50 border border-gray-200"}`}>
+              <div className="rounded-xl p-4 mb-4 h-56 overflow-y-auto bg-background border border-border">
                 {chatMessages.length === 0 ? (
-                  <p className={darkMode ? "text-gray-500" : "text-gray-500"}>Start a conversation...</p>
+                  <p className="text-muted-foreground">Start a conversation...</p>
                 ) : (
                   <div className="space-y-3">
                     {chatMessages.map((msg, idx) => (
-                      <div key={idx} className={`text-sm ${msg.role === "assistant" ? (darkMode ? "text-gray-200" : "text-gray-700") : (darkMode ? "text-white" : "text-gray-900")}`}>
-                        <span className={`font-semibold ${msg.role === "assistant" ? (darkMode ? "text-emerald-300" : "text-emerald-700") : (darkMode ? "text-[#2D4B32]" : "text-[#2D4B32]")}`}>
+                      <div key={idx} className={`text-sm ${msg.role === "assistant" ? "text-foreground" : "text-foreground"}`}>
+                        <span className={`font-semibold ${msg.role === "assistant" ? "text-emerald-700 dark:text-emerald-300" : "text-primary"}`}>
                           {msg.role === "assistant" ? "Assistant" : "You"}:
                         </span>{" "}
                         {msg.content}
@@ -294,7 +315,7 @@ export function EmergencyPage({
                 )}
               </div>
               <div className="flex gap-2">
-                <input
+                <Input
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -304,18 +325,18 @@ export function EmergencyPage({
                     }
                   }}
                   placeholder="Ask about your symptoms..."
-                  className={`flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                  className="flex-1 px-4 py-3 rounded-xl"
                 />
-                <button
+                <Button
                   onClick={sendChat}
                   disabled={chatLoading || chatInput.trim().length === 0}
-                  className={`px-4 py-3 rounded-xl font-semibold transition ${darkMode ? "bg-[#2D4B32] text-white hover:bg-[#27422b]" : "bg-[#2D4B32] text-white hover:bg-[#27422b]"} disabled:opacity-50`}
+                  className="px-4 py-3 rounded-xl font-semibold"
                 >
                   {chatLoading ? <ArrowClockwise className="animate-spin" size={18} /> : "Send"}
-                </button>
+                </Button>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

@@ -7,8 +7,6 @@ interface UseBookingParams {
   token: string | null;
   notes: string;
   isAuthenticated: boolean;
-  phone: string;
-  name: string;
   selectedHospital: Hospital | null;
   selectedDepartment: Department | null;
   setCurrentAppointment: (appt: Appointment | null) => void;
@@ -22,8 +20,6 @@ export function useBooking({
   token,
   notes,
   isAuthenticated,
-  phone,
-  name,
   selectedHospital,
   selectedDepartment,
   setCurrentAppointment,
@@ -33,6 +29,11 @@ export function useBooking({
 }: UseBookingParams) {
   const bookAppointment = async () => {
     if (!selectedHospital || !selectedDepartment) return;
+    if (!isAuthenticated || !token) {
+      alert("Please sign in to book a token.");
+      navigateTo("auth");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -42,8 +43,6 @@ export function useBooking({
           hospitalId: selectedHospital.id,
           departmentId: selectedDepartment.id,
           notes,
-          guestPhone: !isAuthenticated ? phone : undefined,
-          guestName: !isAuthenticated ? name : undefined,
         },
         token || undefined
       );

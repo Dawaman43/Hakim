@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth-store';
 import type { Hospital, Department, Appointment, QueueStatusResponse, TriageResult } from '@/types';
@@ -81,6 +81,13 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
 
   useEffect(() => {
     if (!authHydrated) return;
+    if (!isAuthenticated && view === "booking") {
+      navigateTo("auth");
+    }
+  }, [authHydrated, isAuthenticated, view, navigateTo]);
+
+  useEffect(() => {
+    if (!authHydrated) return;
     if (isAuthenticated && view === "landing") {
       navigateTo("dashboard");
     }
@@ -144,6 +151,16 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
   
   // Data states
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
+
+  useEffect(() => {
+    if (view === "departments" && !selectedHospital) {
+      if (typeof window !== "undefined") {
+        const storedHospital = sessionStorage.getItem("hakim_selected_hospital");
+        if (storedHospital) return;
+      }
+      navigateTo("hospitals");
+    }
+  }, [view, selectedHospital, navigateTo]);
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
   const [currentAppointment, setCurrentAppointment] = useState<Appointment | null>(null);
   const [queueStatus, setQueueStatus] = useState<QueueStatusResponse | null>(null);
@@ -208,6 +225,38 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     facilityTypeFilter,
     searchTerm,
   });
+  const lastDepartmentsHospitalId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (selectedHospital?.id) {
+      sessionStorage.setItem("hakim_selected_hospital", JSON.stringify(selectedHospital));
+    }
+  }, [selectedHospital?.id]);
+
+  useEffect(() => {
+    if (view !== "departments" || selectedHospital) return;
+    if (typeof window === "undefined") return;
+    const storedHospital = sessionStorage.getItem("hakim_selected_hospital");
+    if (!storedHospital) return;
+    try {
+      const parsed = JSON.parse(storedHospital) as Hospital;
+      if (parsed?.id) {
+        setSelectedHospital(parsed);
+        loadDepartments(parsed.id);
+      }
+    } catch {
+      // ignore invalid storage
+    }
+  }, [view, selectedHospital, hospitals, loadDepartments]);
+
+  useEffect(() => {
+    if (view !== "departments") return;
+    if (!selectedHospital?.id) return;
+    if (lastDepartmentsHospitalId.current === selectedHospital.id && departments.length > 0) return;
+    lastDepartmentsHospitalId.current = selectedHospital.id;
+    loadDepartments(selectedHospital.id);
+  }, [view, selectedHospital?.id, departments.length, loadDepartments]);
 
   const { nearestHospitals, nearestLoading, nearestError } = useNearestHospitals({ userLocation });
 
@@ -234,9 +283,10 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
 
   useEffect(() => {
     if (view === "nearest-hospitals" && !userLocation) {
-      setShowLocationModal(true);
+      // Don't auto-open the location modal; user can trigger it manually.
+      return;
     }
-  }, [setShowLocationModal, userLocation, view]);
+  }, [userLocation, view]);
 
   // Get ambulance info based on selected region or user location
   const getAmbulanceInfo = useCallback(() => {
@@ -267,8 +317,6 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     token,
     notes,
     isAuthenticated,
-    phone,
-    name,
     selectedHospital,
     selectedDepartment,
     setCurrentAppointment,
@@ -329,6 +377,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
       t={{
         home: tr.home,
         features: tr.features,
+        download: tr.download,
         about: tr.about,
         contact: tr.contact,
         signIn: tr.signIn,

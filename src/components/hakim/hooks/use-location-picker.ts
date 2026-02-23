@@ -17,7 +17,7 @@ export function useLocationPicker({
 }: UseLocationPickerParams) {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [locationNotice, setLocationNotice] = useState<string | null>(null);
-  const [selectedRegion, setSelectedRegion] = useState<string>("Addis Ababa");
+  const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const ipFallbackTriedRef = useRef(false);
@@ -27,7 +27,7 @@ export function useLocationPicker({
     if (ipFallbackTriedRef.current) return false;
     ipFallbackTriedRef.current = true;
     try {
-      const res = await fetch("https://ipapi.co/json/");
+      const res = await fetch("/api/location/ip");
       if (!res.ok) return false;
       const data = await res.json();
       if (
@@ -43,9 +43,11 @@ export function useLocationPicker({
       );
       setShowLocationModal(false);
       setLocationError(null);
+      setLocationLoading(false);
       if (shouldNavigate) onNavigate("nearest-hospitals");
       return true;
     } catch {
+      setLocationLoading(false);
       return false;
     }
   }, [onNavigate, setUserLocation]);
@@ -93,11 +95,18 @@ export function useLocationPicker({
           "Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.",
         );
         setLocationLoading(false);
+        tryIpFallback(shouldNavigate);
         return;
       }
 
       setLocationLoading(true);
       setLocationError(null);
+
+      if (!navigator.geolocation) {
+        setLocationLoading(false);
+        tryIpFallback(shouldNavigate);
+        return;
+      }
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -131,42 +140,43 @@ export function useLocationPicker({
             requestLocation(true, shouldNavigate);
             return;
           }
-          if (
-            error.code === error.POSITION_UNAVAILABLE ||
-            error.code === error.TIMEOUT
-          ) {
+          if (error.code === error.PERMISSION_DENIED) {
+            tryIpFallback(shouldNavigate).then((didFallback) => {
+              if (didFallback) return;
+              setLocationLoading(false);
+              setLocationError(
+                "Location permission was denied. Please allow location access in your browser and device settings, or select your region below.",
+              );
+              setShowLocationModal(true);
+            });
+            return;
+          }
+
+          if (error.code === error.POSITION_UNAVAILABLE || error.code === error.TIMEOUT) {
             tryWatchPosition(shouldNavigate).then((didWatch) => {
               if (didWatch) return;
               tryIpFallback(shouldNavigate).then((didFallback) => {
-                if (didFallback) {
-                  setLocationLoading(false);
-                  return;
+                if (didFallback) return;
+                setLocationLoading(false);
+                let errorMsg = "Could not get your location. ";
+                if (error.code === error.POSITION_UNAVAILABLE) {
+                  errorMsg = "Your device could not determine its location. Please select your region below.";
                 } else {
-                  setLocationLoading(false);
-                  let errorMsg = "Could not get your location. ";
-                  if (error.code === error.POSITION_UNAVAILABLE) {
-                    if (typeof window !== "undefined" && !window.isSecureContext) {
-                      errorMsg = "Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.";
-                    } else {
-                      errorMsg = "Your device could not determine its location. Please select your region below.";
-                    }
-                  } else {
-                    errorMsg = "Location request timed out. Please try again or select your region below.";
-                  }
-                  setLocationError(errorMsg);
+                  errorMsg = "Location request timed out. Please try again or select your region below.";
                 }
+                setLocationError(errorMsg);
+                setShowLocationModal(true);
               });
             });
             return;
           }
 
-          setLocationLoading(false);
-          let errorMsg = "Could not get your location. ";
-          if (error.code === error.PERMISSION_DENIED) {
-            errorMsg =
-              "Location permission was denied. Please allow location access in your browser and device settings, or select your region below.";
-          }
-          setLocationError(errorMsg);
+          tryIpFallback(shouldNavigate).then((didFallback) => {
+            if (didFallback) return;
+            setLocationLoading(false);
+            setLocationError("Could not get your location. Please select your region below.");
+            setShowLocationModal(true);
+          });
         },
         forceLowAccuracy
           ? { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 }
@@ -230,6 +240,10 @@ export function useLocationPicker({
   }, [requestLocation, tryIpFallback]);
 
   const useSelectedRegion = useCallback(() => {
+    if (!selectedRegion) {
+      setLocationError("Please select a region to continue.");
+      return;
+    }
     const coords = regionCoordinates[selectedRegion] || defaultLocation;
     setUserLocation({ ...coords, city: selectedRegion });
     setLocationError(null);

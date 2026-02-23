@@ -3,36 +3,31 @@ import { appointments, departments, hospitals, users } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import { verifyToken } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = req.headers.get("authorization") || "";
+    const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
+    if (!token) {
+      return NextResponse.json({ success: false, error: "Authentication required" }, { status: 401 });
+    }
+    const payload: any = await verifyToken(token);
+    if (!payload?.userId) {
+      return NextResponse.json({ success: false, error: "Authentication required" }, { status: 401 });
+    }
+
     const body = await req.json();
-    const { hospitalId, departmentId, notes, guestPhone, guestName } = body;
+    const { hospitalId, departmentId, notes } = body;
 
     if (!hospitalId || !departmentId) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
     }
 
-    // Identify user
-    let userPhone = guestPhone;
-    let userId: string | null = null;
-
-    // In a real app, we'd get the user from the session/token
-    // For now, we'll try to find or create the user based on phone
-    if (userPhone) {
-      const existingUserList = await db.select().from(users).where(eq(users.phone, userPhone)).limit(1);
-      if (existingUserList.length > 0) {
-        userId = existingUserList[0].id;
-      } else {
-        userId = uuidv4();
-        await db.insert(users).values({
-          id: userId,
-          phone: userPhone,
-          name: guestName || "Guest",
-        });
-      }
-    } else {
-      return NextResponse.json({ success: false, error: "Authentication required" }, { status: 401 });
+    const userId = String(payload.userId);
+    const userList = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+    if (userList.length === 0) {
+      return NextResponse.json({ success: false, error: "User not found" }, { status: 401 });
     }
 
     // Get department to calculate token

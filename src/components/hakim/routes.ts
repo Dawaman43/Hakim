@@ -9,6 +9,7 @@ export type ViewType =
   | 'notifications'
   | 'emergency'
   | 'features'
+  | 'download'
   | 'about'
   | 'contact'
   | 'auth'
@@ -29,6 +30,7 @@ export const viewRoutes: Record<ViewType, string> = {
   landing: '/',
   dashboard: '/dashboard',
   features: '/features',
+  download: '/download',
   about: '/about',
   contact: '/contact',
   faq: '/faq',

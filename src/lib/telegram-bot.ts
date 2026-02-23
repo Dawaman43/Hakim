@@ -3,20 +3,10 @@ import { db } from "@/db/client";
 import { otpCodes, users, hospitals, departments, appointments } from "@/db/schema";
 import { eq, desc, and, like, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
+import { aiChat, aiTriage } from "@/lib/ai";
 
-// Simple Triage Logic
-const TRIAGE_KEYWORDS: Record<string, "CRITICAL" | "HIGH" | "MEDIUM"> = {
-  "chest": "CRITICAL",
-  "breath": "CRITICAL",
-  "heart": "CRITICAL",
-  "blood": "HIGH",
-  "bleeding": "HIGH",
-  "accident": "HIGH",
-  "stroke": "CRITICAL",
-  "unconscious": "CRITICAL",
-  "pain": "MEDIUM",
-  "fever": "MEDIUM",
-};
+const emergencySessions = new Map<string, boolean>();
+const aiSessions = new Map<string, Array<{ role: "user" | "assistant"; content: string }>>();
 
 // Bilingual Helper
 const strings = {
@@ -30,8 +20,11 @@ const strings = {
     nearbyBtn: "📍 Find Nearby",
     statusBtn: "🎫 My Tokens",
     emergencyBtn: "🆘 Emergency",
+    hospitalsBtn: "🏥 Hospitals",
+    aiBtn: "🤖 Ask AI",
     langBtn: "🌐 Language",
     meBtn: "👤 My Profile",
+    logoutBtn: "🚪 Logout",
     hospFound: "🏥 Available Hospitals:",
     noHosp: "No hospitals found.",
     chooseHosp: "Choose a hospital to book an appointment:",
@@ -44,6 +37,7 @@ const strings = {
     cancelBtn: "❌ Cancel",
     cancelled: "Appointment cancelled.",
     emergencyStart: "🚨 Emergency Assist\n\nPlease describe your symptoms (e.g. 'chest pain').",
+    aiStart: "🤖 AI Health Assistant\n\nAsk a health question. Example: /ai I have a headache and fever.",
     emergencyCrit: "⚠️ CRITICAL SEVERITY\n\nSeek immediate medical attention. Call 911 or proceed to the nearest emergency room.",
     emergencyHigh: "🔴 HIGH SEVERITY\n\nUrgent care needed. Please go to the nearest hospital quickly.",
     emergencyMed: "🟡 MEDIUM SEVERITY\n\nPrompt attention recommended.",
@@ -51,6 +45,9 @@ const strings = {
     call911: "📞 Call 911",
     about: "🏥 Hakim - Healthcare Queue Management\n\nLeading the digital transformation of Ethiopian healthcare. Skip the wait, get care faster.",
     contact: "📞 Emergency: 911\n📧 Support: support@hakim.et\n📍 Addis Ababa, Ethiopia",
+    logoutSuccess: "You have been logged out.",
+    linkSuccess: "Your account is linked. Here is your OTP:",
+    linkInvalid: "Link invalid or expired. Please request a new link from the app.",
   },
   am: {
     welcome: "ወደ ሃኪም እንኳን ደህና መጡ! 🏥",
@@ -62,8 +59,11 @@ const strings = {
     nearbyBtn: "📍 ቅርብ ሆስፒታሎች",
     statusBtn: "🎫 የእኔ ቶከኖች",
     emergencyBtn: "🆘 አደጋ ጊዜ",
+    hospitalsBtn: "🏥 ሆስፒታሎች",
+    aiBtn: "🤖 ኤይአይ ጠይቅ",
     langBtn: "🌐 ቋንቋ",
     meBtn: "👤 መገለጫዬ",
+    logoutBtn: "🚪 ውጣ",
     hospFound: "🏥 የሚገኙ ሆስፒታሎች:",
     noHosp: "ምንም ሆስፒታል አልተገኘም።",
     chooseHosp: "ቦታ ለማስያዝ ሆስፒታል ይምረጡ:",
@@ -76,6 +76,7 @@ const strings = {
     cancelBtn: "❌ ሰርዝ",
     cancelled: "ቀጠሮው ተሰርዟል።",
     emergencyStart: "🚨 የአደጋ ጊዜ እርዳታ\n\nእባክዎ ምልክቶችዎን ይግለጹ (ምሳሌ: 'የደረት ህመም')።",
+    aiStart: "🤖 የጤና ኤይአይ አገልጋይ\n\nጤና ጥያቄ ይጠይቁ። ለምሳሌ: /ai ራስ ህመም እና ትኩሳት አለኝ።",
     emergencyCrit: "⚠️ በጣም አስጊ ደረጃ\n\nወዲያውኑ የህክምና እርዳታ ያግኙ። 911 ይደውሉ ወይም ወደ ቅርቡ ድንገተኛ ክፍል ይሂዱ።",
     emergencyHigh: "🔴 ከፍተኛ ደረጃ\n\nአስቸኳይ እንክብካቤ ያስፈልጋል። እባክዎ በፍጥነት ወደ ቅርብ ሆስፒታል ይሂዱ።",
     emergencyMed: "🟡 መካከለኛ ደረጃ\n\nፈጣን ትኩረት ይመከራል።",
@@ -83,6 +84,9 @@ const strings = {
     call911: "📞 911 ደውል",
     about: "🏥 ሃኪም - የጤና የመጠባበቂያ አስተዳደር\n\nየኢትዮጵያን ጤና አጠባበቅ በዲጂታል መንገድ እየቀየርን ነው። መጠባበቂያን ዝለል፣ ፈጣን እንክብካቤ አግኝ።",
     contact: "📞 አደጋ ጊዜ: 911\n📧 ድጋፍ: support@hakim.et\n📍 አዲስ አበባ፣ ኢትዮጵያ",
+    logoutSuccess: "ተወጥተዋል።",
+    linkSuccess: "መለያዎ ተገናኝቷል። ኦቲፒዎ:",
+    linkInvalid: "ሊንኩ ተቀባይነት የለውም ወይም አልተቀበለም። ከመተግበሪያው እንደገና ይጠይቁ።",
   }
 };
 
@@ -101,9 +105,11 @@ export function setupBot(bot: Bot) {
   const getMainKeyboard = (lang: "en" | "am") => {
     const s = strings[lang];
     return new Keyboard()
-      .text(s.bookBtn).text(s.nearbyBtn).row()
-      .text(s.statusBtn).text(s.emergencyBtn).row()
+      .text(s.bookBtn).text(s.hospitalsBtn).row()
+      .text(s.nearbyBtn).text(s.statusBtn).row()
+      .text(s.emergencyBtn).text(s.aiBtn).row()
       .text(s.langBtn).text(s.meBtn).row()
+      .text(s.logoutBtn).row()
       .resized();
   };
 
@@ -114,11 +120,24 @@ export function setupBot(bot: Bot) {
     return p;
   };
 
-  const getHospKeyboard = async () => {
-    const hList = await db.select().from(hospitals).where(eq(hospitals.isActive, true)).limit(5);
+  const getHospKeyboard = async (page = 0) => {
+    const limit = 5;
+    const offset = page * limit;
+    const hList = await db.select().from(hospitals).where(eq(hospitals.isActive, true)).limit(limit).offset(offset);
     const keyboard = new InlineKeyboard();
     hList.forEach((h) => keyboard.text(h.name, `book_hosp_${h.id}`).row());
+    if (page > 0) keyboard.text("⬅️ Prev", `hosp_page_${page - 1}`).row();
+    if (hList.length === limit) keyboard.text("Next ➡️", `hosp_page_${page + 1}`).row();
     return keyboard;
+  };
+
+  const showHospitalsPage = async (ctx: any, page = 0) => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
+    const s = strings[lang];
+    const keyboard = await getHospKeyboard(page);
+    await ctx.reply(s.hospFound, { reply_markup: keyboard });
   };
 
   // --- REUSABLE LOGIC ---
@@ -174,6 +193,24 @@ export function setupBot(bot: Bot) {
     }
   };
 
+  const sendLatestOtp = async (ctx: any, lang: "en" | "am") => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const s = strings[lang];
+    const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
+    if (!u[0]) return ctx.reply("Please /start first.");
+    const otpRow = await db
+      .select()
+      .from(otpCodes)
+      .where(and(eq(otpCodes.phone, u[0].phone), eq(otpCodes.verified, false)))
+      .orderBy(desc(otpCodes.createdAt))
+      .limit(1);
+    if (!otpRow[0] || otpRow[0].purpose === "TELEGRAM_LINK") {
+      return ctx.reply(lang === "en" ? "No pending OTP found." : "የሚጠበቅ ኦቲፒ የለም።");
+    }
+    return ctx.reply(`${s.linkSuccess} ${otpRow[0].code}`);
+  };
+
   // --- MIDDLEWARE / INTERCEPT ---
   bot.on("message", async (ctx, next) => {
     console.log(`💬 Incoming message from ${ctx.from?.id}: ${ctx.message?.text || "[non-text]"}`);
@@ -196,11 +233,23 @@ export function setupBot(bot: Bot) {
     
     // Handle Menu Buttons
     if (text === s.bookBtn) return ctx.reply(s.chooseHosp, { reply_markup: await getHospKeyboard() });
+    if (text === s.hospitalsBtn) return showHospitalsPage(ctx, 0);
     if (text === s.statusBtn) return showStatus(ctx, lang);
     if (text === s.nearbyBtn) return ctx.reply(lang === "en" ? "Send location" : "ቦታዎን ይላኩ", { reply_markup: { keyboard: [[{ text: "📍 Share Location", request_location: true }]], resize_keyboard: true, one_time_keyboard: true } });
-    if (text === s.emergencyBtn) return ctx.reply(s.emergencyStart);
+    if (text === s.emergencyBtn) {
+      emergencySessions.set(tid, true);
+      return ctx.reply(s.emergencyStart);
+    }
+    if (text === s.aiBtn) return ctx.reply(s.aiStart);
     if (text === s.langBtn) return toggleLanguage(ctx);
     if (text === s.meBtn) return showMe(ctx);
+    if (text === s.logoutBtn) {
+      const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
+      if (u[0]) await db.update(users).set({ telegramId: null }).where(eq(users.id, u[0].id));
+      emergencySessions.delete(tid);
+      aiSessions.delete(tid);
+      return ctx.reply(s.logoutSuccess, { reply_markup: getMainKeyboard(lang) });
+    }
 
     await next();
   });
@@ -210,11 +259,40 @@ export function setupBot(bot: Bot) {
     const tid = ctx.from?.id.toString();
     if (!tid) return;
 
+    const parts = ctx.message.text?.split(" ") || [];
+    if (parts[1]?.startsWith("link_")) {
+      const code = parts[1].replace("link_", "");
+      const link = await db.select().from(otpCodes).where(eq(otpCodes.code, code)).limit(1);
+      if (!link[0] || link[0].purpose !== "TELEGRAM_LINK" || new Date() > link[0].expiresAt) {
+        return ctx.reply(strings.en.linkInvalid + " / " + strings.am.linkInvalid);
+      }
+      const user = await db.select().from(users).where(eq(users.phone, link[0].phone)).limit(1);
+      if (!user[0]) {
+        return ctx.reply(strings.en.linkInvalid + " / " + strings.am.linkInvalid);
+      }
+      await db.update(users).set({ telegramId: tid }).where(eq(users.id, user[0].id));
+      await db.update(otpCodes).set({ verified: true }).where(eq(otpCodes.id, link[0].id));
+
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date();
+      expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+      await db.insert(otpCodes).values({
+        id: uuidv4(),
+        phone: user[0].phone,
+        code: otp,
+        purpose: "LOGIN",
+        expiresAt,
+      });
+
+      return ctx.reply(`${strings.en.linkSuccess} ${otp}\n\n${strings.am.linkSuccess} ${otp}`, { reply_markup: getMainKeyboard("en") });
+    }
+
     const existing = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
     const lang = (existing[0]?.language as "en" | "am") || "en";
     const s = strings[lang];
 
     if (existing[0]) {
+      await sendLatestOtp(ctx, lang);
       await ctx.reply(s.welcome, { reply_markup: getMainKeyboard(lang) });
       return;
     }
@@ -255,6 +333,22 @@ export function setupBot(bot: Bot) {
     await showStatus(ctx, lang);
   });
   bot.command("me", showMe);
+  bot.command("otp", async (ctx) => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
+    await sendLatestOtp(ctx, lang);
+  });
+  bot.command("logout", async (ctx) => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
+    const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
+    if (u[0]) await db.update(users).set({ telegramId: null }).where(eq(users.id, u[0].id));
+    emergencySessions.delete(tid);
+    aiSessions.delete(tid);
+    return ctx.reply(strings[lang].logoutSuccess, { reply_markup: getMainKeyboard(lang) });
+  });
 
   bot.command("health", async (ctx) => {
     try {
@@ -263,6 +357,27 @@ export function setupBot(bot: Bot) {
     } catch (e: any) {
       await ctx.reply("❌ Status: Error\nDB: " + e.message);
     }
+  });
+
+  bot.command("hospitals", async (ctx) => {
+    await showHospitalsPage(ctx, 0);
+  });
+
+  bot.command("ai", async (ctx) => {
+    const tid = ctx.from?.id.toString();
+    if (!tid) return;
+    const lang = await getLang(tid);
+    const s = strings[lang];
+    const text = ctx.message.text?.replace("/ai", "").trim();
+    if (!text) {
+      return ctx.reply(s.aiStart);
+    }
+    const history = aiSessions.get(tid) || [];
+    const next = [...history, { role: "user", content: text }].slice(-8);
+    const reply = await aiChat(next);
+    if (!reply) return ctx.reply(lang === "en" ? "AI unavailable. Please try again later." : "ኤይአይ አልተገኘም፣ ቆይተው ይሞክሩ።");
+    aiSessions.set(tid, [...next, { role: "assistant", content: reply }].slice(-8));
+    return ctx.reply(reply);
   });
 
   // --- CALLBACKS & EVENTS ---
@@ -310,25 +425,17 @@ export function setupBot(bot: Bot) {
     if (!tid) return;
     const lang = await getLang(tid);
     const s = strings[lang];
-    const text = ctx.message.text.toLowerCase();
-    
-    let severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" = "LOW";
-    for (const [key, val] of Object.entries(TRIAGE_KEYWORDS)) {
-      if (text.includes(key)) {
-        if (val === "CRITICAL") severity = "CRITICAL";
-        else if (val === "HIGH" && severity !== "CRITICAL") severity = "HIGH";
-        else if (val === "MEDIUM" && severity === "LOW") severity = "MEDIUM";
-      }
+    const text = ctx.message.text;
+
+    if (emergencySessions.get(tid)) {
+      emergencySessions.delete(tid);
+      const triage = await aiTriage(text);
+      const msg = triage.severityLevel === "CRITICAL" ? s.emergencyCrit :
+        triage.severityLevel === "HIGH" ? s.emergencyHigh :
+        triage.severityLevel === "MEDIUM" ? s.emergencyMed : s.emergencyLow;
+      const kb = triage.isEmergency ? new InlineKeyboard().url(s.call911, "tel:911") : undefined;
+      return ctx.reply(msg, { reply_markup: kb });
     }
-
-    if (severity === "LOW" && text.length < 10) return; 
-
-    const msg = severity === "CRITICAL" ? s.emergencyCrit : 
-                severity === "HIGH" ? s.emergencyHigh : 
-                severity === "MEDIUM" ? s.emergencyMed : s.emergencyLow;
-
-    const kb = severity === "CRITICAL" ? new InlineKeyboard().url(s.call911, "tel:911") : undefined;
-    await ctx.reply(msg, { reply_markup: kb });
   });
 
   bot.callbackQuery(/^book_hosp_(.+)$/, async (ctx) => {
@@ -343,6 +450,12 @@ export function setupBot(bot: Bot) {
     const keyboard = new InlineKeyboard();
     dList.forEach((d) => keyboard.text(d.name, `book_dept_${hid}_${d.id}`).row());
     await ctx.editMessageText(strings[lang].chooseDept, { reply_markup: keyboard });
+  });
+
+  bot.callbackQuery(/^hosp_page_(\d+)$/, async (ctx) => {
+    const page = parseInt(ctx.match[1], 10);
+    await ctx.answerCallbackQuery();
+    await showHospitalsPage(ctx, page);
   });
 
   bot.callbackQuery(/^book_dept_(.+)_(.+)$/, async (ctx) => {

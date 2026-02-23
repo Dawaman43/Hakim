@@ -1,9 +1,27 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { users, otpCodes } from "@/db/schema";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, or } from "drizzle-orm";
 import { signToken } from "@/lib/jwt";
 import { v4 as uuidv4 } from "uuid";
+
+async function notifySuperAdmins(message: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const ids = (process.env.SUPER_ADMIN_TELEGRAM_IDS || "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+  if (!token || ids.length === 0) return;
+  await Promise.all(
+    ids.map((chatId) =>
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text: message }),
+      }).catch(() => null)
+    )
+  );
+}
 
 export async function POST(req: Request) {
   try {
@@ -14,7 +32,11 @@ export async function POST(req: Request) {
     }
 
     const recentCodes = await db.select().from(otpCodes)
-      .where(and(eq(otpCodes.phone, phone), eq(otpCodes.verified, false)))
+      .where(and(
+        eq(otpCodes.phone, phone),
+        eq(otpCodes.verified, false),
+        or(eq(otpCodes.purpose, "LOGIN"), eq(otpCodes.purpose, "REGISTRATION"))
+      ))
       .orderBy(desc(otpCodes.createdAt))
       .limit(1);
 
@@ -43,7 +65,10 @@ export async function POST(req: Request) {
         id: newUserId,
         phone,
         name: name || null,
+        role: "PATIENT",
+        isVerified: true,
       });
+      await notifySuperAdmins(`New user registered: ${phone}${name ? ` (${name})` : ""}`);
       userList = await db.select().from(users).where(eq(users.id, newUserId)).limit(1);
       user = userList[0];
     } else if (name && !user.name) {

@@ -24,11 +24,11 @@ interface FooterProps {
 }
 
 export function Footer({ t, selectedRegion, getAmbulanceInfo, onNavigate, stats, darkMode }: FooterProps) {
-  const heading = darkMode ? "text-white" : "text-gray-900";
-  const muted = darkMode ? "text-gray-400" : "text-gray-600";
-  const subtle = darkMode ? "text-gray-500" : "text-gray-500";
-  const border = darkMode ? "border-gray-800/80" : "border-gray-400/60";
-  const surface = darkMode ? "bg-gray-950" : "bg-background";
+  const heading = "text-foreground";
+  const muted = "text-muted-foreground";
+  const subtle = "text-muted-foreground";
+  const border = "border-border";
+  const surface = "bg-background";
   return (
     <footer className={`relative overflow-hidden ${surface} ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

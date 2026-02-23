@@ -1,10 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowLeft, MapPin, MagnifyingGlass, Warning, Crosshair, ArrowClockwise, Hospital as HospitalIcon } from '@phosphor-icons/react';
 import type { Hospital } from '@/types';
 import type { ViewType } from '../routes';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Spinner } from '@/components/ui/spinner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface MapPageProps {
   darkMode: boolean;
@@ -66,7 +70,7 @@ export function MapPage({
   const filteredHospitals = hospitals.filter((h) => {
     const matchesSearch = h.name.toLowerCase().includes(mapSearchTerm.toLowerCase()) ||
       h.address?.toLowerCase().includes(mapSearchTerm.toLowerCase());
-    const matchesRegion = !mapSelectedRegion || h.region === mapSelectedRegion;
+    const matchesRegion = !mapSelectedRegion || mapSelectedRegion === 'ALL' || h.region === mapSelectedRegion;
     return matchesSearch && matchesRegion;
   });
 
@@ -76,65 +80,67 @@ export function MapPage({
     : filteredHospitals;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {navigation}
 
       <section className="pt-8 pb-4 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <button
+          <div>
+            <Button
               onClick={() => onNavigate('hospitals')}
-              className="flex items-center gap-2 text-gray-600 hover:text-[#2D4B32] transition mb-6"
+              variant="ghost"
+              className="flex items-center gap-2 text-muted-foreground hover:text-primary mb-6"
             >
               <ArrowLeft size={20} />
               Back to Hospitals
-            </button>
+            </Button>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
                   Find Hospitals Near You
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   Interactive map of {filteredHospitals.length} facilities across Ethiopia
                 </p>
               </div>
               {userLocation && (
-                <div className="flex items-center gap-2 text-sm text-[#2D4B32] bg-[#2D4B32]/10 px-4 py-2 rounded-lg">
+                <Badge variant="secondary" className="gap-2 bg-primary/10 text-primary border border-primary/10">
                   <MapPin size={16} />
                   <span>Location detected</span>
-                </div>
+                </Badge>
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      <section className="py-4 bg-white border-b">
+      <section className="py-4 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <MagnifyingGlass size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
+              <MagnifyingGlass size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
                 type="text"
                 placeholder="Search hospitals by name or address..."
                 value={mapSearchTerm}
                 onChange={(e) => setMapSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition"
+                className="w-full pl-12 pr-4 py-3 rounded-xl"
               />
             </div>
-            <select
-              value={mapSelectedRegion}
-              onChange={(e) => setMapSelectedRegion(e.target.value)}
-              className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition min-w-[200px]"
-            >
-              <option value="">All Regions ({filteredHospitals.length})</option>
-              {regions.map((r) => (
-                <option key={r.name} value={r.name}>{r.name} ({r.count})</option>
-              ))}
-            </select>
-            <button
+            <Select value={mapSelectedRegion} onValueChange={setMapSelectedRegion}>
+              <SelectTrigger className="h-12 rounded-xl min-w-[200px]">
+                <SelectValue placeholder={`All Regions (${filteredHospitals.length})`} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Regions ({filteredHospitals.length})</SelectItem>
+                {regions.map((r) => (
+                  <SelectItem key={r.name} value={r.name}>{r.name} ({r.count})</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
               onClick={() => onFindNearest(false)}
-              className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#2D4B32] text-white rounded-xl hover:bg-[#2D4B32] transition"
+              className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl"
             >
               {locationLoading ? (
                 <>
@@ -147,10 +153,10 @@ export function MapPage({
                   Find My Location
                 </>
               )}
-            </button>
+            </Button>
           </div>
           {filteredHospitals.length > MAX_MAP_MARKERS && (
-            <div className="mt-4 flex items-center gap-2 text-sm text-[#2D4B32] bg-[#2D4B32]/10 border border-[#2D4B32]/20 rounded-lg px-3 py-2">
+            <div className="mt-4 flex items-center gap-2 text-sm text-primary bg-primary/10 border border-primary/20 rounded-lg px-3 py-2">
               <Warning size={16} />
               <span>Showing the first {MAX_MAP_MARKERS} facilities. Use search or region to narrow results.</span>
             </div>
@@ -160,17 +166,17 @@ export function MapPage({
 
       <section className="h-[calc(100vh-300px)] min-h-[500px] relative">
         {!mapMounted || !MapComponent ? (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2D4B32]/5 to-[#2D4B32]/10">
+          <div className="w-full h-full flex items-center justify-center bg-muted/30">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2D4B32] mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading interactive map...</p>
+              <Spinner size={28} className="mx-auto mb-4" />
+              <p className="text-muted-foreground">Loading interactive map...</p>
             </div>
           </div>
         ) : hospitals.length === 0 ? (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2D4B32]/5 to-[#2D4B32]/10">
+          <div className="w-full h-full flex items-center justify-center bg-muted/30">
             <div className="text-center">
-              <HospitalIcon size={48} className="text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">Loading hospitals...</p>
+              <HospitalIcon size={48} className="text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">Loading hospitals...</p>
             </div>
           </div>
         ) : (
@@ -187,9 +193,9 @@ export function MapPage({
         )}
       </section>
 
-      <section className="py-6 bg-white border-t">
+      <section className="py-6 bg-background border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="font-semibold text-gray-900 mb-4">
+          <h3 className="font-semibold text-foreground mb-4">
             {filteredHospitals.length} Hospital{filteredHospitals.length !== 1 ? 's' : ''} Found
           </h3>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -201,17 +207,17 @@ export function MapPage({
                   loadDepartments(hospital.id);
                   onNavigate('departments');
                 }}
-                className="p-3 bg-gray-50 rounded-lg text-left hover:bg-[#2D4B32]/10 hover:ring-2 hover:ring-[#2D4B32]/40 transition group"
+                className="p-3 bg-card border border-border rounded-lg text-left hover:bg-primary/10 hover:border-primary/40 transition group"
               >
-                <p className="font-medium text-gray-900 group-hover:text-[#2D4B32] truncate">
+                <p className="font-medium text-foreground group-hover:text-primary truncate">
                   {hospital.name}
                 </p>
-                <p className="text-sm text-gray-500">{hospital.region}</p>
+                <p className="text-sm text-muted-foreground">{hospital.region}</p>
               </button>
             ))}
           </div>
           {filteredHospitals.length > 8 && (
-            <p className="text-center text-gray-500 text-sm mt-4">
+            <p className="text-center text-muted-foreground text-sm mt-4">
               +{filteredHospitals.length - 8} more hospitals on the map
             </p>
           )}

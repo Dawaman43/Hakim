@@ -23,6 +23,7 @@ interface NavigationProps {
   t: {
     home: string;
     features: string;
+    download: string;
     about: string;
     contact: string;
     signIn: string;
@@ -51,15 +52,11 @@ export function Navigation({
   return (
     <nav className={`relative z-50 transition-all duration-300 ${
       transparent
-        ? darkMode
-          ? 'bg-gray-950/95 backdrop-blur-md border-b border-gray-800/60 shadow-sm'
-          : 'bg-transparent'
-        : darkMode
-          ? 'bg-gray-950/95 backdrop-blur-md border-b border-gray-800/60 shadow-sm'
-          : 'bg-background backdrop-blur-md border-b border-gray-200/50 shadow-sm'
+        ? 'bg-background/70 backdrop-blur-md border-b border-border/40'
+        : 'bg-background/90 backdrop-blur-md border-b border-border/60 shadow-sm'
     }`}>
       {!transparent && (
-        <div className="h-1 bg-gradient-to-r from-[#2D4B32] via-[#2D4B32] to-[#2D4B32]" />
+        <div className="h-0.5 bg-primary/80" />
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,41 +65,71 @@ export function Navigation({
             onClick={() => onNavigate(homeTarget)}
             className="flex items-center gap-2.5 group"
           >
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md overflow-hidden group-hover:-translate-y-0.5 group-hover:shadow-lg transition-all border border-gray-100">
+            <div className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-sm overflow-hidden group-hover:-translate-y-0.5 group-hover:shadow-md transition-all border border-border">
               <img src="/logo.png" alt="Hakim Logo" className="w-[120%] h-[120%] object-cover object-center object-top" />
             </div>
           </button>
 
-          <div className={`hidden md:flex items-center rounded-full px-2 py-1 border ${darkMode ? 'bg-gray-950/80 border-gray-700/50' : 'bg-gray-100/80 border-gray-200/50'}`}>
+          <div className="hidden md:flex items-center rounded-full px-2 py-1 border border-border/70 bg-muted/70 shadow-sm">
             {isAuthenticated && (
               <button
                 onClick={() => onNavigate('dashboard')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${view === 'dashboard' ? darkMode ? 'bg-gray-800 text-white shadow-sm' : 'bg-white text-[#2D4B32] shadow-sm' : darkMode ? 'text-gray-300 hover:text-[#2D4B32]' : 'text-gray-600 hover:text-[#2D4B32]'}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  view === 'dashboard'
+                    ? 'bg-background text-foreground border border-border shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                }`}
               >
                 {t.dashboard}
               </button>
             )}
             <button
               onClick={() => onNavigate('landing')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${view === 'landing' ? darkMode ? 'bg-gray-800 text-white shadow-sm' : 'bg-white text-[#2D4B32] shadow-sm' : darkMode ? 'text-gray-300 hover:text-[#2D4B32]' : 'text-gray-600 hover:text-[#2D4B32]'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                view === 'landing'
+                  ? 'bg-background text-foreground border border-border shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+              }`}
             >
               {t.home}
             </button>
             <button
               onClick={() => onNavigate('features')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${view === 'features' ? darkMode ? 'bg-gray-800 text-white shadow-sm' : 'bg-white text-[#2D4B32] shadow-sm' : darkMode ? 'text-gray-300 hover:text-[#2D4B32]' : 'text-gray-600 hover:text-[#2D4B32]'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                view === 'features'
+                  ? 'bg-background text-foreground border border-border shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+              }`}
             >
               {t.features}
             </button>
             <button
+              onClick={() => onNavigate('download')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                view === 'download'
+                  ? 'bg-background text-foreground border border-border shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+              }`}
+            >
+              {t.download}
+            </button>
+            <button
               onClick={() => onNavigate('about')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${view === 'about' ? darkMode ? 'bg-gray-800 text-white shadow-sm' : 'bg-white text-[#2D4B32] shadow-sm' : darkMode ? 'text-gray-300 hover:text-[#2D4B32]' : 'text-gray-600 hover:text-[#2D4B32]'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                view === 'about'
+                  ? 'bg-background text-foreground border border-border shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+              }`}
             >
               {t.about}
             </button>
             <button
               onClick={() => onNavigate('contact')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${view === 'contact' ? darkMode ? 'bg-gray-800 text-white shadow-sm' : 'bg-white text-[#2D4B32] shadow-sm' : darkMode ? 'text-gray-300 hover:text-[#2D4B32]' : 'text-gray-600 hover:text-[#2D4B32]'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                view === 'contact'
+                  ? 'bg-background text-foreground border border-border shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+              }`}
             >
               {t.contact}
             </button>
@@ -111,7 +138,7 @@ export function Navigation({
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={onToggleLanguage}
-              className={`flex items-center gap-1.5 p-2.5 rounded-xl transition-all ${darkMode ? 'bg-gray-950 text-gray-300 hover:bg-gray-700 hover:text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'}`}
+              className="flex items-center gap-1.5 p-2.5 rounded-xl transition-all bg-muted text-foreground hover:bg-muted/80"
               title={language === 'en' ? 'Switch to Amharic' : 'Switch to English'}
             >
               <Globe size={18} />
@@ -120,7 +147,7 @@ export function Navigation({
 
             <button
               onClick={onToggleDarkMode}
-              className={`p-2.5 rounded-xl transition-all ${darkMode ? 'bg-gray-950 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-yellow-500'}`}
+              className="p-2.5 rounded-xl transition-all bg-muted text-foreground hover:bg-muted/80"
               title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {darkMode ? <Sun size={20} weight="fill" /> : <Moon size={20} />}
@@ -130,17 +157,17 @@ export function Navigation({
               <>
                 <button
                   onClick={() => onNavigate('profile')}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all ${darkMode ? 'text-gray-200 hover:bg-gray-950' : 'text-gray-700 hover:bg-gray-100/80'}`}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all text-foreground hover:bg-muted/70"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-full flex items-center justify-center shadow-sm">
-                    <User size={16} className="text-white" />
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-sm">
+                    <User size={16} className="text-primary-foreground" />
                   </div>
                   <span className="font-medium">{user?.name?.split(' ')[0] || 'User'}</span>
                 </button>
                 {user?.role === 'HOSPITAL_ADMIN' && (
                   <button
                     onClick={() => onNavigate('admin-dashboard')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition font-medium border ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10 border-[#2D4B32]/50' : 'bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-[#2D4B32] hover:from-[#2D4B32] hover:to-[#2D4B32] border-[#2D4B32]/50'}`}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl transition font-medium border border-primary/30 bg-primary/10 text-primary hover:bg-primary/15"
                   >
                     <Gear size={18} />
                     {t.dashboard}
@@ -148,7 +175,7 @@ export function Navigation({
                 )}
                 <button
                   onClick={() => { onLogout(); onNavigate('landing'); }}
-                  className={`p-2.5 rounded-xl transition-all ${darkMode ? 'text-gray-500 hover:text-red-400 hover:bg-red-900/30' : 'text-gray-400 hover:text-red-500 hover:bg-red-50'}`}
+                  className="p-2.5 rounded-xl transition-all text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                 >
                   <SignOut size={20} />
                 </button>
@@ -157,13 +184,13 @@ export function Navigation({
               <>
                 <button
                   onClick={() => onNavigate('auth')}
-                  className={`px-4 py-2.5 rounded-xl transition font-medium ${darkMode ? 'text-gray-300 hover:text-[#2D4B32] hover:bg-gray-950' : 'text-gray-700 hover:text-[#2D4B32] hover:bg-gray-100/80'}`}
+                  className="px-4 py-2.5 rounded-xl transition font-medium text-foreground hover:text-primary hover:bg-muted/70"
                 >
                   {t.signIn}
                 </button>
                 <button
                   onClick={() => onNavigate('hospitals')}
-                  className="px-5 py-2.5 bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-[#2D4B32]/20 hover:-translate-y-0.5 transition-all"
+                  className="px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-medium hover:shadow-sm hover:-translate-y-0.5 transition-all"
                 >
                   {t.bookQueue}
                 </button>
@@ -174,20 +201,20 @@ export function Navigation({
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={onToggleLanguage}
-              className={`flex items-center gap-1 p-2 rounded-xl transition-all ${darkMode ? 'bg-gray-950 text-gray-300' : 'bg-gray-100 text-gray-600'}`}
+              className="flex items-center gap-1 p-2 rounded-xl transition-all bg-muted text-foreground"
             >
               <Globe size={18} />
               <span className="text-xs font-medium">{language === 'en' ? 'አማ' : 'EN'}</span>
             </button>
             <button
               onClick={onToggleDarkMode}
-              className={`p-2.5 rounded-xl transition-all ${darkMode ? 'bg-gray-950 text-yellow-400' : 'bg-gray-100 text-gray-600'}`}
+              className="p-2.5 rounded-xl transition-all bg-muted text-foreground"
             >
               {darkMode ? <Sun size={20} weight="fill" /> : <Moon size={20} />}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2.5 rounded-xl transition-all ${darkMode ? 'text-gray-300 hover:text-[#2D4B32] hover:bg-gray-950' : 'text-gray-600 hover:text-[#2D4B32] hover:bg-gray-100/80'}`}
+              className="p-2.5 rounded-xl transition-all text-foreground hover:text-primary hover:bg-muted/70"
             >
               {mobileMenuOpen ? <X size={24} /> : <List size={24} />}
             </button>
@@ -201,53 +228,83 @@ export function Navigation({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`md:hidden border-t shadow-lg ${darkMode ? 'bg-gray-950/95 backdrop-blur-md border-gray-700/50' : 'bg-background backdrop-blur-md border-gray-200/50'}`}
+            className="md:hidden border-t shadow-lg bg-background/95 backdrop-blur-md border-border/60"
           >
             <div className="px-4 py-4 space-y-1">
               {isAuthenticated && (
                 <button
                   onClick={() => { onNavigate('dashboard'); setMobileMenuOpen(false); }}
-                  className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'dashboard' ? darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32] font-medium border border-[#2D4B32]/50' : 'bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-[#2D4B32] font-medium border border-[#2D4B32]' : darkMode ? 'hover:bg-gray-950 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                  className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                    view === 'dashboard'
+                      ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                      : 'hover:bg-muted/70 text-foreground'
+                  }`}
                 >
                   {t.dashboard}
                 </button>
               )}
               <button
                 onClick={() => { onNavigate('landing'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'landing' ? darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32] font-medium border border-[#2D4B32]/50' : 'bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-[#2D4B32] font-medium border border-[#2D4B32]' : darkMode ? 'hover:bg-gray-950 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                  view === 'landing'
+                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                    : 'hover:bg-muted/70 text-foreground'
+                }`}
               >
                 {t.home}
               </button>
               <button
                 onClick={() => { onNavigate('features'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'features' ? darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32] font-medium border border-[#2D4B32]/50' : 'bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-[#2D4B32] font-medium border border-[#2D4B32]' : darkMode ? 'hover:bg-gray-950 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                  view === 'features'
+                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                    : 'hover:bg-muted/70 text-foreground'
+                }`}
               >
                 Features
               </button>
               <button
+                onClick={() => { onNavigate('download'); setMobileMenuOpen(false); }}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                  view === 'download'
+                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                    : 'hover:bg-muted/70 text-foreground'
+                }`}
+              >
+                {t.download}
+              </button>
+              <button
                 onClick={() => { onNavigate('about'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'about' ? darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32] font-medium border border-[#2D4B32]/50' : 'bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-[#2D4B32] font-medium border border-[#2D4B32]' : darkMode ? 'hover:bg-gray-950 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                  view === 'about'
+                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                    : 'hover:bg-muted/70 text-foreground'
+                }`}
               >
                 About
               </button>
               <button
                 onClick={() => { onNavigate('contact'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${view === 'contact' ? darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32] font-medium border border-[#2D4B32]/50' : 'bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-[#2D4B32] font-medium border border-[#2D4B32]' : darkMode ? 'hover:bg-gray-950 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                  view === 'contact'
+                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                    : 'hover:bg-muted/70 text-foreground'
+                }`}
               >
                 Contact
               </button>
-              <hr className={`my-3 ${darkMode ? 'border-gray-700/50' : 'border-gray-200/50'}`} />
+              <hr className="my-3 border-border/60" />
               {isAuthenticated ? (
                 <>
                   <button
                     onClick={() => { onNavigate('profile'); setMobileMenuOpen(false); }}
-                    className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${darkMode ? 'hover:bg-gray-950 text-gray-300' : 'hover:bg-gray-100/80'}`}
+                    className="block w-full text-left px-4 py-3 rounded-xl transition-all hover:bg-muted/70 text-foreground"
                   >
                     Profile
                   </button>
                   <button
                     onClick={() => { onLogout(); onNavigate('landing'); setMobileMenuOpen(false); }}
-                    className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${darkMode ? 'text-red-400 hover:bg-red-900/30' : 'text-red-500 hover:bg-red-50'}`}
+                    className="block w-full text-left px-4 py-3 rounded-xl transition-all text-destructive hover:bg-destructive/10"
                   >
                     Sign Out
                   </button>
@@ -256,13 +313,13 @@ export function Navigation({
                 <div className="pt-2 space-y-2">
                   <button
                     onClick={() => { onNavigate('auth'); setMobileMenuOpen(false); }}
-                    className={`block w-full text-center px-4 py-3 border rounded-xl transition-all ${darkMode ? 'border-gray-700 hover:bg-gray-950 text-gray-300' : 'border-gray-200 hover:bg-gray-50'}`}
+                    className="block w-full text-center px-4 py-3 border border-border rounded-xl transition-all hover:bg-muted/70 text-foreground"
                   >
                     Sign In
                   </button>
                   <button
                     onClick={() => { onNavigate('hospitals'); setMobileMenuOpen(false); }}
-                    className="block w-full text-center px-4 py-3 bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-white rounded-xl font-medium shadow-lg shadow-[#2D4B32]/20"
+                    className="block w-full text-center px-4 py-3 bg-primary text-primary-foreground rounded-xl font-medium shadow-sm"
                   >
                     Book Queue
                   </button>

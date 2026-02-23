@@ -71,6 +71,7 @@ export function LandingPage(props: LandingPageProps) {
         t={{
           home: t.home,
           features: t.features,
+          download: t.download,
           about: t.about,
           contact: t.contact,
           signIn: t.signIn,

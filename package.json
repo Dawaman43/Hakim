@@ -3,14 +3,14 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n \"web,bot\" -c \"cyan,magenta\" \"next dev -p 3000\" \"bun run bot.ts\"",
+    "dev": "NODE_OPTIONS=--dns-result-order=ipv4first concurrently -n \"web,bot\" -c \"cyan,magenta\" \"next dev -p 3000\" \"bun run bot.ts\"",
     "bot": "bun run bot.ts",
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
-    "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
+    "start": "NODE_OPTIONS=--dns-result-order=ipv4first NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint .",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "NODE_OPTIONS=--dns-result-order=ipv4first bunx drizzle-kit migrate",
     "db:reset": "prisma migrate reset"
   },
   "dependencies": {
@@ -69,6 +69,7 @@
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.4",
     "next-themes": "^0.4.6",
+    "nodemailer": "^8.0.1",
     "pg": "^8.18.0",
     "prisma": "^6.11.1",
     "react": "^19.0.0",
@@ -84,6 +85,7 @@
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "undici": "^6.21.2",
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",
     "zod": "^4.0.2",

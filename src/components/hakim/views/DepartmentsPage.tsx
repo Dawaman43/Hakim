@@ -8,6 +8,7 @@ import type { ViewType } from '../routes';
 interface DepartmentsPageProps {
   darkMode: boolean;
   loading: boolean;
+  isAuthenticated: boolean;
   selectedHospital: Hospital | null;
   departments: Department[];
   onNavigate: (view: ViewType) => void;
@@ -20,6 +21,7 @@ interface DepartmentsPageProps {
 export function DepartmentsPage({
   darkMode,
   loading,
+  isAuthenticated,
   selectedHospital,
   departments,
   onNavigate,
@@ -88,9 +90,35 @@ export function DepartmentsPage({
 
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
+          {!selectedHospital ? (
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+              <p className="text-lg font-semibold text-foreground">Select a hospital first</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Departments are loaded after you choose a hospital.
+              </p>
+              <button
+                onClick={() => onNavigate('hospitals')}
+                className="mt-4 inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
+              >
+                Browse Hospitals
+              </button>
+            </div>
+          ) : loading ? (
             <div className="flex items-center justify-center p-8">
               <span className="h-6 w-6 rounded-full bg-[#2D4B32] animate-pulse" />
+            </div>
+          ) : departments.length === 0 ? (
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+              <p className="text-lg font-semibold text-foreground">No departments found</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                This facility does not have departments listed yet.
+              </p>
+              <button
+                onClick={() => selectedHospital?.id && onNavigate('hospitals')}
+                className="mt-4 inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
+              >
+                Back to Hospitals
+              </button>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -102,7 +130,7 @@ export function DepartmentsPage({
                   transition={{ delay: Math.min(index * 0.05, 0.5) }}
                   onClick={() => {
                     onSelectDepartment(department);
-                    onNavigate('booking');
+                    onNavigate(isAuthenticated ? 'booking' : 'auth');
                   }}
                   className={`rounded-2xl border transition-all text-left group overflow-hidden p-6 ${darkMode ? 'bg-gray-950 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'}`}
                 >

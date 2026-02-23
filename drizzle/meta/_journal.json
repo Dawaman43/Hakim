@@ -15,6 +15,13 @@
       "when": 1771745414259,
       "tag": "0001_nervous_arclight",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771868246545,
+      "tag": "0002_lethal_ezekiel_stane",
+      "breakpoints": true
     }
   ]
 }

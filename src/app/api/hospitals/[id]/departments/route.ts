@@ -1,22 +1,39 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
-import { departments } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
-export async function GET(_request: Request, { params }: { params: { id: string } }) {
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request, { params }: { params: { id?: string } }) {
   try {
-    const rows = await db.select().from(departments).where(eq(departments.hospitalId, params.id));
-    const data = rows.map((dept) => ({
-      id: dept.id,
-      hospitalId: dept.hospitalId,
-      name: dept.name,
-      description: dept.description,
-      averageServiceTimeMin: dept.averageServiceTimeMin,
-      dailyCapacity: dept.dailyCapacity,
-      currentQueueCount: dept.currentQueueCount,
-      isActive: dept.isActive,
-      createdAt: dept.createdAt.toISOString(),
-      updatedAt: dept.updatedAt.toISOString(),
+    const pathname = new URL(request.url).pathname;
+    const match = pathname.match(/\/api\/hospitals\/([^/]+)\/departments/);
+    const idFromPath = match?.[1];
+    const hospitalId = params?.id || idFromPath;
+    if (!hospitalId) {
+      return NextResponse.json({ success: false, error: "Missing hospital id" }, { status: 400 });
+    }
+    const result = await db.execute(sql`
+      select
+        id,
+        hospital_id as "hospitalId",
+        name,
+        description,
+        average_service_time_min as "averageServiceTimeMin",
+        daily_capacity as "dailyCapacity",
+        current_queue_count as "currentQueueCount",
+        is_active as "isActive",
+        created_at as "createdAt",
+        updated_at as "updatedAt"
+      from public.departments
+      where hospital_id = ${hospitalId}
+      order by name
+    `);
+    const rows = (result as any).rows ?? result;
+    const data = rows.map((dept: any) => ({
+      ...dept,
+      createdAt: dept.createdAt ? new Date(dept.createdAt).toISOString() : null,
+      updatedAt: dept.updatedAt ? new Date(dept.updatedAt).toISOString() : null,
     }));
     return NextResponse.json({ success: true, data });
   } catch (error) {

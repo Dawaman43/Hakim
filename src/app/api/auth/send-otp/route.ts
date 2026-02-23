@@ -1,10 +1,24 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
-import { otpCodes } from "@/db/schema";
+import { otpCodes, users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
 function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+async function sendTelegramOtp(telegramId: string, code: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return;
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: telegramId,
+      text: `🔐 Your Hakim OTP code is: ${code}`,
+    }),
+  }).catch(() => null);
 }
 
 export async function POST(req: Request) {
@@ -30,11 +44,19 @@ export async function POST(req: Request) {
       expiresAt,
     });
 
+    const user = (await db.select().from(users).where(eq(users.phone, phone)).limit(1))[0];
+    if (user?.telegramId) {
+      await sendTelegramOtp(user.telegramId, code);
+    }
+
     if (process.env.NODE_ENV === "development") {
        return NextResponse.json({ success: true, otpCode: code });
     }
 
-    return NextResponse.json({ success: true, message: "OTP generated in DB. Awaiting Telegram bot to transmit." });
+    return NextResponse.json({
+      success: true,
+      message: "OTP generated in DB. Awaiting Telegram bot to transmit.",
+    });
 
   } catch (error) {
     console.error("Send OTP Error:", error);

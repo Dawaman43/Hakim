@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "Permissions-Policy", value: "geolocation=(self)" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

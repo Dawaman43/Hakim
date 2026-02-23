@@ -1,26 +1,23 @@
-import { Pool } from "pg";
-import { drizzle } from "drizzle-orm/node-postgres";
+import { neon, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
+import dns from "node:dns";
+import { Agent } from "undici";
 
-const databaseUrl = process.env.DATABASE_URL;
+if (typeof dns.setDefaultResultOrder === "function") {
+  dns.setDefaultResultOrder("ipv4first");
+}
+
+
+const databaseUrl = process.env.DATABASE_URL_DIRECT ?? process.env.DATABASE_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL is not set");
 }
 
-// Strip problematic query params that cause warnings in 'pg'
-const url = new URL(databaseUrl);
-url.searchParams.delete("sslmode");
-url.searchParams.delete("channel_binding");
+const agent = new Agent({ connect: { family: 4 } });
+neonConfig.fetchFunction = (input, init) => fetch(input, { ...init, dispatcher: agent });
 
-export const pool = new Pool({ 
-  connectionString: url.toString(),
-  ssl: {
-    rejectUnauthorized: false,
-  },
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
-});
-
-export const db = drizzle(pool, { schema });
+const sql = neon(databaseUrl);
+export const db = drizzle(sql, { schema });
+export const pool = { end: () => Promise.resolve() };

@@ -4,6 +4,10 @@ export const users = pgTable("users", {
   id: text("id").primaryKey(),
   phone: text("phone").notNull().unique(),
   name: text("name"),
+  email: text("email"),
+  role: text("role").notNull().default("PATIENT"),
+  isVerified: boolean("is_verified").notNull().default(true),
+  passwordHash: text("password_hash"),
   telegramId: text("telegram_id"),
   language: text("language").notNull().default("en"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -22,6 +26,7 @@ export const otpCodes = pgTable("otp_codes", {
 
 export const hospitals = pgTable("hospitals", {
   id: text("id").primaryKey(),
+  adminId: text("admin_id").references(() => users.id, { onDelete: "set null" }),
   name: text("name").notNull(),
   region: text("region").notNull(),
   city: text("city"),
