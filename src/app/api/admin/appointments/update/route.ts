@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
-import { appointments, hospitals } from "@/db/schema";
+import { appointments, hospitals, departments, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyToken } from "@/lib/jwt";
+import { sendTelegramMessage } from "@/lib/telegram-notify";
 
 const allowedStatuses = ["WAITING", "SERVING", "COMPLETED", "CANCELLED", "SKIPPED", "EMERGENCY"];
 
@@ -34,6 +35,30 @@ export async function POST(request: Request) {
     }
 
     await db.update(appointments).set({ status }).where(eq(appointments.id, appointmentId));
+
+    if (status === "SERVING") {
+      const appt = await db
+        .select({
+          appointmentId: appointments.id,
+          tokenNumber: appointments.tokenNumber,
+          patientTelegramId: users.telegramId,
+          hospitalName: hospitals.name,
+          departmentName: departments.name,
+        })
+        .from(appointments)
+        .leftJoin(users, eq(users.id, appointments.patientId))
+        .leftJoin(hospitals, eq(hospitals.id, appointments.hospitalId))
+        .leftJoin(departments, eq(departments.id, appointments.departmentId))
+        .where(eq(appointments.id, appointmentId))
+        .limit(1);
+
+      if (appt[0]?.patientTelegramId) {
+        await sendTelegramMessage(
+          appt[0].patientTelegramId,
+          `✅ Your appointment is ready.\nHospital: ${appt[0].hospitalName}\nDepartment: ${appt[0].departmentName}\nToken: #${appt[0].tokenNumber}\nPlease proceed to the desk now.`
+        );
+      }
+    }
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Update appointment error:", error);

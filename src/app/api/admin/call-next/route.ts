@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
-import { appointments, departments, hospitals } from "@/db/schema";
+import { appointments, departments, hospitals, users } from "@/db/schema";
 import { and, asc, eq } from "drizzle-orm";
 import { verifyToken } from "@/lib/jwt";
+import { sendTelegramMessage } from "@/lib/telegram-notify";
 
 export async function POST(request: Request) {
   try {
@@ -38,6 +39,30 @@ export async function POST(request: Request) {
 
     await db.update(appointments).set({ status: "SERVING" }).where(eq(appointments.id, next[0].id));
     await db.update(departments).set({ currentQueueCount: next[0].tokenNumber }).where(eq(departments.id, departmentId));
+
+    const appt = await db
+      .select({
+        appointmentId: appointments.id,
+        tokenNumber: appointments.tokenNumber,
+        patientName: users.name,
+        patientPhone: users.phone,
+        patientTelegramId: users.telegramId,
+        hospitalName: hospitals.name,
+        departmentName: departments.name,
+      })
+      .from(appointments)
+      .leftJoin(users, eq(users.id, appointments.patientId))
+      .leftJoin(hospitals, eq(hospitals.id, appointments.hospitalId))
+      .leftJoin(departments, eq(departments.id, appointments.departmentId))
+      .where(eq(appointments.id, next[0].id))
+      .limit(1);
+
+    if (appt[0]?.patientTelegramId) {
+      await sendTelegramMessage(
+        appt[0].patientTelegramId,
+        `✅ Your appointment is ready.\nHospital: ${appt[0].hospitalName}\nDepartment: ${appt[0].departmentName}\nToken: #${appt[0].tokenNumber}\nPlease proceed to the desk now.`
+      );
+    }
 
     return NextResponse.json({ success: true, data: next[0] });
   } catch (error) {

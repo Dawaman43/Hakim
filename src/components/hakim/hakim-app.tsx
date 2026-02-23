@@ -96,9 +96,15 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
   useEffect(() => {
     if (!authHydrated) return;
     if (isAuthenticated && view === "landing") {
-      navigateTo("dashboard");
+      if (user?.role === "SUPER_ADMIN") {
+        navigateTo("admin-dashboard");
+      } else if (user?.role === "HOSPITAL_ADMIN") {
+        navigateTo("hospital-dashboard");
+      } else {
+        navigateTo("dashboard");
+      }
     }
-  }, [authHydrated, isAuthenticated, view, navigateTo]);
+  }, [authHydrated, isAuthenticated, view, navigateTo, user?.role]);
 
   useEffect(() => {
     if (!authHydrated) return;

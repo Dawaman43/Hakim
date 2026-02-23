@@ -54,7 +54,13 @@ export function useAuthOtp({
       const res = await api.post("/api/auth/verify-otp", { phone, otpCode: otp, name });
       if (res.success) {
         login(res.user, res.token);
-        navigateTo("dashboard");
+        if (res.user?.role === "SUPER_ADMIN") {
+          navigateTo("admin-dashboard");
+        } else if (res.user?.role === "HOSPITAL_ADMIN") {
+          navigateTo("hospital-dashboard");
+        } else {
+          navigateTo("dashboard");
+        }
         setPhone("");
         setOtp("");
         setOtpSent(false);
