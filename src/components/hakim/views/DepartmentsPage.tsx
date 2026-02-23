@@ -47,7 +47,7 @@ export function DepartmentsPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       {navigation}
 
-      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-background'}`}>
+      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <button
@@ -68,7 +68,7 @@ export function DepartmentsPage({
                 </p>
               </div>
               {selectedHospital && (
-                <div className={`flex items-center gap-3 px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+                <div className={`flex items-center gap-3 px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-950 border-gray-700' : 'bg-white border-gray-200'}`}>
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#E7EDDF] border border-[#2D4B32]/30">
                     <Stethoscope size={20} className="text-[#2D4B32]" />
                   </div>
@@ -104,7 +104,7 @@ export function DepartmentsPage({
                     onSelectDepartment(department);
                     onNavigate('booking');
                   }}
-                  className={`rounded-2xl border transition-all text-left group overflow-hidden p-6 ${darkMode ? 'bg-gray-900 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'}`}
+                  className={`rounded-2xl border transition-all text-left group overflow-hidden p-6 ${darkMode ? 'bg-gray-950 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'}`}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#E7EDDF] border border-[#2D4B32]/30">

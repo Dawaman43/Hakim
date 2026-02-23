@@ -3,7 +3,12 @@ export const api = {
     const headers: HeadersInit = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
     const res = await fetch(url, { headers });
-    return res.json();
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return { success: false, error: 'Invalid JSON response', status: res.status };
+    }
   },
   async post(url: string, data: unknown, token?: string) {
     const headers: HeadersInit = { 'Content-Type': 'application/json' };
@@ -13,6 +18,11 @@ export const api = {
       headers,
       body: JSON.stringify(data),
     });
-    return res.json();
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return { success: false, error: 'Invalid JSON response', status: res.status };
+    }
   },
 };

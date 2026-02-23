@@ -40,7 +40,7 @@ export function StepHospitalInfo({
               placeholder="e.g., Tikur Anbessa General Hospital"
               value={registrationData.hospitalName}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, hospitalName: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
             />
           </div>
         </div>
@@ -52,7 +52,7 @@ export function StepHospitalInfo({
           <select
             value={registrationData.hospitalType}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, hospitalType: e.target.value as "GOVERNMENT" | "PRIVATE" | "NGO" }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
           >
             <option value="">Select type</option>
             <option value="GOVERNMENT">{tr.government}</option>
@@ -68,7 +68,7 @@ export function StepHospitalInfo({
           <select
             value={registrationData.region}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, region: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
           >
             {regionOptions.map(region => (
               <option key={region} value={region}>{region}</option>
@@ -85,7 +85,7 @@ export function StepHospitalInfo({
             placeholder="e.g., Addis Ababa"
             value={registrationData.city}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, city: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
           />
         </div>
 
@@ -96,7 +96,7 @@ export function StepHospitalInfo({
           <select
             value={registrationData.operatingHours}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, operatingHours: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
           >
             <option value="24/7">{tr.hours247}</option>
             <option value="business">{tr.hoursBusiness}</option>
@@ -114,7 +114,7 @@ export function StepHospitalInfo({
             placeholder="Full address"
             value={registrationData.address}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, address: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
           />
         </div>
 
@@ -129,7 +129,7 @@ export function StepHospitalInfo({
               placeholder="011XXXXXXXX"
               value={registrationData.phone}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, phone: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ export function StepHospitalInfo({
               placeholder="email@hospital.org"
               value={registrationData.email}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, email: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
             />
           </div>
         </div>

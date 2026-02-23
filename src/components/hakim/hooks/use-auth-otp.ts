@@ -54,7 +54,7 @@ export function useAuthOtp({
       const res = await api.post("/api/auth/verify-otp", { phone, otpCode: otp, name });
       if (res.success) {
         login(res.user, res.token);
-        navigateTo("landing");
+        navigateTo("dashboard");
         setPhone("");
         setOtp("");
         setOtpSent(false);

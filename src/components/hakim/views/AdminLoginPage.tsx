@@ -63,7 +63,7 @@ export function AdminLoginPage({
           </p>
         </div>
 
-        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           <div className="space-y-4">
             <div>
               <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
@@ -76,7 +76,7 @@ export function AdminLoginPage({
                   placeholder="09XXXXXXXXX"
                   value={adminPhone}
                   onChange={(e) => setAdminPhone(e.target.value)}
-                  className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                  className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                 />
               </div>
             </div>
@@ -89,7 +89,7 @@ export function AdminLoginPage({
                 placeholder="Enter your password"
                 value={adminPassword}
                 onChange={(e) => setAdminPassword(e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
               />
             </div>
             <button

@@ -24,7 +24,7 @@ export function FAQPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
       {navigation}
 
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-background"}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -55,7 +55,7 @@ export function FAQPage({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}
+                className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}
               >
                 <h3 className={`text-lg font-bold mb-3 ${darkMode ? "text-[#2D4B32]" : "text-[#2D4B32]"}`}>
                   {item.q}

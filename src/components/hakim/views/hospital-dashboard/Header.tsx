@@ -32,13 +32,13 @@ export function Header({
         <div className="flex items-center gap-3">
           <button
             onClick={toggleDarkMode}
-            className={`p-2.5 rounded-xl transition-all ${darkMode ? "bg-gray-800 text-yellow-400 hover:bg-gray-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            className={`p-2.5 rounded-xl transition-all ${darkMode ? "bg-gray-950 text-yellow-400 hover:bg-gray-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
           >
             {darkMode ? <Sun size={20} weight="fill" /> : <Moon size={20} />}
           </button>
           <button
             onClick={toggleLanguage}
-            className={`flex items-center gap-1.5 p-2.5 rounded-xl transition-all ${darkMode ? "bg-gray-800 text-gray-300 hover:bg-gray-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            className={`flex items-center gap-1.5 p-2.5 rounded-xl transition-all ${darkMode ? "bg-gray-950 text-gray-300 hover:bg-gray-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
           >
             <Globe size={18} />
             <span className="text-xs font-medium">{language === "en" ? "አማ" : "EN"}</span>

@@ -55,7 +55,7 @@ export function LocationPermissionModal({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className={`rounded-3xl shadow-2xl max-w-md w-full p-8 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}
+            className={`rounded-3xl shadow-2xl max-w-md w-full p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}
           >
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[#E7EDDF] border border-[#2D4B32]/30">
               <Crosshair size={32} className="text-[#2D4B32]" />
@@ -103,7 +103,7 @@ export function LocationPermissionModal({
               <select
                 value={selectedRegion}
                 onChange={(e) => onSelectRegion(e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition cursor-pointer ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-gray-50 border-gray-200"}`}
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition cursor-pointer ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "bg-gray-50 border-gray-200"}`}
               >
                 {regionOptions.map(region => (
                   <option key={region} value={region}>{region}</option>
@@ -131,7 +131,7 @@ export function LocationPermissionModal({
                 placeholder="e.g. Bishoftu, Adama..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "bg-gray-50 border-gray-200 placeholder-gray-400"}`}
+                className={`flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "bg-gray-50 border-gray-200 placeholder-gray-400"}`}
               />
               <button 
                 type="submit"
@@ -144,7 +144,7 @@ export function LocationPermissionModal({
 
             <button
               onClick={onUseDefaultLocation}
-              className={`w-full px-4 py-2 rounded-xl text-sm font-medium transition border mb-2 ${darkMode ? "bg-gray-800 border-gray-700 text-gray-300 hover:border-[#2D4B32]" : "bg-gray-50 border-gray-200 text-gray-600 hover:border-[#2D4B32]"}`}
+              className={`w-full px-4 py-2 rounded-xl text-sm font-medium transition border mb-2 ${darkMode ? "bg-gray-950 border-gray-700 text-gray-300 hover:border-[#2D4B32]" : "bg-gray-50 border-gray-200 text-gray-600 hover:border-[#2D4B32]"}`}
             >
               Use Addis Ababa Instead
             </button>

@@ -38,7 +38,7 @@ export function StepServices({
             className={`flex items-center justify-between p-3 rounded-xl border transition ${
               registrationData.services.includes(service.id)
                 ? darkMode ? "bg-[#2D4B32]/10 border-[#2D4B32]/50 text-[#2D4B32]" : "bg-[#2D4B32] border-[#2D4B32] text-[#2D4B32]"
-                : darkMode ? "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700" : "bg-background border-gray-200 text-gray-700 hover:bg-gray-50"
+                : darkMode ? "bg-gray-950 border-gray-700 text-gray-300 hover:bg-gray-700" : "bg-background border-gray-200 text-gray-700 hover:bg-gray-50"
             }`}
           >
             <span>{service.label}</span>
@@ -49,7 +49,7 @@ export function StepServices({
       <div className="flex justify-between">
         <button
           onClick={onBack}
-          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-gray-800 text-gray-300 hover:bg-gray-700" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-gray-950 text-gray-300 hover:bg-gray-700" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
         >
           <ArrowLeft size={20} />
           {tr.back}

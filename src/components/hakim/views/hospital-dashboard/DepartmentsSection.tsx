@@ -39,7 +39,7 @@ export function DepartmentsSection({
       </div>
 
       {showAddDepartment && (
-        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           <h4 className={`font-medium mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.addDepartment}</h4>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -103,7 +103,7 @@ export function DepartmentsSection({
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {dashboardQueues.map((dept) => (
-          <div key={dept.departmentId} className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+          <div key={dept.departmentId} className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
             <div className="flex items-center justify-between mb-3">
               <h4 className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>{dept.departmentName}</h4>
               <div className="flex gap-1">

@@ -1,9 +1,12 @@
 export type ViewType =
   | 'landing'
+  | 'dashboard'
   | 'hospitals'
   | 'departments'
   | 'booking'
   | 'token'
+  | 'appointments'
+  | 'notifications'
   | 'emergency'
   | 'features'
   | 'about'
@@ -24,6 +27,7 @@ export type ViewType =
 
 export const viewRoutes: Record<ViewType, string> = {
   landing: '/',
+  dashboard: '/dashboard',
   features: '/features',
   about: '/about',
   contact: '/contact',
@@ -37,6 +41,8 @@ export const viewRoutes: Record<ViewType, string> = {
   departments: '/departments',
   booking: '/booking',
   token: '/token',
+  appointments: '/appointments',
+  notifications: '/notifications',
   emergency: '/emergency',
   'admin-login': '/admin/login',
   'admin-dashboard': '/admin',

@@ -17,11 +17,13 @@ interface ProfilePageProps {
   darkMode: boolean;
   user: { name?: string; phone?: string; role?: string } | null;
   token: string | null;
-  apiGet: (path: string, token?: string) => Promise<{ success: boolean; data: Appointment[] }>;
+  apiGet: (path: string, token?: string) => Promise<any>;
   setCurrentAppointment: (appointment: Appointment | null) => void;
+  currentAppointment: Appointment | null;
   onNavigate: (view: ViewType) => void;
   onLogout: () => void;
   navigation: React.ReactNode;
+  t: Record<string, string>;
 }
 
 export function ProfilePage({
@@ -30,9 +32,11 @@ export function ProfilePage({
   token,
   apiGet,
   setCurrentAppointment,
+  currentAppointment,
   onNavigate,
   onLogout,
   navigation,
+  t,
 }: ProfilePageProps) {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
@@ -56,21 +60,35 @@ export function ProfilePage({
               </span>
             </div>
 
-            <div className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+            <div className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
               <button
                 onClick={async () => {
-                  const res = await apiGet("/api/queue/my-tokens?status=WAITING", token || undefined);
-                  if (res.success && res.data.length > 0) {
-                    setCurrentAppointment(res.data[0]);
+                  if (currentAppointment) {
                     onNavigate("token");
-                  } else {
-                    alert("No active appointments found");
+                    return;
                   }
+                  if (!token) {
+                    alert("Your session expired. Please sign in again.");
+                    onNavigate("auth");
+                    return;
+                  }
+                  const res = await apiGet("/api/patient/active-token", token || undefined);
+                  if (res?.success && res.appointment) {
+                    setCurrentAppointment(res.appointment);
+                    onNavigate("token");
+                    return;
+                  }
+                  if (res?.status === 401) {
+                    alert("Your session expired. Please sign in again.");
+                    onNavigate("auth");
+                    return;
+                  }
+                  alert(res?.error || "No active appointments found");
                 }}
-                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-gray-800 border-gray-800" : "hover:bg-gray-50 border-gray-100"}`}
+                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-gray-950 border-gray-800" : "hover:bg-gray-50 border-gray-100"}`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                  <Ticket size={20} className="text-[#2D4B32]" />
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                  <Ticket size={20} className="text-current" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>My Active Token</p>
@@ -79,24 +97,30 @@ export function ProfilePage({
                 <CaretRight size={20} className={darkMode ? "text-gray-600" : "text-gray-400"} />
               </button>
 
-              <button className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-gray-800 border-gray-800" : "hover:bg-gray-50 border-gray-100"}`}>
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                  <Clock size={20} className="text-[#2D4B32]" />
+              <button
+                onClick={() => onNavigate("appointments")}
+                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-gray-950 border-gray-800" : "hover:bg-gray-50 border-gray-100"}`}
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                  <Clock size={20} className="text-current" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>Appointment History</p>
+                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>{t.appointmentHistory}</p>
                   <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>View past appointments</p>
                 </div>
                 <CaretRight size={20} className={darkMode ? "text-gray-600" : "text-gray-400"} />
               </button>
 
-              <button className={`w-full p-4 flex items-center gap-4 transition ${darkMode ? "hover:bg-gray-800" : "hover:bg-gray-50"}`}>
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                  <Bell size={20} className="text-[#2D4B32]" />
+              <button
+                onClick={() => onNavigate("notifications")}
+                className={`w-full p-4 flex items-center gap-4 transition ${darkMode ? "hover:bg-gray-950" : "hover:bg-gray-50"}`}
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                  <Bell size={20} className="text-current" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>Notifications</p>
-                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Manage notification settings</p>
+                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>{t.notifications}</p>
+                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{t.notificationHistoryDesc}</p>
                 </div>
                 <CaretRight size={20} className={darkMode ? "text-gray-600" : "text-gray-400"} />
               </button>

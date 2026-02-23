@@ -11,7 +11,7 @@ interface FeaturesSectionProps {
 
 export function FeaturesSection({ darkMode, t }: FeaturesSectionProps) {
   return (
-    <section className={`py-24 transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-background'}`}>
+    <section className={`py-24 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -45,7 +45,7 @@ export function FeaturesSection({ darkMode, t }: FeaturesSectionProps) {
             <motion.div
               key={index}
               variants={fadeIn}
-              className={`group p-8 rounded-3xl transition-all duration-300 border ${darkMode ? 'bg-gray-900 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'}`}
+              className={`group p-8 rounded-3xl transition-all duration-300 border ${darkMode ? 'bg-gray-950 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'}`}
             >
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform bg-[#E7EDDF] border border-[#2D4B32]/30">
                 <feature.icon size={28} className="text-[#2D4B32]" />

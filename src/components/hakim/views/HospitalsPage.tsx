@@ -68,21 +68,21 @@ export function HospitalsPage({
   const getFacilityBadge = (type: string | undefined) => {
     switch (type) {
       case 'HOSPITAL':
-        return { label: 'Hospital', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Hospital', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       case 'HEALTH_CENTER':
-        return { label: 'Health Center', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Health Center', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       case 'CLINIC':
-        return { label: 'Clinic', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Clinic', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       case 'HEALTH_POST':
-        return { label: 'Health Post', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Health Post', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       case 'SPECIALIZED_CENTER':
-        return { label: 'Specialized', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Specialized', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       case 'PHARMACY':
-        return { label: 'Pharmacy', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Pharmacy', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       case 'LABORATORY':
-        return { label: 'Laboratory', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Laboratory', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
       default:
-        return { label: 'Hospital', color: 'bg-[#2D4B32] text-[#2D4B32]', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
+        return { label: 'Hospital', color: 'bg-[#2D4B32] text-white', darkColor: 'bg-[#2D4B32]/10 text-[#2D4B32]' };
     }
   };
 
@@ -90,7 +90,7 @@ export function HospitalsPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       {navigation}
 
-      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-background'}`}>
+      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -116,7 +116,7 @@ export function HospitalsPage({
               </div>
             ) : (
               <div className={`mt-4 flex flex-wrap gap-3 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+                <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-gray-950' : 'bg-gray-100'}`}>
                   {totalHospitals} total facilities
                 </span>
                 <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]'}`}>
@@ -141,7 +141,7 @@ export function HospitalsPage({
                     setSearchTerm(e.target.value);
                     setPage(1);
                   }}
-                  className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' : 'bg-white border-gray-200'}`}
+                  className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-950 border-gray-700 text-white placeholder-gray-500' : 'bg-white border-gray-200'}`}
                 />
               </div>
               <select
@@ -150,7 +150,7 @@ export function HospitalsPage({
                   setRegionFilter(e.target.value);
                   setPage(1);
                 }}
-                className={`px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
+                className={`px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-950 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
               >
                 <option>All Regions</option>
                 <option>Addis Ababa</option>
@@ -170,13 +170,13 @@ export function HospitalsPage({
               <div className={`flex border rounded-xl overflow-hidden ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-3 ${viewMode === 'grid' ? (darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]') : (darkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-400')}`}
+                  className={`p-3 ${viewMode === 'grid' ? (darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]') : (darkMode ? 'bg-gray-950 text-gray-400' : 'bg-white text-gray-400')}`}
                 >
                   <GridFour size={20} />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-3 ${viewMode === 'list' ? (darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]') : (darkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-400')}`}
+                  className={`p-3 ${viewMode === 'list' ? (darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]') : (darkMode ? 'bg-gray-950 text-gray-400' : 'bg-white text-gray-400')}`}
                 >
                   <List size={20} />
                 </button>
@@ -213,7 +213,7 @@ export function HospitalsPage({
                         ? 'bg-[#2D4B32]/10 text-[#2D4B32] border border-[#2D4B32]/50'
                         : 'bg-[#2D4B32]/10 text-[#2D4B32] border border-[#2D4B32]/50'
                       : darkMode
-                        ? 'bg-gray-800 text-gray-400 hover:bg-gray-700 border border-gray-700'
+                        ? 'bg-gray-950 text-gray-400 hover:bg-gray-700 border border-gray-700'
                         : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
                   }`}
                 >
@@ -238,7 +238,7 @@ export function HospitalsPage({
                 <div
                   key={idx}
                   className={`rounded-2xl border p-6 animate-pulse ${
-                    darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
+                    darkMode ? 'bg-gray-950 border-gray-800' : 'bg-white border-gray-200'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -268,7 +268,7 @@ export function HospitalsPage({
                       setPageSize(Number(e.target.value));
                       setPage(1);
                     }}
-                    className={`px-2 py-1 border rounded-lg ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
+                    className={`px-2 py-1 border rounded-lg ${darkMode ? 'bg-gray-950 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
                   >
                     {[12, 24, 36, 48].map((size) => (
                       <option key={size} value={size}>{size}</option>
@@ -298,7 +298,7 @@ export function HospitalsPage({
                         onNavigate('departments');
                       }}
                       className={`rounded-2xl border transition-all text-left group overflow-hidden ${
-                        darkMode ? 'bg-gray-900 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'
+                        darkMode ? 'bg-gray-950 border-gray-800 hover:border-[#2D4B32]/60' : 'bg-white border-gray-200 hover:border-[#2D4B32]'
                       } ${viewMode === 'grid' ? 'p-6' : 'p-4 flex items-center gap-4'}`}
                     >
                       {viewMode === 'grid' ? (
@@ -355,8 +355,8 @@ export function HospitalsPage({
                   disabled={page <= 1}
                   className={`px-4 py-2 rounded-xl border text-sm transition ${
                     page <= 1
-                      ? darkMode ? 'bg-gray-900 border-gray-800 text-gray-600' : 'bg-gray-100 border-gray-200 text-gray-400'
-                      : darkMode ? 'bg-gray-900 border-gray-700 text-white hover:border-[#2D4B32]' : 'bg-white border-gray-200 text-gray-700 hover:border-[#2D4B32]'
+                      ? darkMode ? 'bg-gray-950 border-gray-800 text-gray-600' : 'bg-gray-100 border-gray-200 text-gray-400'
+                      : darkMode ? 'bg-gray-950 border-gray-700 text-white hover:border-[#2D4B32]' : 'bg-white border-gray-200 text-gray-700 hover:border-[#2D4B32]'
                   }`}
                 >
                   Previous
@@ -369,8 +369,8 @@ export function HospitalsPage({
                   disabled={page >= totalPages}
                   className={`px-4 py-2 rounded-xl border text-sm transition ${
                     page >= totalPages
-                      ? darkMode ? 'bg-gray-900 border-gray-800 text-gray-600' : 'bg-gray-100 border-gray-200 text-gray-400'
-                      : darkMode ? 'bg-gray-900 border-gray-700 text-white hover:border-[#2D4B32]' : 'bg-white border-gray-200 text-gray-700 hover:border-[#2D4B32]'
+                      ? darkMode ? 'bg-gray-950 border-gray-800 text-gray-600' : 'bg-gray-100 border-gray-200 text-gray-400'
+                      : darkMode ? 'bg-gray-950 border-gray-700 text-white hover:border-[#2D4B32]' : 'bg-white border-gray-200 text-gray-700 hover:border-[#2D4B32]'
                   }`}
                 >
                   Next

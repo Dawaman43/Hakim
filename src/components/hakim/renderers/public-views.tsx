@@ -8,7 +8,10 @@ import { MapPage } from "../views/MapPage";
 import { DepartmentsPage } from "../views/DepartmentsPage";
 import { BookingPage } from "../views/BookingPage";
 import { TokenPage } from "../views/TokenPage";
+import { AppointmentsPage } from "../views/AppointmentsPage";
+import { NotificationsPage } from "../views/NotificationsPage";
 import { FeaturesPage } from "../views/FeaturesPage";
+import { DashboardPage } from "../views/DashboardPage";
 import { AboutPage } from "../views/AboutPage";
 import { AuthPage } from "../views/AuthPage";
 import { EmergencyPage } from "../views/EmergencyPage";
@@ -83,6 +86,7 @@ export function PublicViews(props: PublicViewProps) {
     triageResult,
     setTriageResult,
     reportEmergency,
+    apiPost,
     apiGet,
     setCurrentAppointment,
     userLocation,
@@ -118,11 +122,27 @@ export function PublicViews(props: PublicViewProps) {
   }
 
   if (view === "features") {
-    return <FeaturesPage darkMode={darkMode} t={t} navigation={navigation} footer={footer} cta={<CTASection t={t} onNavigate={onNavigate} />} />;
+    return <FeaturesPage darkMode={darkMode} t={t} navigation={navigation} footer={footer} cta={<CTASection t={t} onNavigate={onNavigate} darkMode={darkMode} />} />;
+  }
+
+  if (view === "dashboard") {
+    return (
+      <DashboardPage
+        darkMode={darkMode}
+        t={t}
+        user={user}
+        navigation={navigation}
+        onNavigate={onNavigate}
+        currentAppointment={currentAppointment}
+        queueStatus={queueStatus}
+        nearestHospitals={nearestHospitals}
+        nearestLoading={nearestLoading}
+      />
+    );
   }
 
   if (view === "about") {
-    return <AboutPage darkMode={darkMode} t={t} navigation={navigation} footer={footer} cta={<CTASection t={t} onNavigate={onNavigate} />} />;
+    return <AboutPage darkMode={darkMode} t={t} navigation={navigation} footer={footer} cta={<CTASection t={t} onNavigate={onNavigate} darkMode={darkMode} />} />;
   }
 
   if (view === "contact") {
@@ -284,6 +304,34 @@ export function PublicViews(props: PublicViewProps) {
     );
   }
 
+  if (view === "appointments") {
+    return (
+      <AppointmentsPage
+        darkMode={darkMode}
+        token={token}
+        apiGet={apiGet}
+        onNavigate={onNavigate}
+        navigation={navigation}
+        footer={footer}
+        t={t}
+      />
+    );
+  }
+
+  if (view === "notifications") {
+    return (
+      <NotificationsPage
+        darkMode={darkMode}
+        token={token}
+        apiGet={apiGet}
+        onNavigate={onNavigate}
+        navigation={navigation}
+        footer={footer}
+        t={t}
+      />
+    );
+  }
+
   if (view === "emergency") {
     return (
       <EmergencyPage
@@ -302,6 +350,7 @@ export function PublicViews(props: PublicViewProps) {
         triageResult={triageResult}
         setTriageResult={setTriageResult}
         reportEmergency={reportEmergency}
+        apiPost={apiPost}
         getSeverityColor={getSeverityColor}
         getSeverityLabel={getSeverityLabel}
         onNavigate={onNavigate}
@@ -319,9 +368,11 @@ export function PublicViews(props: PublicViewProps) {
         token={token}
         apiGet={apiGet}
         setCurrentAppointment={setCurrentAppointment}
+        currentAppointment={currentAppointment}
         onNavigate={onNavigate}
         onLogout={onLogout}
         navigation={navigation}
+        t={t}
       />
     );
   }

@@ -107,20 +107,20 @@ export function HospitalRegistrationPage({
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                 registrationStep >= step
                   ? "bg-[#2D4B32] text-white"
-                  : darkMode ? "bg-gray-800 text-gray-400" : "bg-gray-200 text-gray-500"
+                  : darkMode ? "bg-gray-950 text-gray-400" : "bg-gray-200 text-gray-500"
               }`}>
                 {step}
               </div>
               {step < 3 && (
                 <div className={`w-12 h-1 mx-1 rounded transition-all ${
-                  registrationStep > step ? "bg-[#2D4B32]" : darkMode ? "bg-gray-800" : "bg-gray-200"
+                  registrationStep > step ? "bg-[#2D4B32]" : darkMode ? "bg-gray-950" : "bg-gray-200"
                 }`} />
               )}
             </div>
           ))}
         </div>
 
-        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           {registrationStep === 1 && (
             <StepHospitalInfo
               darkMode={darkMode}

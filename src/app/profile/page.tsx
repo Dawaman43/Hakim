@@ -1,5 +1,7 @@
 import { HakimApp } from '@/components/hakim/hakim-app';
+import { getUiPreferences } from '@/app/ui-preferences';
 
-export default function Page() {
-  return <HakimApp initialView="profile" />;
+export default async function Page() {
+  const { theme, language } = await getUiPreferences();
+  return <HakimApp initialView="profile" initialTheme={theme} initialLanguage={language} />;
 }

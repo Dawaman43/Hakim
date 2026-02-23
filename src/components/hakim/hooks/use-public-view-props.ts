@@ -70,6 +70,7 @@ interface UsePublicViewPropsParams {
   setTriageResult: (value: TriageResult | null) => void;
   reportEmergency: () => void;
   apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
   setCurrentAppointment: (appt: Appointment | null) => void;
   userLocation: { lat: number; lng: number } | null;
   locationNotice: string | null;
@@ -145,6 +146,7 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     setTriageResult: params.setTriageResult,
     reportEmergency: params.reportEmergency,
     apiGet: params.apiGet,
+    apiPost: params.apiPost,
     setCurrentAppointment: params.setCurrentAppointment,
     userLocation: params.userLocation,
     locationNotice: params.locationNotice,
@@ -217,6 +219,7 @@ export function usePublicViewProps(params: UsePublicViewPropsParams) {
     params.setTriageResult,
     params.reportEmergency,
     params.apiGet,
+    params.apiPost,
     params.setCurrentAppointment,
     params.userLocation,
     params.locationNotice,

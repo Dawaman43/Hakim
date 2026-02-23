@@ -46,7 +46,7 @@ export function BookingPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       {navigation}
 
-      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-background'}`}>
+      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <button
@@ -69,7 +69,7 @@ export function BookingPage({
 
       <section className="py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`rounded-3xl border p-6 ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+          <div className={`rounded-3xl border p-6 ${darkMode ? 'bg-gray-950 border-gray-800' : 'bg-white border-gray-200'}`}>
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#E7EDDF] border border-[#2D4B32]/30">
@@ -103,7 +103,7 @@ export function BookingPage({
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
+                      className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-950 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
                       placeholder="09xxxxxxxx"
                     />
                   </div>
@@ -119,7 +119,7 @@ export function BookingPage({
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
+                      className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? 'bg-gray-950 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
                       placeholder={t.nameOptional}
                     />
                   </div>
@@ -134,7 +134,7 @@ export function BookingPage({
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition min-h-[120px] ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition min-h-[120px] ${darkMode ? 'bg-gray-950 border-gray-700 text-white' : 'bg-white border-gray-200'}`}
                 placeholder={t.notesPlaceholder}
               />
             </div>

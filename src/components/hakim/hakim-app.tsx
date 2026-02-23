@@ -32,10 +32,12 @@ import { DEFAULT_LOCATION, REGION_AMBULANCE_DATA, REGION_COORDINATES } from './c
 
 interface HakimAppProps {
   initialView?: ViewType;
+  initialTheme?: "light" | "dark";
+  initialLanguage?: Language;
 }
 
 // Main Component
-export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
+export function HakimApp({ initialView = 'landing', initialTheme = "light", initialLanguage = "en" }: HakimAppProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, token, isAuthenticated, login, logout } = useAuthStore();
@@ -49,17 +51,88 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
       router.push(target);
     }
   }, [router, pathname]);
+
+  const [authHydrated, setAuthHydrated] = useState(false);
+
+  useEffect(() => {
+    const persist = (useAuthStore as any).persist;
+    if (!persist) {
+      setAuthHydrated(true);
+      return;
+    }
+    if (persist.hasHydrated?.()) {
+      setAuthHydrated(true);
+    }
+    const unsub = persist.onFinishHydration?.(() => setAuthHydrated(true));
+    if (!persist.hasHydrated?.()) {
+      persist.rehydrate?.();
+    }
+    return () => {
+      if (typeof unsub === "function") unsub();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!authHydrated) return;
+    if (!isAuthenticated && view === "dashboard") {
+      navigateTo("landing");
+    }
+  }, [authHydrated, isAuthenticated, view, navigateTo]);
+
+  useEffect(() => {
+    if (!authHydrated) return;
+    if (isAuthenticated && view === "landing") {
+      navigateTo("dashboard");
+    }
+  }, [authHydrated, isAuthenticated, view, navigateTo]);
+
+  useEffect(() => {
+    if (!authHydrated) return;
+    if (!isAuthenticated || !token) {
+      setCurrentAppointment(null);
+      setQueueStatus(null);
+      return;
+    }
+
+    let cancelled = false;
+    api.get("/api/patient/active-token", token).then((res) => {
+      if (cancelled) return;
+      if (res?.success) {
+        setCurrentAppointment(res.appointment || null);
+        setQueueStatus(res.queueStatus || null);
+      }
+    }).catch((err) => {
+      console.error("Failed to load active token:", err);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authHydrated, isAuthenticated, token]);
   
-  // Dark mode state
-  const [darkMode, setDarkMode] = useState(false);
+  // Dark mode state (use server-provided preference to avoid mismatch)
+  const [darkMode, setDarkMode] = useState(initialTheme === "dark");
   
   // Toggle dark mode
   const toggleDarkMode = useCallback(() => {
     setDarkMode(prev => !prev);
   }, []);
   
-  // Language state
-  const [language, setLanguage] = useState<Language>('en');
+  // Language state (use server-provided preference to avoid mismatch)
+  const [language, setLanguage] = useState<Language>(initialLanguage);
+
+  // Persist UI preferences
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("hakim_theme", darkMode ? "dark" : "light");
+    document.cookie = `hakim_theme=${darkMode ? "dark" : "light"}; path=/; max-age=31536000`;
+  }, [darkMode]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("hakim_lang", language);
+    document.cookie = `hakim_lang=${language}; path=/; max-age=31536000`;
+  }, [language]);
   
   // Toggle language
   const toggleLanguage = useCallback(() => {
@@ -268,6 +341,7 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
   const AppFooter = () => (
     <Footer
       t={tr}
+      darkMode={darkMode}
       selectedRegion={selectedRegion}
       getAmbulanceInfo={getAmbulanceInfo}
       onNavigate={navigateTo}
@@ -349,6 +423,8 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     setTriageResult,
     reportEmergency,
     apiGet: api.get,
+    apiPost: api.post,
+    apiPost: api.post,
     setCurrentAppointment,
     userLocation,
     locationNotice,
@@ -433,8 +509,20 @@ export function HakimApp({ initialView = 'landing' }: HakimAppProps) {
     setNewDepartment,
   });
 
+  if (!authHydrated) {
+    return (
+      <div
+        className={`${darkMode ? 'dark bg-gray-950' : ''} min-h-screen transition-colors duration-300`}
+        suppressHydrationWarning
+      />
+    );
+  }
+
   return (
-    <div className={`${darkMode ? 'dark bg-gray-950' : ''} min-h-screen transition-colors duration-300`}>
+    <div
+      className={`${darkMode ? 'dark bg-gray-950' : ''} min-h-screen transition-colors duration-300`}
+      suppressHydrationWarning
+    >
       <HakimViewProvider value={{ publicProps, adminProps, hospitalProps }}>
         <HakimViewRenderer />
       </HakimViewProvider>

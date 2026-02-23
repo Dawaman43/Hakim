@@ -38,7 +38,7 @@ export function Sidebar({
   ] as const;
 
   return (
-    <aside className={`w-64 fixed left-0 top-0 h-full z-40 flex flex-col transition-colors duration-300 ${darkMode ? "bg-gray-900 border-r border-gray-800" : "bg-white border-r border-gray-200"}`}>
+    <aside className={`w-64 fixed left-0 top-0 h-full z-40 flex flex-col transition-colors duration-300 ${darkMode ? "bg-gray-950 border-r border-gray-800" : "bg-white border-r border-gray-200"}`}>
       <div className="p-6">
         <button onClick={() => onNavigate("landing")} className="flex items-center gap-2">
           <div className="w-10 h-10 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-xl flex items-center justify-center shadow-lg">
@@ -57,8 +57,8 @@ export function Sidebar({
             onClick={() => setDashboardSection(item.id as DashboardSection)}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl mb-1 transition-all ${
               dashboardSection === item.id
-                ? darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] font-medium" : "bg-[#2D4B32] text-[#2D4B32] font-medium"
-                : darkMode ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                ? darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] font-medium" : "bg-[#2D4B32] text-white font-medium"
+                : darkMode ? "text-gray-400 hover:text-white hover:bg-gray-950" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             }`}
           >
             <item.icon size={20} />

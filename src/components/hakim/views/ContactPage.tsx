@@ -32,7 +32,7 @@ export function ContactPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
       {navigation}
 
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-background"}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -51,7 +51,7 @@ export function ContactPage({
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
-              className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}
+              className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}
             >
               <h2 className={`text-2xl font-bold mb-6 ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.sendMessage}</h2>
               <form className="space-y-6">
@@ -61,7 +61,7 @@ export function ContactPage({
                     <input
                       type="text"
                       placeholder={tr.namePlaceholder}
-                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                     />
                   </div>
                   <div>
@@ -69,7 +69,7 @@ export function ContactPage({
                     <input
                       type="tel"
                       placeholder="09XXXXXXXXX"
-                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                     />
                   </div>
                 </div>
@@ -78,12 +78,12 @@ export function ContactPage({
                   <input
                     type="email"
                     placeholder={tr.emailPlaceholder}
-                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                   />
                 </div>
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{tr.subjectLabel}</label>
-                  <select className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "border-gray-200"}`}>
+                  <select className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}>
                     <option>{tr.generalInquiry}</option>
                     <option>{tr.technicalSupport}</option>
                     <option>{tr.hospitalPartnership}</option>
@@ -95,7 +95,7 @@ export function ContactPage({
                   <textarea
                     rows={4}
                     placeholder={tr.messagePlaceholder}
-                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                   />
                 </div>
                 <button
@@ -113,12 +113,12 @@ export function ContactPage({
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
-              <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+              <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                 <h2 className={`text-2xl font-bold mb-6 ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.getInTouch}</h2>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                      <MapPin size={24} className="text-[#2D4B32]" />
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                      <MapPin size={24} className="text-current" />
                     </div>
                     <div>
                       <h3 className={`font-semibold ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.location}</h3>
@@ -126,8 +126,8 @@ export function ContactPage({
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                      <Phone size={24} className="text-[#2D4B32]" />
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                      <Phone size={24} className="text-current" />
                     </div>
                     <div>
                       <h3 className={`font-semibold ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.phoneLabel}</h3>
@@ -135,8 +135,8 @@ export function ContactPage({
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                      <EnvelopeSimple size={24} className="text-[#2D4B32]" />
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                      <EnvelopeSimple size={24} className="text-current" />
                     </div>
                     <div>
                       <h3 className={`font-semibold ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.emailAddress}</h3>

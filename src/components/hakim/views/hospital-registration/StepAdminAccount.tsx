@@ -45,7 +45,7 @@ export function StepAdminAccount({
               placeholder="Full name"
               value={registrationData.adminName}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, adminName: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
             />
           </div>
         </div>
@@ -61,7 +61,7 @@ export function StepAdminAccount({
               placeholder="09XXXXXXXXX"
               value={registrationData.adminPhone}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, adminPhone: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
             />
           </div>
         </div>
@@ -76,7 +76,7 @@ export function StepAdminAccount({
               placeholder="Minimum 8 characters"
               value={registrationData.adminPassword}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, adminPassword: e.target.value }))}
-              className={`w-full pr-12 pl-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pr-12 pl-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
             />
             <button
               type="button"
@@ -97,7 +97,7 @@ export function StepAdminAccount({
             placeholder="Re-enter password"
             value={registrationData.confirmPassword}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
           />
         </div>
       </div>
@@ -117,7 +117,7 @@ export function StepAdminAccount({
       <div className="flex justify-between">
         <button
           onClick={onBack}
-          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-gray-800 text-gray-300 hover:bg-gray-700" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-gray-950 text-gray-300 hover:bg-gray-700" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
         >
           <ArrowLeft size={20} />
           {tr.back}

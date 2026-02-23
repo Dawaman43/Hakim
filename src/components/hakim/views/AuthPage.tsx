@@ -77,7 +77,7 @@ export function AuthPage({
           </p>
         </div>
 
-        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           {!otpSent ? (
             <div className="space-y-6">
               <div>
@@ -89,7 +89,7 @@ export function AuthPage({
                     placeholder="09XXXXXXXXX"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition text-lg ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                    className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition text-lg ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                   />
                 </div>
               </div>
@@ -102,7 +102,7 @@ export function AuthPage({
                     placeholder={t.yourNamePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition text-lg ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                    className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition text-lg ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                   />
                 </div>
               </div>
@@ -130,7 +130,7 @@ export function AuthPage({
                   placeholder="000000"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  className={`w-full text-center text-3xl tracking-widest py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition font-mono ${darkMode ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                  className={`w-full text-center text-3xl tracking-widest py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition font-mono ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
                   maxLength={6}
                 />
               </div>
@@ -168,7 +168,7 @@ export function AuthPage({
           </div>
         </div>
 
-        <div className={`mt-4 p-4 rounded-2xl border ${darkMode ? "bg-gray-900/50 border-gray-800" : "bg-[#2D4B32]/10 border-[#2D4B32]"}`}>
+        <div className={`mt-4 p-4 rounded-2xl border ${darkMode ? "bg-gray-950/50 border-gray-800" : "bg-[#2D4B32]/10 border-[#2D4B32]"}`}>
           <p className={`text-sm text-center ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
             Want to register your hospital?{" "}
             <button onClick={() => onNavigate("hospital-register")} className="text-[#2D4B32] hover:underline font-medium">

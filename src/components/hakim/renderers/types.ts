@@ -70,6 +70,7 @@ export interface PublicViewProps {
   setTriageResult: (value: TriageResult | null) => void;
   reportEmergency: () => void;
   apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
   setCurrentAppointment: (appt: Appointment | null) => void;
   userLocation: { lat: number; lng: number; city?: string } | null;
   locationNotice: string | null;

@@ -1,5 +1,7 @@
 import { HakimApp } from '@/components/hakim/hakim-app';
+import { getUiPreferences } from '@/app/ui-preferences';
 
-export default function Page() {
-  return <HakimApp initialView="nearest-hospitals" />;
+export default async function Page() {
+  const { theme, language } = await getUiPreferences();
+  return <HakimApp initialView="nearest-hospitals" initialTheme={theme} initialLanguage={language} />;
 }

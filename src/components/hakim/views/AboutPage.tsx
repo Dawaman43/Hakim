@@ -32,7 +32,7 @@ export function AboutPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
       {navigation}
 
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-background"}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -69,9 +69,9 @@ export function AboutPage({
               <p className={`text-lg mb-6 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                 {t.missionPara2}
               </p>
-              <div className={`flex items-center gap-4 p-4 rounded-xl ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                <HandHeart size={32} className="text-[#2D4B32]" />
-                <p className={`font-medium ${darkMode ? "text-[#2D4B32]" : "text-[#2D4B32]"}`}>
+              <div className={`flex items-center gap-4 p-4 rounded-xl ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                <HandHeart size={32} className="text-current" />
+                <p className="font-medium text-current">
                   {t.missionBelief}
                 </p>
               </div>
@@ -91,7 +91,7 @@ export function AboutPage({
                     { icon: Clock, value: "2-4 hrs", label: t.avgWaitReduced },
                     { icon: MapPin, value: "13", label: t.regions },
                   ].map((stat, i) => (
-                    <div key={i} className={`rounded-2xl p-6 text-center shadow-lg ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+                    <div key={i} className={`rounded-2xl p-6 text-center shadow-lg ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                       <stat.icon size={28} className="text-[#2D4B32] mx-auto mb-3" />
                       <p className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>{stat.value}</p>
                       <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{stat.label}</p>
@@ -104,7 +104,7 @@ export function AboutPage({
         </div>
       </section>
 
-      <section className={`py-24 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+      <section className={`py-24 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -135,10 +135,10 @@ export function AboutPage({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow ${darkMode ? "bg-gray-800" : "bg-background"}`}
+                className={`rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow ${darkMode ? "bg-gray-950" : "bg-background"}`}
               >
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                  <item.icon size={28} className="text-[#2D4B32]" />
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                  <item.icon size={28} className="text-current" />
                 </div>
                 <h3 className={`text-xl font-bold mb-3 ${darkMode ? "text-white" : "text-gray-900"}`}>{item.title}</h3>
                 <p className={darkMode ? "text-gray-400" : "text-gray-600"}>{item.description}</p>

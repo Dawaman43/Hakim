@@ -29,7 +29,11 @@ export function Navigation({
   onLogout,
 }: NavigationProps) {
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 ${transparent ? 'bg-transparent' : 'bg-white/95 backdrop-blur-sm shadow-sm'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 ${
+      transparent
+        ? 'bg-transparent dark:bg-gray-950/95 dark:backdrop-blur-sm dark:border-b dark:border-gray-800/60'
+        : 'bg-white/95 backdrop-blur-sm shadow-sm dark:bg-gray-950/95 dark:border-b dark:border-gray-800/60'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -47,10 +51,10 @@ export function Navigation({
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => onNavigate('landing')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">Home</button>
-            <button onClick={() => onNavigate('features')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">Features</button>
-            <button onClick={() => onNavigate('about')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">About</button>
-            <button onClick={() => onNavigate('contact')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium">Contact</button>
+            <button onClick={() => onNavigate('landing')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium dark:text-gray-300">Home</button>
+            <button onClick={() => onNavigate('features')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium dark:text-gray-300">Features</button>
+            <button onClick={() => onNavigate('about')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium dark:text-gray-300">About</button>
+            <button onClick={() => onNavigate('contact')} className="text-gray-600 hover:text-[#2D4B32] transition font-medium dark:text-gray-300">Contact</button>
           </div>
 
           {/* Auth Buttons */}
@@ -59,7 +63,7 @@ export function Navigation({
               <>
                 <button
                   onClick={() => onNavigate('profile')}
-                  className="flex items-center gap-2 text-gray-600 hover:text-[#2D4B32] transition"
+                  className="flex items-center gap-2 text-gray-600 hover:text-[#2D4B32] transition dark:text-gray-300"
                 >
                   <User size={20} />
                   <span>{user?.name?.split(' ')[0] || 'User'}</span>
@@ -67,7 +71,7 @@ export function Navigation({
                 {user?.role === 'HOSPITAL_ADMIN' && (
                   <button
                     onClick={() => onNavigate('admin-dashboard')}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#2D4B32] text-[#2D4B32] rounded-lg hover:bg-[#2D4B32] transition font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#2D4B32] text-white rounded-lg hover:bg-[#2D4B32] transition font-medium"
                   >
                     <Gear size={20} />
                     Dashboard
@@ -75,7 +79,7 @@ export function Navigation({
                 )}
                 <button
                   onClick={() => { onLogout(); onNavigate('landing'); }}
-                  className="p-2 text-gray-400 hover:text-red-500 transition"
+                  className="p-2 text-gray-400 hover:text-red-500 transition dark:text-gray-500"
                 >
                   <SignOut size={20} />
                 </button>
@@ -84,7 +88,7 @@ export function Navigation({
               <>
                 <button
                   onClick={() => onNavigate('auth')}
-                  className="text-gray-600 hover:text-[#2D4B32] transition font-medium"
+                  className="text-gray-600 hover:text-[#2D4B32] transition font-medium dark:text-gray-300"
                 >
                   Sign In
                 </button>
@@ -126,7 +130,7 @@ function MobileMenuButton({
     <div className="md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-gray-600"
+        className="p-2 text-gray-600 dark:text-gray-300"
       >
         {isOpen ? <X size={24} /> : <List size={24} />}
       </button>
@@ -137,18 +141,18 @@ function MobileMenuButton({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t absolute left-0 right-0 top-16"
+            className="md:hidden bg-white border-t absolute left-0 right-0 top-16 dark:bg-gray-950 dark:border-gray-800"
           >
             <div className="px-4 py-4 space-y-2">
-              <button onClick={() => { onNavigate('landing'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50">Home</button>
-              <button onClick={() => { onNavigate('features'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50">Features</button>
-              <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50">About</button>
-              <button onClick={() => { onNavigate('contact'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50">Contact</button>
-              <hr className="my-2" />
+              <button onClick={() => { onNavigate('landing'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 dark:text-gray-200">Home</button>
+              <button onClick={() => { onNavigate('features'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 dark:text-gray-200">Features</button>
+              <button onClick={() => { onNavigate('about'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 dark:text-gray-200">About</button>
+              <button onClick={() => { onNavigate('contact'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 dark:text-gray-200">Contact</button>
+              <hr className="my-2 dark:border-gray-800" />
               {isAuthenticated ? (
                 <>
-                  <button onClick={() => { onNavigate('profile'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50">Profile</button>
-                  <button onClick={() => { onLogout(); onNavigate('landing'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 text-red-500">Sign Out</button>
+                  <button onClick={() => { onNavigate('profile'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 dark:text-gray-200">Profile</button>
+                  <button onClick={() => { onLogout(); onNavigate('landing'); setIsOpen(false); }} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 text-red-500 dark:hover:bg-gray-900">Sign Out</button>
                 </>
               ) : (
                 <button onClick={() => { onNavigate('auth'); setIsOpen(false); }} className="block w-full text-center px-4 py-2 bg-[#2D4B32] text-white rounded-lg">Sign In</button>

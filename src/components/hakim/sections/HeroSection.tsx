@@ -16,10 +16,10 @@ interface HeroSectionProps {
 
 export function HeroSection({ darkMode, t, onNavigate, onFindNearest, locationLoading }: HeroSectionProps) {
   return (
-    <section className={`relative min-h-screen flex items-center overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-background'}`}>
+    <section className={`relative min-h-screen flex items-center overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       <div className="absolute inset-0 overflow-hidden">
         <div className={`absolute -top-32 -right-24 w-80 h-80 rounded-full blur-2xl ${darkMode ? 'bg-[#2D4B32]/10' : 'bg-[#2D4B32]/10'}`} />
-        <div className={`absolute inset-0 bg-[linear-gradient(to_right,_1px,transparent_1px),linear-gradient(to_bottom,_1px,transparent_1px)] bg-[size:24px_24px] ${darkMode ? 'bg-gray-800/15' : 'bg-gray-400/10'}`} />
+        <div className={`absolute inset-0 bg-[linear-gradient(to_right,_1px,transparent_1px),linear-gradient(to_bottom,_1px,transparent_1px)] bg-[size:24px_24px] ${darkMode ? 'bg-gray-950/15' : 'bg-gray-400/10'}`} />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
@@ -66,7 +66,7 @@ export function HeroSection({ darkMode, t, onNavigate, onFindNearest, locationLo
               <button
                 onClick={onFindNearest}
                 disabled={locationLoading}
-                className={`group px-8 py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 border-2 ${darkMode ? 'bg-gray-800 border-gray-700 text-gray-200 hover:border-[#2D4B32] hover:bg-gray-750' : 'bg-white border-gray-200 text-gray-700 hover:text-white hover:border-[#2D4B32] hover:bg-[#2D4B32] hover:shadow-lg'}`}
+                className={`group px-8 py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 border-2 ${darkMode ? 'bg-gray-950 border-gray-700 text-gray-200 hover:border-[#2D4B32] hover:bg-gray-750' : 'bg-white border-gray-200 text-gray-700 hover:text-white hover:border-[#2D4B32] hover:bg-[#2D4B32] hover:shadow-lg'}`}
               >
                 {locationLoading ? (
                   <>
@@ -105,7 +105,7 @@ export function HeroSection({ darkMode, t, onNavigate, onFindNearest, locationLo
             className="relative hidden lg:block"
           >
             <div className="relative w-full aspect-square max-w-lg mx-auto">
-              <div className={`absolute inset-0 backdrop-blur-sm rounded-3xl shadow-2xl p-8 flex flex-col justify-center border ${darkMode ? 'bg-gray-900/90 border-gray-700 shadow-[#2D4B32]/20' : 'bg-background border-gray-100 shadow-[#2D4B32]/20'}`}>
+              <div className={`absolute inset-0 backdrop-blur-sm rounded-3xl shadow-2xl p-8 flex flex-col justify-center border ${darkMode ? 'bg-gray-950/90 border-gray-700 shadow-[#2D4B32]/20' : 'bg-background border-gray-100 shadow-[#2D4B32]/20'}`}>
                 <div className="text-center mb-6">
                   <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4 shadow-inner ${darkMode ? 'bg-[#E7EDDF]' : 'bg-[#E7EDDF]'}`}>
                     <Ticket size={40} className="text-[#2D4B32]" weight="duotone" />

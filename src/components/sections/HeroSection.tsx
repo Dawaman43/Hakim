@@ -36,7 +36,7 @@ export function HeroSection({ onNavigate, onFindNearest, locationLoading, locati
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#2D4B32] rounded-full text-[#2D4B32] text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#2D4B32] rounded-full text-white text-sm font-medium mb-6">
               <Sparkle size={16} weight="fill" />
               <span>Made for Ethiopia 🇪🇹</span>
             </div>
@@ -145,7 +145,7 @@ function HeroIllustration() {
         <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl shadow-[#2D4B32]/20 p-8 flex flex-col justify-center">
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-[#2D4B32] rounded-2xl mb-4">
-              <Ticket size={40} className="text-[#2D4B32]" weight="duotone" />
+              <Ticket size={40} className="text-white" weight="duotone" />
             </div>
             <p className="text-gray-500 text-sm">Your Token Number</p>
             <p className="text-6xl font-bold text-gray-900 mt-2">#042</p>
@@ -174,17 +174,17 @@ function HeroIllustration() {
               <CaretRight size={20} className="text-gray-400" />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-[#2D4B32] rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-[#2D4B32] rounded-xl text-white">
               <div className="flex items-center gap-3">
-                <Timer size={24} className="text-[#2D4B32]" />
+                <Timer size={24} className="text-white" />
                 <div>
-                  <p className="text-sm text-[#2D4B32]">Estimated Wait</p>
-                  <p className="font-bold text-[#2D4B32]">~25 minutes</p>
+                  <p className="text-sm text-white">Estimated Wait</p>
+                  <p className="font-bold text-white">~25 minutes</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-[#2D4B32]">5</p>
-                <p className="text-xs text-[#2D4B32]">ahead</p>
+                <p className="text-2xl font-bold text-white">5</p>
+                <p className="text-xs text-white">ahead</p>
               </div>
             </div>
           </div>

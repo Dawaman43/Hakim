@@ -50,14 +50,14 @@ export function AdminQueuePage({
 
             <h1 className={`text-2xl font-bold mb-6 ${darkMode ? "text-white" : "text-gray-900"}`}>Queue Management</h1>
 
-            <div className={`rounded-2xl shadow-lg p-4 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+            <div className={`rounded-2xl shadow-lg p-4 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
               <select
                 value={selectedDepartment?.id || ""}
                 onChange={(e) => {
                   const dept = departments.find(d => d.id === e.target.value);
                   setSelectedDepartment((dept as Department) || null);
                 }}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "border-gray-200"}`}
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
               >
                 <option value="">Select department</option>
                 {departments.map(d => (
@@ -67,7 +67,7 @@ export function AdminQueuePage({
             </div>
 
             {selectedDepartment && (
-              <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+              <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                 <div className="text-center mb-6">
                   <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Currently Serving</p>
                   <p className={`text-5xl font-bold my-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
@@ -92,19 +92,19 @@ export function AdminQueuePage({
             )}
 
             <div className="grid grid-cols-2 gap-4">
-              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                 <ArrowClockwise size={24} className="text-[#2D4B32] mx-auto mb-2" />
                 <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>Skip Patient</p>
               </button>
-              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                 <FirstAid size={24} className="text-red-500 mx-auto mb-2" />
                 <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>Emergency Insert</p>
               </button>
-              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                 <Check size={24} className="text-[#2D4B32] mx-auto mb-2" />
                 <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>Mark Complete</p>
               </button>
-              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-900" : "bg-background"}`}>
+              <button className={`p-4 rounded-2xl shadow-lg hover:shadow-xl transition text-center ${darkMode ? "bg-gray-950" : "bg-background"}`}>
                 <Clock size={24} className="text-[#2D4B32] mx-auto mb-2" />
                 <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>View History</p>
               </button>

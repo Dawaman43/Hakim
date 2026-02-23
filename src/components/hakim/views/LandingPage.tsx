@@ -87,8 +87,8 @@ export function LandingPage(props: LandingPageProps) {
       />
       <FeaturesSection darkMode={darkMode} t={t} />
       <HowItWorksSection darkMode={darkMode} t={t} />
-      <CTASection t={t} onNavigate={onNavigate} />
-      <Footer t={t} selectedRegion={selectedRegion} getAmbulanceInfo={getAmbulanceInfo} onNavigate={onNavigate} />
+      <CTASection t={t} onNavigate={onNavigate} darkMode={darkMode} />
+      <Footer t={t} selectedRegion={selectedRegion} getAmbulanceInfo={getAmbulanceInfo} onNavigate={onNavigate} darkMode={darkMode} />
     </div>
   );
 }

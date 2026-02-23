@@ -31,45 +31,45 @@ export function OverviewSection({
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{tr.todayPatients}</span>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-              <Users size={20} className="text-[#2D4B32]" />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+              <Users size={20} className="text-current" />
             </div>
           </div>
           <p className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>{dashboardStats.todayPatients}</p>
         </div>
-        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{tr.currentlyWaiting}</span>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-              <Timer size={20} className="text-[#2D4B32]" />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+              <Timer size={20} className="text-current" />
             </div>
           </div>
           <p className="text-3xl font-bold text-[#2D4B32]">{dashboardStats.waiting}</p>
         </div>
-        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{tr.servedToday}</span>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-              <CheckCircle size={20} className="text-[#2D4B32]" />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+              <CheckCircle size={20} className="text-current" />
             </div>
           </div>
           <p className="text-3xl font-bold text-[#2D4B32]">{dashboardStats.served}</p>
         </div>
-        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+        <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{tr.averageWaitTime}</span>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-              <Clock size={20} className="text-[#2D4B32]" />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+              <Clock size={20} className="text-current" />
             </div>
           </div>
           <p className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>{dashboardStats.avgWaitTime}<span className="text-lg font-normal">min</span></p>
         </div>
       </div>
 
-      <div className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+      <div className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
         <div className={`p-6 border-b ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
           <h3 className={`text-lg font-semibold ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.queueStatus}</h3>
         </div>
@@ -90,8 +90,8 @@ export function OverviewSection({
                 <tr key={queue.departmentId} className={index % 2 === 0 ? "" : darkMode ? "bg-gray-750/30" : "bg-background"}>
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10" : "bg-[#2D4B32]"}`}>
-                        <Stethoscope size={16} className="text-[#2D4B32]" />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                        <Stethoscope size={16} className="text-current" />
                       </div>
                       <span className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>{queue.departmentName}</span>
                     </div>
@@ -100,7 +100,7 @@ export function OverviewSection({
                   <td className="py-4 px-6 text-center">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                       queue.waiting > 10 ? (darkMode ? "bg-red-900/50 text-red-400" : "bg-red-100 text-red-700") :
-                      queue.waiting > 5 ? (darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-[#2D4B32]") :
+                      queue.waiting > 5 ? (darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white") :
                       (darkMode ? "bg-green-900/50 text-green-400" : "bg-green-100 text-green-700")
                     }`}>
                       {queue.waiting}
@@ -127,10 +127,10 @@ export function OverviewSection({
         </div>
       </div>
 
-      <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-background"}`}>
+      <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
         <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>{tr.quickActions}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button onClick={() => setDashboardSection("queues")} className={`p-4 rounded-xl transition text-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10" : "bg-[#2D4B32] text-[#2D4B32] hover:bg-[#2D4B32]"}`}>
+          <button onClick={() => setDashboardSection("queues")} className={`p-4 rounded-xl transition text-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10" : "bg-[#2D4B32] text-white hover:bg-[#2D4B32]"}`}>
             <Users size={24} className="mx-auto mb-2" />
             <span className="text-sm font-medium">{tr.manageQueues}</span>
           </button>
@@ -138,11 +138,11 @@ export function OverviewSection({
             <FirstAid size={24} className="mx-auto mb-2" />
             <span className="text-sm font-medium">{tr.addEmergency}</span>
           </button>
-          <button className={`p-4 rounded-xl transition text-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10" : "bg-[#2D4B32] text-[#2D4B32] hover:bg-[#2D4B32]"}`}>
+          <button className={`p-4 rounded-xl transition text-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10" : "bg-[#2D4B32] text-white hover:bg-[#2D4B32]"}`}>
             <Bell size={24} className="mx-auto mb-2" />
             <span className="text-sm font-medium">{tr.broadcastAlert}</span>
           </button>
-          <button onClick={() => setDashboardSection("analytics")} className={`p-4 rounded-xl transition text-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10" : "bg-[#2D4B32] text-[#2D4B32] hover:bg-[#2D4B32]"}`}>
+          <button onClick={() => setDashboardSection("analytics")} className={`p-4 rounded-xl transition text-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] hover:bg-[#2D4B32]/10" : "bg-[#2D4B32] text-white hover:bg-[#2D4B32]"}`}>
             <ChartBar size={24} className="mx-auto mb-2" />
             <span className="text-sm font-medium">{tr.viewReports}</span>
           </button>

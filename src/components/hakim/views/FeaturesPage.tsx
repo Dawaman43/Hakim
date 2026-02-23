@@ -28,7 +28,7 @@ export function FeaturesPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       {navigation}
 
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-background'}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -57,7 +57,7 @@ export function FeaturesPage({
             className="grid lg:grid-cols-2 gap-12 items-center"
           >
             <div>
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-[#2D4B32]'}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-white'}`}>
                 <Ticket size={16} weight="fill" />
                 {t.queueManagement}
               </div>
@@ -82,7 +82,7 @@ export function FeaturesPage({
               </ul>
             </div>
             <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-[#2D4B32]/30 to-[#2D4B32]/30' : 'bg-gradient-to-br from-[#2D4B32] to-[#2D4B32]'}`}>
-              <div className={`rounded-2xl shadow-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-background'}`}>
+              <div className={`rounded-2xl shadow-xl p-6 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
                 <div className="text-center mb-6">
                   <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.tokenNumber}</p>
                   <p className={`text-5xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>#042</p>
@@ -120,11 +120,11 @@ export function FeaturesPage({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className={`rounded-xl shadow-lg p-4 ${darkMode ? 'bg-gray-800' : 'bg-background'}`}
+                    className={`rounded-xl shadow-lg p-4 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-[#2D4B32]/10' : 'bg-[#2D4B32]'}`}>
-                        <CellTower size={20} className="text-[#2D4B32]" />
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-white'}`}>
+                        <CellTower size={20} className="text-current" />
                       </div>
                       <div>
                         <p className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{sms.title}</p>
@@ -136,8 +136,8 @@ export function FeaturesPage({
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-[#2D4B32]'}`}>
-                <CellTower size={16} weight="fill" />
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-white'}`}>
+                <CellTower size={16} weight="fill" className="text-current" />
                 {t.smsSystem}
               </div>
               <h2 className={`text-3xl sm:text-4xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -186,7 +186,7 @@ export function FeaturesPage({
                   { level: t.medium, color: 'bg-yellow-500', desc: t.mediumDesc },
                   { level: t.low, color: 'bg-green-500', desc: t.lowDesc },
                 ].map((severity, i) => (
-                  <div key={i} className={`flex items-center gap-3 p-3 rounded-lg ${darkMode ? 'bg-gray-800' : 'bg-background'}`}>
+                  <div key={i} className={`flex items-center gap-3 p-3 rounded-lg ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
                     <div className={`w-3 h-3 ${severity.color} rounded-full`} />
                     <div>
                       <p className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{severity.level}</p>
@@ -205,7 +205,7 @@ export function FeaturesPage({
               </div>
             </div>
             <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-red-900/20 to-[#2D4B32]/20' : 'bg-gradient-to-br from-red-50 to-[#2D4B32]'}`}>
-              <div className={`rounded-2xl shadow-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-background'}`}>
+              <div className={`rounded-2xl shadow-xl p-6 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
                 <h4 className={`font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>{t.describeSymptoms}</h4>
                 <div className={`rounded-lg p-4 mb-4 ${darkMode ? 'bg-gray-700' : 'bg-background'}`}>
                   <p className={`text-sm italic ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>

@@ -41,7 +41,7 @@ export function TokenPage({
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
       {navigation}
 
-      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950' : 'bg-background'}`}>
+      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-background'}`}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <button
@@ -64,26 +64,26 @@ export function TokenPage({
 
       <section className="py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`rounded-3xl border p-6 ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+          <div className={`rounded-3xl border p-6 ${darkMode ? 'bg-gray-950 border-gray-800' : 'bg-white border-gray-200'}`}>
             <div className="text-center mb-8">
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.yourTokenNumber}</p>
               <p className={`text-6xl font-bold mt-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>#{currentAppointment.tokenNumber}</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
-              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
                 <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.status}</p>
                 <p className="text-lg font-semibold text-[#2D4B32]">{currentAppointment.status}</p>
               </div>
-              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
                 <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.queuePosition}</p>
-                <p className="text-lg font-semibold text-[#2D4B32]">{queueStatus?.position ?? '--'}</p>
+                <p className="text-lg font-semibold text-[#2D4B32]">{queueStatus?.totalWaiting ?? '--'}</p>
               </div>
-              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
                 <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.estimatedWait}</p>
-                <p className="text-lg font-semibold text-[#2D4B32]">{formatWaitTime(queueStatus?.estimatedWaitTime || 0)}</p>
+                <p className="text-lg font-semibold text-[#2D4B32]">{formatWaitTime(queueStatus?.estimatedWaitMinutes || 0)}</p>
               </div>
-              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
                 <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.currentlyServing}</p>
                 <p className="text-lg font-semibold text-[#2D4B32]">#{queueStatus?.currentToken ?? '--'}</p>
               </div>

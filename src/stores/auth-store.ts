@@ -4,6 +4,25 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { User } from '@/types';
 
+const safeStorage = () => {
+  if (typeof window === 'undefined') return undefined;
+  return {
+    getItem: (key: string) => {
+      const value = localStorage.getItem(key);
+      if (value == null) return null;
+      try {
+        JSON.parse(value);
+        return value;
+      } catch {
+        localStorage.removeItem(key);
+        return null;
+      }
+    },
+    setItem: (key: string, value: string) => localStorage.setItem(key, value),
+    removeItem: (key: string) => localStorage.removeItem(key),
+  };
+};
+
 interface AuthState {
   user: User | null;
   token: string | null;
@@ -53,7 +72,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'hakim-auth',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeStorage() as any),
       partialize: (state) => ({
         user: state.user,
         token: state.token,
@@ -98,7 +117,7 @@ export const useQueueStore = create<QueueState>()(
     }),
     {
       name: 'hakim-queue',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeStorage() as any),
     }
   )
 );
@@ -122,7 +141,7 @@ export const useEmergencyStore = create<EmergencyState>()(
     }),
     {
       name: 'hakim-emergency',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeStorage() as any),
     }
   )
 );
