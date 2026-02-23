@@ -34,14 +34,14 @@ export function CTASection({ t, onNavigate, darkMode }: CTASectionProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               onClick={() => onNavigate('hospitals')}
-              className="px-8 py-4 bg-[#2D4B32] text-white rounded-2xl font-semibold text-lg transition-all"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all"
             >
               {t.bookYourTokenNow}
             </Button>
             <Button
               onClick={() => onNavigate('emergency')}
               variant="outline"
-              className="px-8 py-4 rounded-2xl font-semibold text-lg border-2 transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 rounded-2xl font-semibold text-lg border-2 border-border text-foreground bg-background/60 hover:bg-muted transition-all flex items-center justify-center gap-2"
             >
               <Ambulance size={20} />
               {t.emergencyAssist}

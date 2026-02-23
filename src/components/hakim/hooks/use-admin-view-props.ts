@@ -9,6 +9,7 @@ interface UseAdminViewPropsParams {
   view: ViewType;
   darkMode: boolean;
   loading: boolean;
+  token: string | null;
   hospitals: Hospital[];
   departments: Department[];
   selectedHospital: Hospital | null;
@@ -21,6 +22,8 @@ interface UseAdminViewPropsParams {
   onNavigate: (view: ViewType) => void;
   onLogin: (user: User, token: string) => void;
   navigation: React.ReactNode;
+  apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
 }
 
 export function useAdminViewProps(params: UseAdminViewPropsParams) {
@@ -28,6 +31,7 @@ export function useAdminViewProps(params: UseAdminViewPropsParams) {
     view: params.view,
     darkMode: params.darkMode,
     loading: params.loading,
+    token: params.token,
     hospitals: params.hospitals,
     departments: params.departments,
     selectedHospital: params.selectedHospital,
@@ -40,10 +44,13 @@ export function useAdminViewProps(params: UseAdminViewPropsParams) {
     onNavigate: params.onNavigate,
     onLogin: params.onLogin,
     navigation: params.navigation,
+    apiGet: params.apiGet,
+    apiPost: params.apiPost,
   }), [
     params.view,
     params.darkMode,
     params.loading,
+    params.token,
     params.hospitals,
     params.departments,
     params.selectedHospital,
@@ -56,5 +63,7 @@ export function useAdminViewProps(params: UseAdminViewPropsParams) {
     params.onNavigate,
     params.onLogin,
     params.navigation,
+    params.apiGet,
+    params.apiPost,
   ]);
 }

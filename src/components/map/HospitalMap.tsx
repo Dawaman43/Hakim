@@ -131,10 +131,10 @@ export default function HospitalMap({
 
   if (!isMounted) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+      <div className="w-full h-full flex items-center justify-center bg-muted">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2D4B32] mx-auto mb-2"></div>
-          <p className="text-gray-500">Loading map...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+          <p className="text-muted-foreground">Loading map...</p>
         </div>
       </div>
     );
@@ -175,19 +175,19 @@ export default function HospitalMap({
           >
             <Popup>
               <div className="p-2 min-w-[200px]">
-                <h3 className="font-bold text-[#2D4B32]">{hospital.name}</h3>
-                <p className="text-sm text-gray-600">{hospital.region}</p>
+                <h3 className="font-bold text-primary">{hospital.name}</h3>
+                <p className="text-sm text-muted-foreground">{hospital.region}</p>
                 {hospital.address && (
-                  <p className="text-xs text-gray-500 mt-1">{hospital.address}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{hospital.address}</p>
                 )}
                 {hospital.emergencyContactNumber && (
-                  <p className="text-xs text-[#2D4B32] mt-2">
+                  <p className="text-xs text-primary mt-2">
                     📞 {hospital.emergencyContactNumber}
                   </p>
                 )}
                 <button
                   onClick={() => onHospitalSelect(hospital)}
-                  className="w-full mt-2 px-3 py-1 bg-[#2D4B32] text-white text-sm rounded hover:bg-[#2D4B32] transition"
+                  className="w-full mt-2 px-3 py-1 bg-primary text-primary-foreground text-sm rounded hover:bg-primary transition"
                 >
                   Select Facility
                 </button>
@@ -198,44 +198,44 @@ export default function HospitalMap({
       </MapContainer>
 
       {/* Map Legend */}
-      <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-3 z-[1000]">
-        <p className="text-xs font-semibold text-gray-700 mb-2">Legend</p>
+      <div className="absolute bottom-4 left-4 bg-card rounded-lg shadow-lg p-3 z-[1000]">
+        <p className="text-xs font-semibold text-muted-foreground mb-2">Legend</p>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
-          <span className="text-xs text-gray-600">Hospital</span>
+          <div className="w-4 h-4 bg-primary rounded-full border-2 border-white shadow"></div>
+          <span className="text-xs text-muted-foreground">Hospital</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
-          <span className="text-xs text-gray-600">Health Center</span>
+          <div className="w-4 h-4 bg-primary rounded-full border-2 border-white shadow"></div>
+          <span className="text-xs text-muted-foreground">Health Center</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
-          <span className="text-xs text-gray-600">Clinic</span>
+          <div className="w-4 h-4 bg-primary rounded-full border-2 border-white shadow"></div>
+          <span className="text-xs text-muted-foreground">Clinic</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
-          <span className="text-xs text-gray-600">Pharmacy</span>
+          <div className="w-4 h-4 bg-primary rounded-full border-2 border-white shadow"></div>
+          <span className="text-xs text-muted-foreground">Pharmacy</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
-          <span className="text-xs text-gray-600">Laboratory</span>
+          <div className="w-4 h-4 bg-primary rounded-full border-2 border-white shadow"></div>
+          <span className="text-xs text-muted-foreground">Laboratory</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
           <div className="w-4 h-4 bg-red-600 rounded-full border-2 border-white shadow"></div>
-          <span className="text-xs text-gray-600">Selected</span>
+          <span className="text-xs text-muted-foreground">Selected</span>
         </div>
         {userLocation && (
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-[#2D4B32] rounded-full border-2 border-white shadow"></div>
-            <span className="text-xs text-gray-600">Your Location</span>
+            <div className="w-4 h-4 bg-primary rounded-full border-2 border-white shadow"></div>
+            <span className="text-xs text-muted-foreground">Your Location</span>
           </div>
         )}
       </div>
 
       {/* Facility Count */}
-      <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg px-3 py-2 z-[1000]">
-        <p className="text-xs text-gray-500">Facilities Shown</p>
-        <p className="text-lg font-bold text-[#2D4B32]">{validHospitals.length}</p>
+      <div className="absolute top-4 right-4 bg-card rounded-lg shadow-lg px-3 py-2 z-[1000]">
+        <p className="text-xs text-muted-foreground">Facilities Shown</p>
+        <p className="text-lg font-bold text-primary">{validHospitals.length}</p>
       </div>
     </div>
   );

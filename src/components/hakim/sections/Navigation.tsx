@@ -29,6 +29,11 @@ interface NavigationProps {
     signIn: string;
     bookQueue: string;
     dashboard: string;
+    hospitals: string;
+    appointments: string;
+    notifications: string;
+    emergencyAssist: string;
+    aiDoctor: string;
   };
 }
 
@@ -47,7 +52,33 @@ export function Navigation({
   onLogout,
   t,
 }: NavigationProps) {
-  const homeTarget: ViewType = isAuthenticated ? 'dashboard' : 'landing';
+  const role = user?.role;
+  const isAdmin = role === 'HOSPITAL_ADMIN' || role === 'SUPER_ADMIN';
+  const homeTarget: ViewType = isAuthenticated
+    ? role === 'HOSPITAL_ADMIN'
+      ? 'hospital-dashboard'
+      : role === 'SUPER_ADMIN'
+        ? 'admin-dashboard'
+        : 'dashboard'
+    : 'landing';
+
+  const adminNavItems: Array<{ label: string; view: ViewType }> =
+    role === 'SUPER_ADMIN'
+      ? [
+          { label: t.dashboard, view: 'admin-dashboard' },
+          { label: 'Queue', view: 'admin-queue' },
+          { label: 'Analytics', view: 'admin-analytics' },
+        ]
+      : [{ label: t.dashboard, view: 'hospital-dashboard' }];
+
+  const patientNavItems: Array<{ label: string; view: ViewType }> = [
+    { label: t.dashboard, view: 'dashboard' },
+    { label: t.hospitals, view: 'hospitals' },
+    { label: t.appointments, view: 'appointments' },
+    { label: t.notifications, view: 'notifications' },
+    { label: t.aiDoctor, view: 'assistant' },
+    { label: t.emergencyAssist, view: 'emergency' },
+  ];
 
   return (
     <nav className={`relative z-50 transition-all duration-300 ${
@@ -71,68 +102,92 @@ export function Navigation({
           </button>
 
           <div className="hidden md:flex items-center rounded-full px-2 py-1 border border-border/70 bg-muted/70 shadow-sm">
-            {isAuthenticated && (
-              <button
-                onClick={() => onNavigate('dashboard')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  view === 'dashboard'
-                    ? 'bg-background text-foreground border border-border shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
-                }`}
-              >
-                {t.dashboard}
-              </button>
+            {isAuthenticated && isAdmin ? (
+              adminNavItems.map((item) => (
+                <button
+                  key={item.view}
+                  onClick={() => onNavigate(item.view)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    view === item.view
+                      ? 'bg-background text-foreground border border-border shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))
+            ) : (
+              <>
+                {isAuthenticated ? (
+                  patientNavItems.map((item) => (
+                    <button
+                      key={item.view}
+                      onClick={() => onNavigate(item.view)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        view === item.view
+                          ? 'bg-background text-foreground border border-border shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))
+                ) : (
+                  <>
+                    <button
+                      onClick={() => onNavigate('landing')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        view === 'landing'
+                          ? 'bg-background text-foreground border border-border shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                      }`}
+                    >
+                      {t.home}
+                    </button>
+                    <button
+                      onClick={() => onNavigate('features')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        view === 'features'
+                          ? 'bg-background text-foreground border border-border shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                      }`}
+                    >
+                      {t.features}
+                    </button>
+                    <button
+                      onClick={() => onNavigate('download')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        view === 'download'
+                          ? 'bg-background text-foreground border border-border shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                      }`}
+                    >
+                      {t.download}
+                    </button>
+                    <button
+                      onClick={() => onNavigate('about')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        view === 'about'
+                          ? 'bg-background text-foreground border border-border shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                      }`}
+                    >
+                      {t.about}
+                    </button>
+                    <button
+                      onClick={() => onNavigate('contact')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        view === 'contact'
+                          ? 'bg-background text-foreground border border-border shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
+                      }`}
+                    >
+                      {t.contact}
+                    </button>
+                  </>
+                )}
+              </>
             )}
-            <button
-              onClick={() => onNavigate('landing')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === 'landing'
-                  ? 'bg-background text-foreground border border-border shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
-              }`}
-            >
-              {t.home}
-            </button>
-            <button
-              onClick={() => onNavigate('features')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === 'features'
-                  ? 'bg-background text-foreground border border-border shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
-              }`}
-            >
-              {t.features}
-            </button>
-            <button
-              onClick={() => onNavigate('download')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === 'download'
-                  ? 'bg-background text-foreground border border-border shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
-              }`}
-            >
-              {t.download}
-            </button>
-            <button
-              onClick={() => onNavigate('about')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === 'about'
-                  ? 'bg-background text-foreground border border-border shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
-              }`}
-            >
-              {t.about}
-            </button>
-            <button
-              onClick={() => onNavigate('contact')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                view === 'contact'
-                  ? 'bg-background text-foreground border border-border shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-background/80'
-              }`}
-            >
-              {t.contact}
-            </button>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
@@ -165,6 +220,15 @@ export function Navigation({
                   <span className="font-medium">{user?.name?.split(' ')[0] || 'User'}</span>
                 </button>
                 {user?.role === 'HOSPITAL_ADMIN' && (
+                  <button
+                    onClick={() => onNavigate('hospital-dashboard')}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl transition font-medium border border-primary/30 bg-primary/10 text-primary hover:bg-primary/15"
+                  >
+                    <Gear size={18} />
+                    {t.dashboard}
+                  </button>
+                )}
+                {user?.role === 'SUPER_ADMIN' && (
                   <button
                     onClick={() => onNavigate('admin-dashboard')}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl transition font-medium border border-primary/30 bg-primary/10 text-primary hover:bg-primary/15"
@@ -231,68 +295,92 @@ export function Navigation({
             className="md:hidden border-t shadow-lg bg-background/95 backdrop-blur-md border-border/60"
           >
             <div className="px-4 py-4 space-y-1">
-              {isAuthenticated && (
-                <button
-                  onClick={() => { onNavigate('dashboard'); setMobileMenuOpen(false); }}
-                  className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                    view === 'dashboard'
-                      ? 'bg-primary/10 text-primary font-medium border border-primary/30'
-                      : 'hover:bg-muted/70 text-foreground'
-                  }`}
-                >
-                  {t.dashboard}
-                </button>
+              {isAuthenticated && isAdmin ? (
+                adminNavItems.map((item) => (
+                  <button
+                    key={item.view}
+                    onClick={() => { onNavigate(item.view); setMobileMenuOpen(false); }}
+                    className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                      view === item.view
+                        ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                        : 'hover:bg-muted/70 text-foreground'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))
+              ) : (
+                <>
+                  {isAuthenticated ? (
+                    patientNavItems.map((item) => (
+                      <button
+                        key={item.view}
+                        onClick={() => { onNavigate(item.view); setMobileMenuOpen(false); }}
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                          view === item.view
+                            ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                            : 'hover:bg-muted/70 text-foreground'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => { onNavigate('landing'); setMobileMenuOpen(false); }}
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                          view === 'landing'
+                            ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                            : 'hover:bg-muted/70 text-foreground'
+                        }`}
+                      >
+                        {t.home}
+                      </button>
+                      <button
+                        onClick={() => { onNavigate('features'); setMobileMenuOpen(false); }}
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                          view === 'features'
+                            ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                            : 'hover:bg-muted/70 text-foreground'
+                        }`}
+                      >
+                        Features
+                      </button>
+                      <button
+                        onClick={() => { onNavigate('download'); setMobileMenuOpen(false); }}
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                          view === 'download'
+                            ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                            : 'hover:bg-muted/70 text-foreground'
+                        }`}
+                      >
+                        {t.download}
+                      </button>
+                      <button
+                        onClick={() => { onNavigate('about'); setMobileMenuOpen(false); }}
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                          view === 'about'
+                            ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                            : 'hover:bg-muted/70 text-foreground'
+                        }`}
+                      >
+                        About
+                      </button>
+                      <button
+                        onClick={() => { onNavigate('contact'); setMobileMenuOpen(false); }}
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+                          view === 'contact'
+                            ? 'bg-primary/10 text-primary font-medium border border-primary/30'
+                            : 'hover:bg-muted/70 text-foreground'
+                        }`}
+                      >
+                        Contact
+                      </button>
+                    </>
+                  )}
+                </>
               )}
-              <button
-                onClick={() => { onNavigate('landing'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                  view === 'landing'
-                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
-                    : 'hover:bg-muted/70 text-foreground'
-                }`}
-              >
-                {t.home}
-              </button>
-              <button
-                onClick={() => { onNavigate('features'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                  view === 'features'
-                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
-                    : 'hover:bg-muted/70 text-foreground'
-                }`}
-              >
-                Features
-              </button>
-              <button
-                onClick={() => { onNavigate('download'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                  view === 'download'
-                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
-                    : 'hover:bg-muted/70 text-foreground'
-                }`}
-              >
-                {t.download}
-              </button>
-              <button
-                onClick={() => { onNavigate('about'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                  view === 'about'
-                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
-                    : 'hover:bg-muted/70 text-foreground'
-                }`}
-              >
-                About
-              </button>
-              <button
-                onClick={() => { onNavigate('contact'); setMobileMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
-                  view === 'contact'
-                    ? 'bg-primary/10 text-primary font-medium border border-primary/30'
-                    : 'hover:bg-muted/70 text-foreground'
-                }`}
-              >
-                Contact
-              </button>
               <hr className="my-3 border-border/60" />
               {isAuthenticated ? (
                 <>

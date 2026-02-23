@@ -42,12 +42,12 @@ export function HowItWorksSection({ darkMode, t }: HowItWorksSectionProps) {
               className="relative text-center"
             >
               {index < 3 && (
-                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-[#2D4B32] to-transparent" />
+                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary to-transparent" />
               )}
 
-              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-3xl shadow-lg shadow-[#2D4B32]/20 mb-6">
-                <item.icon size={40} className="text-white" />
-                <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-center text-sm font-bold bg-card text-[#2D4B32]">
+              <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-primary shadow-lg shadow-primary/20 mb-6">
+                <item.icon size={40} className="text-primary-foreground" />
+                <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-center text-sm font-bold bg-primary text-primary-foreground">
                   {item.step}
                 </span>
               </div>

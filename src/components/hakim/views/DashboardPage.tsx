@@ -38,10 +38,10 @@ export function DashboardPage({
   nearestHospitals,
   nearestLoading,
 }: DashboardPageProps) {
-  const bg = darkMode ? 'bg-gray-950' : 'bg-background';
-  const card = darkMode ? 'bg-gray-950 border-gray-800' : 'bg-white border-gray-200';
-  const text = darkMode ? 'text-white' : 'text-gray-900';
-  const muted = darkMode ? 'text-gray-400' : 'text-gray-600';
+  const bg = darkMode ? 'bg-background' : 'bg-background';
+  const card = darkMode ? 'bg-background border-border' : 'bg-card border-border';
+  const text = darkMode ? 'text-foreground' : 'text-foreground';
+  const muted = darkMode ? 'text-muted-foreground' : 'text-muted-foreground';
 
   const quickActions = [
     { label: t.bookQueue, icon: Ticket, view: 'hospitals' },
@@ -65,7 +65,7 @@ export function DashboardPage({
               </h1>
             </div>
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${card}`}>
-              <ShieldCheck size={18} className="text-[#2D4B32]" />
+              <ShieldCheck size={18} className="text-primary" />
               <span className={`text-sm ${muted}`}>{t.hipaaCompliant}</span>
             </div>
           </div>
@@ -86,10 +86,10 @@ export function DashboardPage({
                     onClick={() => onNavigate(item.view)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition ${
                       item.view === 'dashboard'
-                        ? 'bg-[#2D4B32]/10 text-[#2D4B32]'
+                        ? 'bg-primary/10 text-primary'
                         : darkMode
-                          ? 'text-gray-300 hover:bg-gray-900'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'text-muted-foreground hover:bg-background'
+                          : 'text-muted-foreground hover:bg-muted/40'
                     }`}
                   >
                     <span>{item.label}</span>
@@ -121,7 +121,7 @@ export function DashboardPage({
                   <div key={stat.label} className={`rounded-2xl border p-4 ${card}`}>
                     <div className="flex items-center justify-between mb-3">
                       <span className={`text-sm ${muted}`}>{stat.label}</span>
-                      <stat.icon size={18} className="text-[#2D4B32]" />
+                      <stat.icon size={18} className="text-primary" />
                     </div>
                     <p className={`text-xl font-semibold ${text}`}>{stat.value}</p>
                   </div>
@@ -136,10 +136,10 @@ export function DashboardPage({
                       key={action.view}
                       onClick={() => onNavigate(action.view)}
                       className={`rounded-xl border p-3 text-left transition ${
-                        darkMode ? 'bg-gray-950 border-gray-800 hover:border-[#2D4B32]/50' : 'bg-white border-gray-200 hover:border-[#2D4B32]/50'
+                        darkMode ? 'bg-background border-border hover:border-primary/50' : 'bg-card border-border hover:border-primary/50'
                       }`}
                     >
-                      <action.icon size={20} className="text-[#2D4B32] mb-2" />
+                      <action.icon size={20} className="text-primary mb-2" />
                       <p className={`text-sm font-medium ${text}`}>{action.label}</p>
                     </button>
                   ))}
@@ -150,18 +150,18 @@ export function DashboardPage({
                 <div className={`rounded-2xl border p-5 ${card}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className={`text-lg font-semibold ${text}`}>{t.activeToken}</h3>
-                    <button onClick={() => onNavigate('token')} className="text-sm text-[#2D4B32] font-medium flex items-center gap-1">
+                    <button onClick={() => onNavigate('token')} className="text-sm text-primary font-medium flex items-center gap-1">
                       {t.currentQueueStatus}
                       <ArrowRight size={14} />
                     </button>
                   </div>
                   {currentAppointment ? (
                     <div className="space-y-3">
-                      <div className={`rounded-xl p-4 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                      <div className={`rounded-xl p-4 ${darkMode ? 'bg-background' : 'bg-muted/40'}`}>
                         <p className={`text-sm ${muted}`}>{currentAppointment.hospital?.name || t.hospitals}</p>
                         <p className={`text-base font-semibold ${text}`}>{currentAppointment.department?.name || t.departments}</p>
                         <div className="flex items-center gap-3 mt-3 text-sm">
-                          <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32]/10 text-[#2D4B32]'}`}>
+                          <span className={`px-3 py-1 rounded-full ${darkMode ? 'bg-primary/10 text-primary' : 'bg-primary/10 text-primary'}`}>
                             #{currentAppointment.tokenNumber}
                           </span>
                           <span className={muted}>{t.status}: {currentAppointment.status}</span>
@@ -169,11 +169,11 @@ export function DashboardPage({
                       </div>
                       {queueStatus && (
                         <div className="grid grid-cols-2 gap-3 text-sm">
-                          <div className={`rounded-xl p-3 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                          <div className={`rounded-xl p-3 ${darkMode ? 'bg-background' : 'bg-muted/40'}`}>
                             <p className={muted}>{t.queuePosition}</p>
                             <p className={`font-semibold ${text}`}>{queueStatus.totalWaiting}</p>
                           </div>
-                          <div className={`rounded-xl p-3 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                          <div className={`rounded-xl p-3 ${darkMode ? 'bg-background' : 'bg-muted/40'}`}>
                             <p className={muted}>{t.estimatedWait}</p>
                             <p className={`font-semibold ${text}`}>~{queueStatus.estimatedWaitMinutes} min</p>
                           </div>
@@ -188,13 +188,13 @@ export function DashboardPage({
                 <div className={`rounded-2xl border p-5 ${card}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className={`text-lg font-semibold ${text}`}>{t.notifications}</h3>
-                    <Bell size={18} className="text-[#2D4B32]" />
+                    <Bell size={18} className="text-primary" />
                   </div>
                   <div className="space-y-3">
-                    <div className={`rounded-xl p-4 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                    <div className={`rounded-xl p-4 ${darkMode ? 'bg-background' : 'bg-muted/40'}`}>
                       <p className={`text-sm ${muted}`}>{t.noNotifications}</p>
                     </div>
-                    <button onClick={() => onNavigate('profile')} className="text-sm text-[#2D4B32] font-medium">
+                    <button onClick={() => onNavigate('profile')} className="text-sm text-primary font-medium">
                       {t.profile}
                     </button>
                   </div>
@@ -205,9 +205,9 @@ export function DashboardPage({
                 <div className={`rounded-2xl border p-5 ${card}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className={`text-lg font-semibold ${text}`}>{t.upcomingAppointments}</h3>
-                    <CalendarBlank size={18} className="text-[#2D4B32]" />
+                    <CalendarBlank size={18} className="text-primary" />
                   </div>
-                  <div className={`rounded-xl p-4 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                  <div className={`rounded-xl p-4 ${darkMode ? 'bg-background' : 'bg-muted/40'}`}>
                     <p className={muted}>{t.noAppointments}</p>
                   </div>
                 </div>
@@ -215,7 +215,7 @@ export function DashboardPage({
                 <div className={`rounded-2xl border p-5 ${card}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className={`text-lg font-semibold ${text}`}>{t.nearbyHospitals}</h3>
-                    <button onClick={() => onNavigate('hospitals')} className="text-sm text-[#2D4B32] font-medium flex items-center gap-1">
+                    <button onClick={() => onNavigate('hospitals')} className="text-sm text-primary font-medium flex items-center gap-1">
                       {t.viewAllHospitals}
                       <ArrowRight size={14} />
                     </button>
@@ -225,12 +225,12 @@ export function DashboardPage({
                   ) : (
                     <div className="space-y-3">
                       {(nearestHospitals || []).slice(0, 3).map((hospital) => (
-                        <div key={hospital.id} className={`rounded-xl p-4 flex items-center justify-between ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                        <div key={hospital.id} className={`rounded-xl p-4 flex items-center justify-between ${darkMode ? 'bg-background' : 'bg-muted/40'}`}>
                           <div>
                             <p className={`text-sm font-medium ${text}`}>{hospital.name}</p>
                             <p className={`text-xs ${muted}`}>{hospital.region}</p>
                           </div>
-                          <button onClick={() => onNavigate('hospitals')} className="text-sm text-[#2D4B32] font-medium">
+                          <button onClick={() => onNavigate('hospitals')} className="text-sm text-primary font-medium">
                             {t.bookQueue}
                           </button>
                         </div>

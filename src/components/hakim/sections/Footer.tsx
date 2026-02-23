@@ -30,102 +30,102 @@ export function Footer({ t, selectedRegion, getAmbulanceInfo, onNavigate, stats,
   const border = "border-border";
   const surface = "bg-background";
   return (
-    <footer className={`relative overflow-hidden ${surface} ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+    <footer className={`relative overflow-hidden ${surface} ${darkMode ? "text-foreground" : "text-foreground"}`}>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-[#2D4B32]/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-[#2D4B32]/5 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="h-1 bg-gradient-to-r from-[#2D4B32] via-[#2D4B32] to-[#2D4B32]" />
+      <div className="h-1 bg-gradient-to-r from-primary via-primary to-primary" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-1">
             <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-md overflow-hidden border border-gray-100">
+              <div className="w-11 h-11 bg-card rounded-xl flex items-center justify-center shadow-md overflow-hidden border border-border">
                 <img src="/logo.png" alt="Hakim" className="w-[120%] h-[120%] object-cover object-center object-top" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">Hakim</span>
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">Hakim</span>
             </div>
             <p className={`${muted} mb-6 leading-relaxed`}>
               {t.footerDesc}
             </p>
             <div className="flex gap-3">
-              <button onClick={() => onNavigate('contact')} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group ${darkMode ? "bg-gray-900 border border-gray-800" : "bg-background border border-gray-300/60"} hover:border-[#2D4B32]`}>
-                <ChatCircle size={18} className={`${muted} group-hover:text-[#2D4B32] transition`} />
+              <button onClick={() => onNavigate('contact')} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group ${darkMode ? "bg-background border border-border" : "bg-background border border-border"} hover:border-primary`}>
+                <ChatCircle size={18} className={`${muted} group-hover:text-primary transition`} />
               </button>
-              <a href="tel:+251911000000" className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group ${darkMode ? "bg-gray-900 border border-gray-800" : "bg-background border border-gray-300/60"} hover:border-[#2D4B32]`}>
-                <Phone size={18} className={`${muted} group-hover:text-[#2D4B32] transition`} />
+              <a href="tel:+251911000000" className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group ${darkMode ? "bg-background border border-border" : "bg-background border border-border"} hover:border-primary`}>
+                <Phone size={18} className={`${muted} group-hover:text-primary transition`} />
               </a>
-              <a href="mailto:support@hakim.et" className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group ${darkMode ? "bg-gray-900 border border-gray-800" : "bg-background border border-gray-300/60"} hover:border-[#2D4B32]`}>
-                <EnvelopeSimple size={18} className={`${muted} group-hover:text-[#2D4B32] transition`} />
+              <a href="mailto:support@hakim.et" className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group ${darkMode ? "bg-background border border-border" : "bg-background border border-border"} hover:border-primary`}>
+                <EnvelopeSimple size={18} className={`${muted} group-hover:text-primary transition`} />
               </a>
             </div>
           </div>
 
           <div>
             <h4 className={`font-semibold mb-5 flex items-center gap-2 ${heading}`}>
-              <span className="w-1.5 h-1.5 bg-[#2D4B32] rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
               {t.quickLinks}
             </h4>
             <ul className="space-y-3">
-              <li><button onClick={() => onNavigate('hospitals')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.bookQueue}</button></li>
-              <li><button onClick={() => onNavigate('emergency')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.emergencyAssist}</button></li>
-              <li><button onClick={() => onNavigate('features')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.features}</button></li>
-              <li><button onClick={() => onNavigate('about')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.about}</button></li>
+              <li><button onClick={() => onNavigate('hospitals')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.bookQueue}</button></li>
+              <li><button onClick={() => onNavigate('emergency')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.emergencyAssist}</button></li>
+              <li><button onClick={() => onNavigate('features')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.features}</button></li>
+              <li><button onClick={() => onNavigate('about')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.about}</button></li>
             </ul>
           </div>
 
           <div>
             <h4 className={`font-semibold mb-5 flex items-center gap-2 ${heading}`}>
-              <span className="w-1.5 h-1.5 bg-[#2D4B32] rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
               {t.support}
             </h4>
             <ul className="space-y-3">
-              <li><button onClick={() => onNavigate('contact')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.contactUs}</button></li>
-              <li><button onClick={() => onNavigate('faq')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.faq}</button></li>
-              <li><button onClick={() => onNavigate('privacy')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.privacyPolicy}</button></li>
-              <li><button onClick={() => onNavigate('terms')} className={`${muted} hover:text-[#2D4B32] transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.termsOfService}</button></li>
-              <li><button onClick={() => onNavigate('admin-login')} className={`${muted} hover:text-[#2D4B32] transition text-sm mt-2`}>{t.hospitalAdminPortal} →</button></li>
+              <li><button onClick={() => onNavigate('contact')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.contactUs}</button></li>
+              <li><button onClick={() => onNavigate('faq')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.faq}</button></li>
+              <li><button onClick={() => onNavigate('privacy')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.privacyPolicy}</button></li>
+              <li><button onClick={() => onNavigate('terms')} className={`${muted} hover:text-primary transition flex items-center gap-2 group`}><CaretRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />{t.termsOfService}</button></li>
+              <li><button onClick={() => onNavigate('admin-login')} className={`${muted} hover:text-primary transition text-sm mt-2`}>{t.hospitalAdminPortal} →</button></li>
             </ul>
           </div>
 
           <div>
             <h4 className={`font-semibold mb-5 flex items-center gap-2 ${heading}`}>
-              <span className="w-1.5 h-1.5 bg-[#2D4B32] rounded-full"></span>
+              <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
               {t.emergencyContact}
             </h4>
             <div className="space-y-4">
-              <div className="p-3 bg-[#2D4B32]/10 border border-[#2D4B32]/20 rounded-xl">
-                <p className="text-xs text-[#2D4B32] mb-2">{t.localAmbulance} ({selectedRegion})</p>
-                <a href={`tel:${getAmbulanceInfo().primaryNumber}`} className="group flex items-center gap-3 hover:bg-[#2D4B32]/10 rounded-lg transition -mx-1 px-1 py-1">
-                  <div className="w-10 h-10 bg-[#2D4B32]/10 rounded-lg flex items-center justify-center group-hover:bg-[#2D4B32]/10 transition text-[#2D4B32]">
+              <div className="p-3 bg-primary/10 border border-primary/20 rounded-xl">
+                <p className="text-xs text-primary mb-2">{t.localAmbulance} ({selectedRegion})</p>
+                <a href={`tel:${getAmbulanceInfo().primaryNumber}`} className="group flex items-center gap-3 hover:bg-primary/10 rounded-lg transition -mx-1 px-1 py-1">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/10 transition text-primary">
                     <Ambulance size={20} className="text-current" />
                   </div>
                   <div>
-                    <p className="font-semibold text-[#2D4B32]">{getAmbulanceInfo().primaryNumber}</p>
+                    <p className="font-semibold text-primary">{getAmbulanceInfo().primaryNumber}</p>
                     <p className={`text-xs ${subtle}`}>{getAmbulanceInfo().primaryName}</p>
                   </div>
                 </a>
                 {getAmbulanceInfo().secondaryNumber && (
-                  <a href={`tel:${getAmbulanceInfo().secondaryNumber}`} className="group flex items-center gap-3 hover:bg-[#2D4B32]/10 rounded-lg transition -mx-1 px-1 py-1 mt-2">
-                    <div className="w-8 h-8 bg-[#2D4B32]/10 rounded-lg flex items-center justify-center text-[#2D4B32]/80">
+                  <a href={`tel:${getAmbulanceInfo().secondaryNumber}`} className="group flex items-center gap-3 hover:bg-primary/10 rounded-lg transition -mx-1 px-1 py-1 mt-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary/80">
                       <Phone size={16} className="text-current" />
                     </div>
                     <div>
-                      <p className="font-medium text-[#2D4B32]/80 text-sm">{getAmbulanceInfo().secondaryNumber}</p>
+                      <p className="font-medium text-primary/80 text-sm">{getAmbulanceInfo().secondaryNumber}</p>
                       <p className={`text-xs ${muted}`}>{getAmbulanceInfo().secondaryName}</p>
                     </div>
                   </a>
                 )}
               </div>
 
-              <a href="tel:911" className="group flex items-center gap-3 p-3 bg-[#2D4B32]/10 border border-[#2D4B32]/20 rounded-xl hover:bg-[#2D4B32]/10 transition">
-                <div className="w-10 h-10 bg-[#2D4B32]/10 rounded-lg flex items-center justify-center group-hover:bg-[#2D4B32]/10 transition text-[#2D4B32]">
+              <a href="tel:911" className="group flex items-center gap-3 p-3 bg-primary/10 border border-primary/20 rounded-xl hover:bg-primary/10 transition">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/10 transition text-primary">
                   <Phone size={20} className="text-current" />
                 </div>
                 <div>
-                  <p className="font-semibold text-[#2D4B32]">911</p>
+                  <p className="font-semibold text-primary">911</p>
                   <p className={`text-xs ${muted}`}>{t.nationalEmergency}</p>
                 </div>
               </a>
@@ -158,8 +158,8 @@ export function Footer({ t, selectedRegion, getAmbulanceInfo, onNavigate, stats,
             {t.forEthiopia}
             <span className="text-lg">🇪🇹</span>
           </p>
-          <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm ${darkMode ? "bg-gray-900 text-gray-200 border border-gray-800" : "bg-background text-gray-700 border border-gray-300/60"}`}>
-            <Shield size={14} className="text-[#2D4B32]" />
+          <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm ${darkMode ? "bg-background text-foreground border border-border" : "bg-background text-muted-foreground border border-border"}`}>
+            <Shield size={14} className="text-primary" />
             <span>{t.hipaaCompliant}</span>
           </div>
         </div>

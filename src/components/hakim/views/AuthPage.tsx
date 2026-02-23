@@ -1,17 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   ArrowClockwise,
   ArrowCounterClockwise,
   ArrowLeft,
   ArrowRight,
   Check,
-  Heart,
   Phone,
   User,
 } from "@phosphor-icons/react";
 import type { ViewType } from "../routes";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { normalizeEthiopianPhone } from "@/lib/phone";
 
 interface AuthPageProps {
   darkMode: boolean;
@@ -46,8 +48,12 @@ export function AuthPage({
   onNavigate,
   t,
 }: AuthPageProps) {
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const telegramBotUsername = "Hakim_bet_bot";
+  const telegramLink = `https://t.me/${telegramBotUsername}?start=${encodeURIComponent(normalizeEthiopianPhone(phone) || "")}`;
+
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -55,89 +61,142 @@ export function AuthPage({
       >
         <div className="text-center mb-8">
           <button onClick={() => onNavigate("landing")} className="inline-flex items-center gap-2 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-xl flex items-center justify-center shadow-lg">
-              <Heart weight="fill" className="text-white" size={28} />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">
-              Hakim
-            </span>
+            <ArrowLeft size={18} />
+            {t.backToHome}
           </button>
-          <h2 className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
-            {otpSent ? "Check Telegram" : t.signIn}
+          <h2 className={`text-2xl font-bold ${darkMode ? "text-foreground" : "text-foreground"}`}>
+            {otpSent ? "Check Telegram" : authMode === "signin" ? t.signIn : t.signUp}
           </h2>
-          <p className={`mt-2 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+          <p className={`mt-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {otpSent 
               ? (
                 <>
-                  We&apos;ve generated a code for your phone number. <br />
-                  Please open our Telegram Bot <strong className="text-[#2D4B32]">@HakimBot</strong> to get your verification code.
+                  We&apos;ve prepared your verification flow. <br />
+                  Open our Telegram Bot <strong className="text-primary">@{telegramBotUsername}</strong> to get your OTP.
                 </>
               )
-              : t.signInPhone}
+              : authMode === "signin" ? t.signInPhone : t.signUpPhone}
           </p>
         </div>
 
-        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
           {!otpSent ? (
-            <div className="space-y-6">
-              <div>
-                <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{t.phoneNumberLabel}</label>
-                <div className="relative">
-                  <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
-                  <input
-                    type="tel"
-                    placeholder="09XXXXXXXXX"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition text-lg ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
-                  />
+            <Tabs
+              value={authMode}
+              onValueChange={(value) => {
+                setAuthMode(value as "signin" | "signup");
+                setOtpSent(false);
+                setOtp("");
+              }}
+              className="space-y-6"
+            >
+              <TabsList className="grid grid-cols-2 w-full bg-background/60">
+                <TabsTrigger value="signin">{t.signIn}</TabsTrigger>
+                <TabsTrigger value="signup">{t.signUp}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="signin" className="space-y-6">
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.phoneNumberLabel}</label>
+                  <div className="relative">
+                    <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
+                    <input
+                      type="tel"
+                      placeholder="09XXXXXXXXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{t.nameOptionalLabel}</label>
-                <div className="relative">
-                  <User size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
-                  <input
-                    type="text"
-                    placeholder={t.yourNamePlaceholder}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition text-lg ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
-                  />
+                <button
+                  onClick={() => sendOtp("LOGIN")}
+                  disabled={loading || !phone}
+                  className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <ArrowClockwise className="animate-spin" size={20} />
+                  ) : (
+                    <>
+                      {t.continue}
+                      <ArrowRight size={20} />
+                    </>
+                  )}
+                </button>
+              </TabsContent>
+              <TabsContent value="signup" className="space-y-6">
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.phoneNumberLabel}</label>
+                  <div className="relative">
+                    <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
+                    <input
+                      type="tel"
+                      placeholder="09XXXXXXXXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                    />
+                  </div>
                 </div>
-              </div>
-              <button
-                onClick={() => sendOtp(name ? "REGISTRATION" : "LOGIN")}
-                disabled={loading || !phone}
-                className="w-full py-4 bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-[#2D4B32]/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <ArrowClockwise className="animate-spin" size={20} />
-                ) : (
-                  <>
-                    {t.continue}
-                    <ArrowRight size={20} />
-                  </>
-                )}
-              </button>
-            </div>
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.nameOptionalLabel}</label>
+                  <div className="relative">
+                    <User size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
+                    <input
+                      type="text"
+                      placeholder={t.yourNamePlaceholder}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    if (!phone) return;
+                    setOtpSent(true);
+                  }}
+                  disabled={loading || !phone}
+                  className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <ArrowClockwise className="animate-spin" size={20} />
+                  ) : (
+                    <>
+                      {t.continue}
+                      <ArrowRight size={20} />
+                    </>
+                  )}
+                </button>
+              </TabsContent>
+            </Tabs>
           ) : (
             <div className="space-y-6">
+              <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
+                Open the Telegram bot to get your OTP, then enter it below.
+              </p>
+              <a
+                href={telegramLink}
+                target="_blank"
+                rel="noreferrer"
+                className="block w-full py-3 rounded-xl bg-primary text-primary-foreground text-center font-semibold hover:shadow-lg hover:shadow-primary/20 transition-all"
+              >
+                Open Telegram Bot
+              </a>
               <div>
-                <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>{t.enterOTPLabel}</label>
+                <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.enterOTPLabel}</label>
                 <input
                   type="text"
                   placeholder="000000"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  className={`w-full text-center text-3xl tracking-widest py-4 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition font-mono ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+                  className={`w-full text-center text-3xl tracking-widest py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition font-mono ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
                   maxLength={6}
                 />
               </div>
               <button
                 onClick={verifyOtp}
                 disabled={loading || otp.length !== 6}
-                className="w-full py-4 bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-[#2D4B32]/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <ArrowClockwise className="animate-spin" size={20} />
@@ -150,7 +209,7 @@ export function AuthPage({
               </button>
               <button
                 onClick={() => setOtpSent(false)}
-                className={`w-full py-3 transition flex items-center justify-center gap-2 ${darkMode ? "text-gray-400 hover:text-[#2D4B32]" : "text-gray-600 hover:text-[#2D4B32]"}`}
+                className={`w-full py-3 transition flex items-center justify-center gap-2 ${darkMode ? "text-muted-foreground hover:text-primary" : "text-muted-foreground hover:text-primary"}`}
               >
                 <ArrowCounterClockwise size={16} />
                 {t.changePhone}
@@ -158,20 +217,20 @@ export function AuthPage({
             </div>
           )}
 
-          <div className={`mt-6 pt-6 border-t text-center ${darkMode ? "border-gray-800" : "border-gray-100"}`}>
-            <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          <div className={`mt-6 pt-6 border-t text-center ${darkMode ? "border-border" : "border-border"}`}>
+            <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
               {t.byContinuing}{" "}
-              <a href="#" className="text-[#2D4B32] hover:underline">{t.termsOfService}</a>
+              <a href="#" className="text-primary hover:underline">{t.termsOfService}</a>
               {" "}and{" "}
-              <a href="#" className="text-[#2D4B32] hover:underline">{t.privacyPolicy}</a>
+              <a href="#" className="text-primary hover:underline">{t.privacyPolicy}</a>
             </p>
           </div>
         </div>
 
-        <div className={`mt-4 p-4 rounded-2xl border ${darkMode ? "bg-gray-950/50 border-gray-800" : "bg-[#2D4B32]/10 border-[#2D4B32]"}`}>
-          <p className={`text-sm text-center ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+        <div className={`mt-4 p-4 rounded-2xl border ${darkMode ? "bg-background/50 border-border" : "bg-primary/10 border-primary"}`}>
+          <p className={`text-sm text-center ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             Want to register your hospital?{" "}
-            <button onClick={() => onNavigate("hospital-register")} className="text-[#2D4B32] hover:underline font-medium">
+            <button onClick={() => onNavigate("hospital-register")} className="text-primary hover:underline font-medium">
               {t.registerAsHospital}
             </button>
           </p>
@@ -179,7 +238,7 @@ export function AuthPage({
 
         <button
           onClick={() => onNavigate("landing")}
-          className={`w-full mt-4 py-3 transition flex items-center justify-center gap-2 ${darkMode ? "text-gray-400 hover:text-[#2D4B32]" : "text-gray-600 hover:text-[#2D4B32]"}`}
+          className={`w-full mt-4 py-3 transition flex items-center justify-center gap-2 ${darkMode ? "text-muted-foreground hover:text-primary" : "text-muted-foreground hover:text-primary"}`}
         >
           <ArrowLeft size={16} />
           {t.backToHome}

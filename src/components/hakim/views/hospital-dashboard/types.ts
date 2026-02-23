@@ -5,6 +5,7 @@ export type DashboardSection =
   | "profile"
   | "location"
   | "queues"
+  | "appointments"
   | "departments"
   | "staff"
   | "analytics"
@@ -22,6 +23,8 @@ export interface HospitalProfile {
   longitude: number | null;
   operatingHours: string;
   services: string[];
+  isActive?: boolean;
+  facilityType?: string | null;
 }
 
 export interface DashboardStats {
@@ -38,6 +41,17 @@ export interface DashboardQueue {
   waiting: number;
   served: number;
   status: string;
+}
+
+export interface DashboardAppointment {
+  id: string;
+  tokenNumber: number;
+  status: string;
+  createdAt: string;
+  patientName?: string | null;
+  patientPhone?: string | null;
+  departmentName?: string | null;
+  notes?: string | null;
 }
 
 export interface NewDepartment {

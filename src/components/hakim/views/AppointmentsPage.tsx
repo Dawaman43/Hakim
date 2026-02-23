@@ -38,21 +38,21 @@ export function AppointmentsPage({
   }, [apiGet, token]);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       {navigation}
-      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+      <section className={`pt-8 pb-8 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => onNavigate("profile")}
-            className={`flex items-center gap-2 transition mb-6 ${darkMode ? "text-gray-400 hover:text-[#2D4B32]" : "text-gray-600 hover:text-[#2D4B32]"}`}
+            className={`flex items-center gap-2 transition mb-6 ${darkMode ? "text-muted-foreground hover:text-primary" : "text-muted-foreground hover:text-primary"}`}
           >
             <ArrowLeft size={20} />
             {t.backToDashboard}
           </button>
-          <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
+          <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${darkMode ? "text-foreground" : "text-foreground"}`}>
             {t.upcomingAppointments}
           </h1>
-          <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
+          <p className={darkMode ? "text-muted-foreground" : "text-muted-foreground"}>
             {t.noAppointments}
           </p>
         </div>
@@ -61,26 +61,26 @@ export function AppointmentsPage({
       <section className="py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <p className={darkMode ? "text-gray-400" : "text-gray-600"}>{t.locating}</p>
+            <p className={darkMode ? "text-muted-foreground" : "text-muted-foreground"}>{t.locating}</p>
           ) : items.length === 0 ? (
-            <p className={darkMode ? "text-gray-400" : "text-gray-600"}>{t.noAppointments}</p>
+            <p className={darkMode ? "text-muted-foreground" : "text-muted-foreground"}>{t.noAppointments}</p>
           ) : (
             <div className="space-y-4">
               {items.map((appt) => (
                 <div
                   key={appt.id}
-                  className={`rounded-2xl border p-4 ${darkMode ? "bg-gray-950 border-gray-800" : "bg-white border-gray-200"}`}
+                  className={`rounded-2xl border p-4 ${darkMode ? "bg-background border-border" : "bg-card border-border"}`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                      <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                      <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
                         {appt.hospital?.name || t.hospitals} • {appt.department?.name || t.departments}
                       </p>
-                      <p className={`text-lg font-semibold ${darkMode ? "text-white" : "text-gray-900"}`}>
+                      <p className={`text-lg font-semibold ${darkMode ? "text-foreground" : "text-foreground"}`}>
                         #{appt.tokenNumber} • {appt.status}
                       </p>
                     </div>
-                    <div className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                    <div className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
                       {new Date(appt.createdAt).toLocaleString()}
                     </div>
                   </div>

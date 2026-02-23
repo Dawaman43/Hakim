@@ -4,6 +4,8 @@ import { users, otpCodes } from "@/db/schema";
 import { eq, and, desc, or } from "drizzle-orm";
 import { signToken } from "@/lib/jwt";
 import { v4 as uuidv4 } from "uuid";
+import { normalizeEthiopianPhone } from "@/lib/phone";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 async function notifySuperAdmins(message: string) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -25,15 +27,22 @@ async function notifySuperAdmins(message: string) {
 
 export async function POST(req: Request) {
   try {
-    const { phone, otpCode, name } = await req.json();
+    const ip = getClientIp(req);
+    const limit = rateLimit(`verify-otp:${ip}`, 8, 60_000);
+    if (!limit.allowed) {
+      return NextResponse.json({ success: false, error: "Too many requests. Try again shortly." }, { status: 429 });
+    }
 
-    if (!phone || !otpCode) {
+    const { phone, otpCode, name } = await req.json();
+    const normalizedPhone = normalizeEthiopianPhone(phone);
+
+    if (!normalizedPhone || !otpCode) {
       return NextResponse.json({ success: false, error: "Phone and code are required" }, { status: 400 });
     }
 
     const recentCodes = await db.select().from(otpCodes)
       .where(and(
-        eq(otpCodes.phone, phone),
+        eq(otpCodes.phone, normalizedPhone),
         eq(otpCodes.verified, false),
         or(eq(otpCodes.purpose, "LOGIN"), eq(otpCodes.purpose, "REGISTRATION"))
       ))
@@ -56,19 +65,19 @@ export async function POST(req: Request) {
 
     await db.update(otpCodes).set({ verified: true }).where(eq(otpCodes.id, latestChallenge.id));
 
-    let userList = await db.select().from(users).where(eq(users.phone, phone)).limit(1);
+    let userList = await db.select().from(users).where(eq(users.phone, normalizedPhone)).limit(1);
     let user = userList[0];
 
     if (!user) {
       const newUserId = uuidv4();
       await db.insert(users).values({
         id: newUserId,
-        phone,
+        phone: normalizedPhone,
         name: name || null,
         role: "PATIENT",
         isVerified: true,
       });
-      await notifySuperAdmins(`New user registered: ${phone}${name ? ` (${name})` : ""}`);
+      await notifySuperAdmins(`New user registered: ${normalizedPhone}${name ? ` (${name})` : ""}`);
       userList = await db.select().from(users).where(eq(users.id, newUserId)).limit(1);
       user = userList[0];
     } else if (name && !user.name) {

@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
-import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, NewDepartment } from "./hospital-dashboard/types";
+import { useEffect, useState } from "react";
+import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, NewDepartment, DashboardAppointment } from "./hospital-dashboard/types";
 import { Sidebar } from "./hospital-dashboard/Sidebar";
 import { Header } from "./hospital-dashboard/Header";
 import { OverviewSection } from "./hospital-dashboard/OverviewSection";
 import { ProfileSection } from "./hospital-dashboard/ProfileSection";
 import { LocationSection } from "./hospital-dashboard/LocationSection";
 import { QueuesSection } from "./hospital-dashboard/QueuesSection";
+import { AppointmentsSection } from "./hospital-dashboard/AppointmentsSection";
 import { DepartmentsSection } from "./hospital-dashboard/DepartmentsSection";
+import { StaffSection } from "./hospital-dashboard/StaffSection";
 import { PlaceholderSection } from "./hospital-dashboard/PlaceholderSection";
 
 interface HospitalDashboardPageProps {
@@ -18,18 +20,23 @@ interface HospitalDashboardPageProps {
   toggleLanguage: () => void;
   t: Record<string, string>;
   user: { name?: string } | null;
+  token: string | null;
   dashboardSection: DashboardSection;
   setDashboardSection: (section: DashboardSection) => void;
   hospitalProfile: HospitalProfile | null;
-  setHospitalProfile: (updater: (prev: HospitalProfile | null) => HospitalProfile | null) => void;
+  setHospitalProfile: (value: HospitalProfile | null) => void;
   dashboardStats: DashboardStats;
   setDashboardStats: (stats: DashboardStats) => void;
   dashboardQueues: DashboardQueue[];
   setDashboardQueues: (queues: DashboardQueue[]) => void;
+  dashboardAppointments: DashboardAppointment[];
+  setDashboardAppointments: (appointments: DashboardAppointment[]) => void;
   showAddDepartment: boolean;
   setShowAddDepartment: (value: boolean) => void;
   newDepartment: NewDepartment;
   setNewDepartment: (value: NewDepartment) => void;
+  apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
   onNavigate: (view: string) => void;
   onLogout: () => void;
 }
@@ -41,6 +48,7 @@ export function HospitalDashboardPage({
   toggleLanguage,
   t,
   user,
+  token,
   dashboardSection,
   setDashboardSection,
   hospitalProfile,
@@ -49,40 +57,145 @@ export function HospitalDashboardPage({
   setDashboardStats,
   dashboardQueues,
   setDashboardQueues,
+  dashboardAppointments,
+  setDashboardAppointments,
   showAddDepartment,
   setShowAddDepartment,
   newDepartment,
   setNewDepartment,
+  apiGet,
+  apiPost,
   onNavigate,
   onLogout,
 }: HospitalDashboardPageProps) {
   useEffect(() => {
-    setHospitalProfile({
-      name: "Tikur Anbessa General Hospital",
-      type: "GOVERNMENT",
-      region: "Addis Ababa",
-      city: "Addis Ababa",
-      address: "Churchill Road, P.O. Box 1176",
-      phone: "0115-515125",
-      email: "info@tikuranbessa.gov.et",
-      latitude: 9.032,
-      longitude: 38.7469,
-      operatingHours: "24/7",
-      services: ["emergency", "outpatient", "inpatient", "laboratory", "radiology"],
+    if (!token) return;
+    apiGet("/api/hospital/dashboard", token).then((res) => {
+      if (res?.success) {
+        const data = res.data;
+        setHospitalProfile({
+          name: data.hospital?.name,
+          type: data.hospital?.facilityType || "HOSPITAL",
+          region: data.hospital?.region || "",
+          city: data.hospital?.city || "",
+          address: data.hospital?.address || "",
+          phone: data.hospital?.emergencyContactNumber || "",
+          email: "",
+          latitude: data.hospital?.latitude ?? null,
+          longitude: data.hospital?.longitude ?? null,
+          operatingHours: "24/7",
+          services: [],
+          isActive: data.hospital?.isActive,
+          facilityType: data.hospital?.facilityType,
+        });
+        setDashboardStats(data.stats);
+        setDashboardQueues(data.queues || []);
+        setDashboardAppointments(data.appointments || []);
+      }
+    }).catch((err) => {
+      console.error("Failed to load hospital dashboard", err);
     });
-    setDashboardStats({
-      todayPatients: 156,
-      waiting: 23,
-      served: 133,
-      avgWaitTime: 32,
-    });
-    setDashboardQueues([
-      { departmentId: "1", departmentName: "General Medicine", currentToken: 45, waiting: 8, served: 37, status: "normal" },
-      { departmentId: "2", departmentName: "Pediatrics", currentToken: 23, waiting: 5, served: 18, status: "normal" },
-      { departmentId: "3", departmentName: "Emergency", currentToken: 67, waiting: 12, served: 55, status: "busy" },
-      { departmentId: "4", departmentName: "Obstetrics", currentToken: 12, waiting: 3, served: 9, status: "normal" },
-    ]);
-  }, [setDashboardQueues, setDashboardStats, setHospitalProfile]);
+  }, [apiGet, token, setDashboardQueues, setDashboardStats, setHospitalProfile, setDashboardAppointments]);
+
+  useEffect(() => {
+    if (!token) return;
+    loadStaff();
+  }, [token]);
+
+  const updateAppointmentStatus = async (appointmentId: string, status: string) => {
+    if (!token) return;
+    const res = await apiPost("/api/admin/appointments/update", { appointmentId, status }, token);
+    if (res?.success) {
+      const updated = dashboardAppointments.map((a) => a.id === appointmentId ? { ...a, status } : a);
+      setDashboardAppointments(updated);
+    } else {
+      alert(res?.error || "Failed to update appointment");
+    }
+  };
+
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [savingLocation, setSavingLocation] = useState(false);
+  const [staff, setStaff] = useState<Array<{ id: string; name: string; phone: string; role: string; createdAt: string }>>([]);
+  const [staffLoading, setStaffLoading] = useState(false);
+
+  const saveHospitalProfile = async () => {
+    if (!token || !hospitalProfile) return;
+    setSavingProfile(true);
+    try {
+      const res = await apiPost("/api/hospital/update", {
+        name: hospitalProfile.name,
+        region: hospitalProfile.region,
+        city: hospitalProfile.city,
+        address: hospitalProfile.address,
+        emergencyContactNumber: hospitalProfile.phone,
+        facilityType: hospitalProfile.type,
+      }, token);
+      if (!res?.success) {
+        alert(res?.error || "Failed to save profile");
+      }
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  const saveHospitalLocation = async () => {
+    if (!token || !hospitalProfile) return;
+    setSavingLocation(true);
+    try {
+      const res = await apiPost("/api/hospital/update", {
+        latitude: hospitalProfile.latitude,
+        longitude: hospitalProfile.longitude,
+      }, token);
+      if (!res?.success) {
+        alert(res?.error || "Failed to save location");
+      }
+    } finally {
+      setSavingLocation(false);
+    }
+  };
+
+  const loadStaff = async () => {
+    if (!token) return;
+    setStaffLoading(true);
+    try {
+      const res = await apiGet("/api/hospital/staff", token);
+      if (res?.success) setStaff(res.data || []);
+    } finally {
+      setStaffLoading(false);
+    }
+  };
+
+  const addStaff = async (payload: { name: string; phone: string; role: string }) => {
+    if (!token) return;
+    setStaffLoading(true);
+    try {
+      const res = await apiPost("/api/hospital/staff", payload, token);
+      if (!res?.success) {
+        alert(res?.error || "Failed to add staff");
+      }
+      await loadStaff();
+    } finally {
+      setStaffLoading(false);
+    }
+  };
+
+  const removeStaff = async (id: string) => {
+    if (!token) return;
+    setStaffLoading(true);
+    try {
+      const res = await fetch(`/api/hospital/staff?id=${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!data?.success) {
+        alert(data?.error || "Failed to remove staff");
+      }
+      await loadStaff();
+    } finally {
+      setStaffLoading(false);
+    }
+  };
 
   const renderContent = () => {
     switch (dashboardSection) {
@@ -104,6 +217,8 @@ export function HospitalDashboardPage({
             t={t}
             hospitalProfile={hospitalProfile}
             setHospitalProfile={setHospitalProfile}
+            onSave={saveHospitalProfile}
+            saving={savingProfile}
           />
         );
       case "location":
@@ -113,6 +228,8 @@ export function HospitalDashboardPage({
             t={t}
             hospitalProfile={hospitalProfile}
             setHospitalProfile={setHospitalProfile}
+            onSave={saveHospitalLocation}
+            saving={savingLocation}
           />
         );
       case "queues":
@@ -121,6 +238,16 @@ export function HospitalDashboardPage({
             darkMode={darkMode}
             t={t}
             dashboardQueues={dashboardQueues}
+          />
+        );
+      case "appointments":
+        return (
+          <AppointmentsSection
+            darkMode={darkMode}
+            t={t}
+            appointments={dashboardAppointments}
+            onUpdateStatus={updateAppointmentStatus}
+            loading={false}
           />
         );
       case "departments":
@@ -133,6 +260,17 @@ export function HospitalDashboardPage({
             newDepartment={newDepartment}
             setNewDepartment={setNewDepartment}
             dashboardQueues={dashboardQueues}
+          />
+        );
+      case "staff":
+        return (
+          <StaffSection
+            darkMode={darkMode}
+            t={t}
+            staff={staff}
+            onAdd={addStaff}
+            onRemove={removeStaff}
+            loading={staffLoading}
           />
         );
       case "analytics":
@@ -165,7 +303,7 @@ export function HospitalDashboardPage({
   };
 
   return (
-    <div className={`min-h-screen flex transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className={`min-h-screen flex transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       <Sidebar
         darkMode={darkMode}
         t={t}

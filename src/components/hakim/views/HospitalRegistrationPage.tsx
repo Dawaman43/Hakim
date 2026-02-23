@@ -82,21 +82,21 @@ export function HospitalRegistrationPage({
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
           <button onClick={() => onNavigate("landing")} className="inline-flex items-center gap-2 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-xl flex items-center justify-center shadow-lg">
-              <Heart weight="fill" className="text-white" size={28} />
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center shadow-lg">
+              <Heart weight="fill" className="text-foreground" size={28} />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
               Hakim
             </span>
           </button>
-          <h2 className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
+          <h2 className={`text-2xl font-bold ${darkMode ? "text-foreground" : "text-foreground"}`}>
             {tr.registerHospital}
           </h2>
-          <p className={`mt-2 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+          <p className={`mt-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.registerHospitalDesc}
           </p>
         </div>
@@ -106,21 +106,21 @@ export function HospitalRegistrationPage({
             <div key={step} className="flex items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                 registrationStep >= step
-                  ? "bg-[#2D4B32] text-white"
-                  : darkMode ? "bg-gray-950 text-gray-400" : "bg-gray-200 text-gray-500"
+                  ? "bg-primary text-primary-foreground"
+                  : darkMode ? "bg-background text-muted-foreground" : "bg-muted text-muted-foreground"
               }`}>
                 {step}
               </div>
               {step < 3 && (
                 <div className={`w-12 h-1 mx-1 rounded transition-all ${
-                  registrationStep > step ? "bg-[#2D4B32]" : darkMode ? "bg-gray-950" : "bg-gray-200"
+                  registrationStep > step ? "bg-primary" : darkMode ? "bg-background" : "bg-muted"
                 }`} />
               )}
             </div>
           ))}
         </div>
 
-        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+        <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
           {registrationStep === 1 && (
             <StepHospitalInfo
               darkMode={darkMode}
@@ -161,7 +161,7 @@ export function HospitalRegistrationPage({
 
         <button
           onClick={() => onNavigate("landing")}
-          className={`w-full mt-6 py-3 transition flex items-center justify-center gap-2 ${darkMode ? "text-gray-400 hover:text-[#2D4B32]" : "text-gray-600 hover:text-[#2D4B32]"}`}
+          className={`w-full mt-6 py-3 transition flex items-center justify-center gap-2 ${darkMode ? "text-muted-foreground hover:text-primary" : "text-muted-foreground hover:text-primary"}`}
         >
           <ArrowLeft size={20} />
           {tr.backToHome}

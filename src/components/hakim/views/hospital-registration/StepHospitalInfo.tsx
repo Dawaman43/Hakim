@@ -24,35 +24,35 @@ export function StepHospitalInfo({
 
   return (
     <div className="space-y-6">
-      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>
         {tr.hospitalInfo}
       </h3>
 
       <div className="grid md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.hospitalName} *
           </label>
           <div className="relative">
-            <Hospital size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
+            <Hospital size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
             <input
               type="text"
               placeholder="e.g., Tikur Anbessa General Hospital"
               value={registrationData.hospitalName}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, hospitalName: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
             />
           </div>
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.hospitalType} *
           </label>
           <select
             value={registrationData.hospitalType}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, hospitalType: e.target.value as "GOVERNMENT" | "PRIVATE" | "NGO" }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground" : "border-border"}`}
           >
             <option value="">Select type</option>
             <option value="GOVERNMENT">{tr.government}</option>
@@ -62,13 +62,13 @@ export function StepHospitalInfo({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.region} *
           </label>
           <select
             value={registrationData.region}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, region: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground" : "border-border"}`}
           >
             {regionOptions.map(region => (
               <option key={region} value={region}>{region}</option>
@@ -77,7 +77,7 @@ export function StepHospitalInfo({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.city} *
           </label>
           <input
@@ -85,18 +85,18 @@ export function StepHospitalInfo({
             placeholder="e.g., Addis Ababa"
             value={registrationData.city}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, city: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
           />
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.operatingHoursLabel}
           </label>
           <select
             value={registrationData.operatingHours}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, operatingHours: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground" : "border-border"}`}
           >
             <option value="24/7">{tr.hours247}</option>
             <option value="business">{tr.hoursBusiness}</option>
@@ -106,7 +106,7 @@ export function StepHospitalInfo({
         </div>
 
         <div className="md:col-span-2">
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.address}
           </label>
           <input
@@ -114,38 +114,38 @@ export function StepHospitalInfo({
             placeholder="Full address"
             value={registrationData.address}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, address: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
           />
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.phoneLabel} *
           </label>
           <div className="relative">
-            <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
+            <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
             <input
               type="tel"
               placeholder="011XXXXXXXX"
               value={registrationData.phone}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, phone: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
             />
           </div>
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.emailAddress} *
           </label>
           <div className="relative">
-            <EnvelopeSimple size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
+            <EnvelopeSimple size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
             <input
               type="email"
               placeholder="email@hospital.org"
               value={registrationData.email}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, email: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
             />
           </div>
         </div>
@@ -154,7 +154,7 @@ export function StepHospitalInfo({
       <div className="flex justify-end">
         <button
           onClick={onNext}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2D4B32] text-white rounded-xl font-medium hover:bg-[#2D4B32] transition"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition"
         >
           {tr.nextStep}
           <ArrowRight size={20} />

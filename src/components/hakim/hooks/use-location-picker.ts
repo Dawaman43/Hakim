@@ -199,44 +199,8 @@ export function useLocationPicker({
       // ignore
     }
     setUserLocation(null);
-
-    // If geolocation is unavailable or not in a secure context, gracefully fallback to IP location
-    if (
-      !navigator.geolocation ||
-      (typeof window !== "undefined" && !window.isSecureContext)
-    ) {
-      const fallbackSuccess = await tryIpFallback(shouldNavigate);
-      if (!fallbackSuccess) {
-        setLocationError(
-          "Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.",
-        );
-        setShowLocationModal(true);
-      }
-      return;
-    }
-
-    try {
-      if (navigator.permissions?.query) {
-        const status = await navigator.permissions.query({
-          name: "geolocation" as PermissionName,
-        });
-        if (status.state === "denied") {
-          const fallbackSuccess = await tryIpFallback(shouldNavigate);
-          if (!fallbackSuccess) {
-            setLocationError(
-              "Location permission was denied. Please allow location access in your browser and device settings, or select your region below.",
-            );
-            setShowLocationModal(true);
-          }
-          return;
-        }
-      }
-    } catch {
-      // Permission API not available; continue to prompt
-    }
-
+    setLocationError("Please select your region below.");
     setShowLocationModal(true);
-    requestLocation(false, shouldNavigate);
   }, [requestLocation, tryIpFallback]);
 
   const useSelectedRegion = useCallback(() => {

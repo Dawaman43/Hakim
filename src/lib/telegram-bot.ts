@@ -4,6 +4,7 @@ import { otpCodes, users, hospitals, departments, appointments } from "@/db/sche
 import { eq, desc, and, like, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 import { aiChat, aiTriage } from "@/lib/ai";
+import { normalizeEthiopianPhone } from "@/lib/phone";
 
 const emergencySessions = new Map<string, boolean>();
 const aiSessions = new Map<string, Array<{ role: "user" | "assistant"; content: string }>>();
@@ -113,12 +114,7 @@ export function setupBot(bot: Bot) {
       .resized();
   };
 
-  const scrubPhone = (phone: string) => {
-    let p = phone.replace(/\s+/g, "");
-    if (p.startsWith("+251")) p = "0" + p.slice(4);
-    else if (p.startsWith("251")) p = "0" + p.slice(3);
-    return p;
-  };
+  const scrubPhone = (phone: string) => normalizeEthiopianPhone(phone);
 
   const getHospKeyboard = async (page = 0) => {
     const limit = 5;
@@ -199,16 +195,27 @@ export function setupBot(bot: Bot) {
     const s = strings[lang];
     const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
     if (!u[0]) return ctx.reply("Please /start first.");
+    const normalizedPhone = scrubPhone(u[0].phone);
     const otpRow = await db
       .select()
       .from(otpCodes)
-      .where(and(eq(otpCodes.phone, u[0].phone), eq(otpCodes.verified, false)))
+      .where(and(eq(otpCodes.phone, normalizedPhone), eq(otpCodes.verified, false)))
       .orderBy(desc(otpCodes.createdAt))
       .limit(1);
     if (!otpRow[0] || otpRow[0].purpose === "TELEGRAM_LINK") {
-      return ctx.reply(lang === "en" ? "No pending OTP found." : "የሚጠበቅ ኦቲፒ የለም።");
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date();
+      expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+      await db.insert(otpCodes).values({
+        id: uuidv4(),
+        phone: normalizedPhone,
+        code: otp,
+        purpose: "LOGIN",
+        expiresAt,
+      });
+      return ctx.reply(`${s.linkSuccess} \`${otp}\``, { parse_mode: "Markdown" });
     }
-    return ctx.reply(`${s.linkSuccess} ${otpRow[0].code}`);
+    return ctx.reply(`${s.linkSuccess} \`${otpRow[0].code}\``, { parse_mode: "Markdown" });
   };
 
   // --- MIDDLEWARE / INTERCEPT ---
@@ -284,7 +291,45 @@ export function setupBot(bot: Bot) {
         expiresAt,
       });
 
-      return ctx.reply(`${strings.en.linkSuccess} ${otp}\n\n${strings.am.linkSuccess} ${otp}`, { reply_markup: getMainKeyboard("en") });
+      return ctx.reply(
+        `${strings.en.linkSuccess} \`${otp}\`\n\n${strings.am.linkSuccess} \`${otp}\``,
+        { reply_markup: getMainKeyboard("en"), parse_mode: "Markdown" }
+      );
+    }
+
+    if (parts[1]) {
+      const payloadPhone = scrubPhone(parts[1]);
+      console.log("Telegram /start payload", { tid, payload: parts[1], payloadPhone });
+      if (!/^\d{9,15}$/.test(payloadPhone)) {
+        return ctx.reply(strings.en.linkInvalid + " / " + strings.am.linkInvalid);
+      }
+
+      try {
+        const existingUser = await db.select().from(users).where(eq(users.phone, payloadPhone)).limit(1);
+        if (existingUser[0]) {
+          await db.update(users).set({ telegramId: tid }).where(eq(users.id, existingUser[0].id));
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiresAt = new Date();
+        expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+        await db.insert(otpCodes).values({
+          id: uuidv4(),
+          phone: payloadPhone,
+          code: otp,
+          purpose: existingUser[0] ? "LOGIN" : "REGISTRATION",
+          expiresAt,
+        });
+
+        const lang = (existingUser[0]?.language as "en" | "am") || "en";
+        return ctx.reply(
+          `${strings.en.linkSuccess} \`${otp}\`\n\n${strings.am.linkSuccess} \`${otp}\``,
+          { reply_markup: getMainKeyboard(lang), parse_mode: "Markdown" }
+        );
+      } catch (err: any) {
+        console.error("Telegram /start OTP insert error", err);
+        return ctx.reply("Error generating OTP. Please try again.");
+      }
     }
 
     const existing = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
@@ -356,6 +401,20 @@ export function setupBot(bot: Bot) {
       await ctx.reply("✅ Status: Online\nDB: Connected");
     } catch (e: any) {
       await ctx.reply("❌ Status: Error\nDB: " + e.message);
+    }
+  });
+
+  bot.command("dbinfo", async (ctx) => {
+    try {
+      const dbName = await db.execute(sql`select current_database() as name`);
+      const dbHost = await db.execute(sql`select inet_server_addr() as host`);
+      const nameRow = (dbName as any)?.rows?.[0] ?? (Array.isArray(dbName) ? dbName[0] : null);
+      const hostRow = (dbHost as any)?.rows?.[0] ?? (Array.isArray(dbHost) ? dbHost[0] : null);
+      await ctx.reply(
+        `DB: ${nameRow?.name || "unknown"}\nHost: ${hostRow?.host || "unknown"}`
+      );
+    } catch (e: any) {
+      await ctx.reply("DB info error: " + e.message);
     }
   });
 

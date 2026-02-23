@@ -5,7 +5,7 @@ import type { HospitalViewProps } from "../renderers/types";
 import type { ViewType } from "../routes";
 import type { Language, TranslationStrings } from "../translations";
 import type { User } from "@/types";
-import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, HospitalRegistrationData } from "../types/app-types";
+import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, HospitalRegistrationData, DashboardAppointment } from "../types/app-types";
 
 interface UseHospitalViewPropsParams {
   view: ViewType;
@@ -13,6 +13,7 @@ interface UseHospitalViewPropsParams {
   language: Language;
   t: TranslationStrings;
   user: User | null;
+  token: string | null;
   onNavigate: (view: ViewType) => void;
   onLogout: () => void;
   onToggleLanguage: () => void;
@@ -34,10 +35,14 @@ interface UseHospitalViewPropsParams {
   setDashboardStats: (value: DashboardStats) => void;
   dashboardQueues: DashboardQueue[];
   setDashboardQueues: (value: DashboardQueue[]) => void;
+  dashboardAppointments: DashboardAppointment[];
+  setDashboardAppointments: (value: DashboardAppointment[]) => void;
   showAddDepartment: boolean;
   setShowAddDepartment: (value: boolean) => void;
   newDepartment: { name: string; description: string; capacity: number; avgTime: number };
   setNewDepartment: (value: { name: string; description: string; capacity: number; avgTime: number }) => void;
+  apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
 }
 
 export function useHospitalViewProps(params: UseHospitalViewPropsParams) {
@@ -47,6 +52,7 @@ export function useHospitalViewProps(params: UseHospitalViewPropsParams) {
     language: params.language,
     t: params.t,
     user: params.user,
+    token: params.token,
     onNavigate: params.onNavigate,
     onLogout: params.onLogout,
     onToggleLanguage: params.onToggleLanguage,
@@ -68,16 +74,21 @@ export function useHospitalViewProps(params: UseHospitalViewPropsParams) {
     setDashboardStats: params.setDashboardStats,
     dashboardQueues: params.dashboardQueues,
     setDashboardQueues: params.setDashboardQueues,
+    dashboardAppointments: params.dashboardAppointments,
+    setDashboardAppointments: params.setDashboardAppointments,
     showAddDepartment: params.showAddDepartment,
     setShowAddDepartment: params.setShowAddDepartment,
     newDepartment: params.newDepartment,
     setNewDepartment: params.setNewDepartment,
+    apiGet: params.apiGet,
+    apiPost: params.apiPost,
   }), [
     params.view,
     params.darkMode,
     params.language,
     params.t,
     params.user,
+    params.token,
     params.onNavigate,
     params.onLogout,
     params.onToggleLanguage,
@@ -99,9 +110,13 @@ export function useHospitalViewProps(params: UseHospitalViewPropsParams) {
     params.setDashboardStats,
     params.dashboardQueues,
     params.setDashboardQueues,
+    params.dashboardAppointments,
+    params.setDashboardAppointments,
     params.showAddDepartment,
     params.setShowAddDepartment,
     params.newDepartment,
     params.setNewDepartment,
+    params.apiGet,
+    params.apiPost,
   ]);
 }

@@ -11,6 +11,7 @@ export function AdminViews(props: AdminViewProps) {
     view,
     darkMode,
     loading,
+    token,
     hospitals,
     departments,
     selectedHospital,
@@ -23,6 +24,8 @@ export function AdminViews(props: AdminViewProps) {
     onNavigate,
     onLogin,
     navigation,
+    apiGet,
+    apiPost,
   } = props;
 
   if (view === "admin-login") {
@@ -63,7 +66,7 @@ export function AdminViews(props: AdminViewProps) {
   }
 
   if (view === "admin-analytics") {
-    return <AdminAnalyticsPage darkMode={darkMode} />;
+    return <AdminAnalyticsPage darkMode={darkMode} token={token} apiGet={apiGet} apiPost={apiPost} navigation={navigation} />;
   }
 
   return null;

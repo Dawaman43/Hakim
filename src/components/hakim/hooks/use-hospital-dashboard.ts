@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Department } from "@/types";
-import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile } from "../types/app-types";
+import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, DashboardAppointment } from "../types/app-types";
 
 const DEFAULT_STATS: DashboardStats = {
   todayPatients: 0,
@@ -23,6 +23,7 @@ export function useHospitalDashboard() {
   const [hospitalProfile, setHospitalProfile] = useState<HospitalProfile | null>(null);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats>(DEFAULT_STATS);
   const [dashboardQueues, setDashboardQueues] = useState<DashboardQueue[]>([]);
+  const [dashboardAppointments, setDashboardAppointments] = useState<DashboardAppointment[]>([]);
   const [hospitalDepartments, setHospitalDepartments] = useState<Department[]>([]);
   const [showAddDepartment, setShowAddDepartment] = useState(false);
   const [newDepartment, setNewDepartment] = useState(DEFAULT_NEW_DEPARTMENT);
@@ -36,6 +37,8 @@ export function useHospitalDashboard() {
     setDashboardStats,
     dashboardQueues,
     setDashboardQueues,
+    dashboardAppointments,
+    setDashboardAppointments,
     hospitalDepartments,
     setHospitalDepartments,
     showAddDepartment,

@@ -21,20 +21,20 @@ export function FAQPage({
   const tr = t;
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       {navigation}
 
-      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+      <section className={`pt-8 pb-16 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h1 className={`text-4xl sm:text-5xl font-bold mb-6 ${darkMode ? "text-white" : "text-gray-900"}`}>
+            <h1 className={`text-4xl sm:text-5xl font-bold mb-6 ${darkMode ? "text-foreground" : "text-foreground"}`}>
               {tr.faqTitle}
             </h1>
-            <p className={`text-xl ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+            <p className={`text-xl ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
               {tr.faqSubtitle}
             </p>
           </motion.div>
@@ -55,12 +55,12 @@ export function FAQPage({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}
+                className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}
               >
-                <h3 className={`text-lg font-bold mb-3 ${darkMode ? "text-[#2D4B32]" : "text-[#2D4B32]"}`}>
+                <h3 className={`text-lg font-bold mb-3 ${darkMode ? "text-primary" : "text-primary"}`}>
                   {item.q}
                 </h3>
-                <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
+                <p className={darkMode ? "text-muted-foreground" : "text-muted-foreground"}>
                   {item.a}
                 </p>
               </motion.div>
@@ -68,9 +68,9 @@ export function FAQPage({
           </div>
 
           <div className="mt-12 text-center">
-            <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
+            <p className={darkMode ? "text-muted-foreground" : "text-muted-foreground"}>
               {tr.contactUs}?{" "}
-              <button onClick={() => onNavigate("contact")} className="text-[#2D4B32] hover:underline font-medium">
+              <button onClick={() => onNavigate("contact")} className="text-primary hover:underline font-medium">
                 {tr.contactUs}
               </button>
             </p>

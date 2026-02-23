@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { aiChat } from "@/lib/ai";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const limit = rateLimit(`emergency-chat:${ip}`, 20, 60_000);
+    if (!limit.allowed) {
+      return NextResponse.json({ success: false, error: "Too many requests. Try again shortly." }, { status: 429 });
+    }
+
     const body = await req.json();
     const messages = Array.isArray(body?.messages) ? body.messages : [];
     const filtered = messages

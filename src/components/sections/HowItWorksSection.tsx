@@ -15,7 +15,7 @@ const steps = [
  */
 export function HowItWorksSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -23,10 +23,10 @@ export function HowItWorksSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             How It Works
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Book your hospital visit in four simple steps
           </p>
         </motion.div>
@@ -43,17 +43,17 @@ export function HowItWorksSection() {
             >
               {/* Connector Line */}
               {index < 3 && (
-                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-[#2D4B32] to-transparent" />
+                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary to-transparent" />
               )}
               
-              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-[#2D4B32] to-teal-600 rounded-3xl shadow-lg shadow-[#2D4B32]/20 mb-6">
-                <item.icon size={40} className="text-white" />
-                <span className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center text-sm font-bold text-[#2D4B32]">
+              <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-primary shadow-lg shadow-primary/20 mb-6">
+                <item.icon size={40} className="text-primary-foreground" />
+                <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-md flex items-center justify-center text-sm font-bold bg-primary text-primary-foreground">
                   {item.step}
                 </span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-              <p className="text-gray-600">{item.description}</p>
+              <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
+              <p className="text-muted-foreground">{item.description}</p>
             </motion.div>
           ))}
         </div>

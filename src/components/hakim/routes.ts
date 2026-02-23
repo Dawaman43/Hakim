@@ -8,6 +8,7 @@ export type ViewType =
   | 'appointments'
   | 'notifications'
   | 'emergency'
+  | 'assistant'
   | 'features'
   | 'download'
   | 'about'
@@ -46,6 +47,7 @@ export const viewRoutes: Record<ViewType, string> = {
   appointments: '/appointments',
   notifications: '/notifications',
   emergency: '/emergency',
+  assistant: '/assistant',
   'admin-login': '/admin/login',
   'admin-dashboard': '/admin',
   'admin-queue': '/admin/queue',

@@ -11,7 +11,8 @@
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "NODE_OPTIONS=--dns-result-order=ipv4first bunx drizzle-kit migrate",
-    "db:reset": "prisma migrate reset"
+    "db:reset": "prisma migrate reset",
+    "seed:superadmin": "bun run scripts/seed-superadmin.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

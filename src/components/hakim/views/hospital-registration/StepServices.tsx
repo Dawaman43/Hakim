@@ -26,7 +26,7 @@ export function StepServices({
 
   return (
     <div className="space-y-6">
-      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>
         {tr.servicesOffered}
       </h3>
       <div className="grid sm:grid-cols-2 gap-3">
@@ -37,8 +37,8 @@ export function StepServices({
             onClick={() => onToggleService(service.id)}
             className={`flex items-center justify-between p-3 rounded-xl border transition ${
               registrationData.services.includes(service.id)
-                ? darkMode ? "bg-[#2D4B32]/10 border-[#2D4B32]/50 text-[#2D4B32]" : "bg-[#2D4B32] border-[#2D4B32] text-[#2D4B32]"
-                : darkMode ? "bg-gray-950 border-gray-700 text-gray-300 hover:bg-gray-700" : "bg-background border-gray-200 text-gray-700 hover:bg-gray-50"
+                ? darkMode ? "bg-primary/10 border-primary/50 text-primary" : "bg-primary border-primary text-primary"
+                : darkMode ? "bg-background border-border text-muted-foreground hover:bg-card" : "bg-background border-border text-muted-foreground hover:bg-muted/40"
             }`}
           >
             <span>{service.label}</span>
@@ -49,14 +49,14 @@ export function StepServices({
       <div className="flex justify-between">
         <button
           onClick={onBack}
-          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-gray-950 text-gray-300 hover:bg-gray-700" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-background text-muted-foreground hover:bg-card" : "bg-muted text-muted-foreground hover:bg-muted/60"}`}
         >
           <ArrowLeft size={20} />
           {tr.back}
         </button>
         <button
           onClick={onNext}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2D4B32] text-white rounded-xl font-medium hover:bg-[#2D4B32] transition"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition"
         >
           {tr.nextStep}
           <ArrowRight size={20} />

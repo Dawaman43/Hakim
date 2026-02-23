@@ -16,6 +16,7 @@ import { AboutPage } from "../views/AboutPage";
 import { DownloadPage } from "../views/DownloadPage";
 import { AuthPage } from "../views/AuthPage";
 import { EmergencyPage } from "../views/EmergencyPage";
+import { AssistantPage } from "../views/AssistantPage";
 import { ContactPage } from "../views/ContactPage";
 import { FAQPage } from "../views/FAQPage";
 import { PrivacyPage } from "../views/PrivacyPage";
@@ -358,6 +359,19 @@ export function PublicViews(props: PublicViewProps) {
         onNavigate={onNavigate}
         navigation={navigation}
         footer={footer}
+      />
+    );
+  }
+
+  if (view === "assistant") {
+    return (
+      <AssistantPage
+        darkMode={darkMode}
+        apiPost={apiPost}
+        onNavigate={onNavigate}
+        navigation={navigation}
+        footer={footer}
+        t={t}
       />
     );
   }

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import type { Appointment, Department, Hospital, QueueStatusResponse, TriageResult, User } from "@/types";
 import type { Language, TranslationStrings } from "../translations";
 import type { ViewType } from "../routes";
-import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, HospitalRegistrationData } from "../types/app-types";
+import type { DashboardQueue, DashboardSection, DashboardStats, HospitalProfile, HospitalRegistrationData, DashboardAppointment } from "../types/app-types";
 
 export interface PublicViewProps {
   view: ViewType;
@@ -85,6 +85,7 @@ export interface AdminViewProps {
   view: ViewType;
   darkMode: boolean;
   loading: boolean;
+  token: string | null;
   hospitals: Hospital[];
   departments: Department[];
   selectedHospital: Hospital | null;
@@ -97,6 +98,8 @@ export interface AdminViewProps {
   onNavigate: (view: ViewType) => void;
   onLogin: (user: User, token: string) => void;
   navigation: ReactNode;
+  apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
 }
 
 export interface HospitalViewProps {
@@ -105,6 +108,7 @@ export interface HospitalViewProps {
   language: Language;
   t: TranslationStrings;
   user: User | null;
+  token: string | null;
   onNavigate: (view: ViewType) => void;
   onLogout: () => void;
   onToggleLanguage: () => void;
@@ -126,10 +130,14 @@ export interface HospitalViewProps {
   setDashboardStats: (value: DashboardStats) => void;
   dashboardQueues: DashboardQueue[];
   setDashboardQueues: (value: DashboardQueue[]) => void;
+  dashboardAppointments: DashboardAppointment[];
+  setDashboardAppointments: (value: DashboardAppointment[]) => void;
   showAddDepartment: boolean;
   setShowAddDepartment: (value: boolean) => void;
   newDepartment: { name: string; description: string; capacity: number; avgTime: number };
   setNewDepartment: (value: { name: string; description: string; capacity: number; avgTime: number }) => void;
+  apiGet: (path: string, token?: string) => Promise<any>;
+  apiPost: (path: string, body: unknown, token?: string) => Promise<any>;
 }
 
 export interface HakimViewRendererProps {

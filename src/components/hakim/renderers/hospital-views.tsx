@@ -13,6 +13,7 @@ export function HospitalViews(props: HospitalViewProps) {
     language,
     t,
     user,
+    token,
     onNavigate,
     onLogout,
     onToggleLanguage,
@@ -34,10 +35,14 @@ export function HospitalViews(props: HospitalViewProps) {
     setDashboardStats,
     dashboardQueues,
     setDashboardQueues,
+    dashboardAppointments,
+    setDashboardAppointments,
     showAddDepartment,
     setShowAddDepartment,
     newDepartment,
     setNewDepartment,
+    apiGet,
+    apiPost,
   } = props;
 
   if (view === "hospital-register") {
@@ -68,6 +73,7 @@ export function HospitalViews(props: HospitalViewProps) {
         toggleLanguage={onToggleLanguage}
         t={t}
         user={user}
+        token={token}
         dashboardSection={dashboardSection}
         setDashboardSection={setDashboardSection}
         hospitalProfile={hospitalProfile}
@@ -76,10 +82,14 @@ export function HospitalViews(props: HospitalViewProps) {
         setDashboardStats={setDashboardStats}
         dashboardQueues={dashboardQueues}
         setDashboardQueues={setDashboardQueues}
+        dashboardAppointments={dashboardAppointments}
+        setDashboardAppointments={setDashboardAppointments}
         showAddDepartment={showAddDepartment}
         setShowAddDepartment={setShowAddDepartment}
         newDepartment={newDepartment}
         setNewDepartment={setNewDepartment}
+        apiGet={apiGet}
+        apiPost={apiPost}
         onNavigate={onNavigate}
         onLogout={onLogout}
       />

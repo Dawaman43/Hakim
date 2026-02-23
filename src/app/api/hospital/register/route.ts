@@ -4,6 +4,7 @@ import { departments, hospitals, notifications, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/password";
 import { v4 as uuidv4 } from "uuid";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const SERVICE_MAP: Record<string, { name: string; avg: number }> = {
   emergency: { name: "Emergency", avg: 10 },
@@ -38,6 +39,12 @@ async function notifySuperAdmins(message: string) {
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const limit = rateLimit(`hospital-register:${ip}`, 5, 60_000);
+    if (!limit.allowed) {
+      return NextResponse.json({ success: false, error: "Too many requests. Try again shortly." }, { status: 429 });
+    }
+
     const body = await req.json();
     const {
       hospitalName,

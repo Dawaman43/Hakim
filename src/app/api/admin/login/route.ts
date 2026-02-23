@@ -4,9 +4,16 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyPassword } from "@/lib/password";
 import { signToken } from "@/lib/jwt";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const limit = rateLimit(`admin-login:${ip}`, 6, 60_000);
+    if (!limit.allowed) {
+      return NextResponse.json({ success: false, error: "Too many attempts. Try again shortly." }, { status: 429 });
+    }
+
     const { phone, password } = await req.json();
     if (!phone || !password) {
       return NextResponse.json({ success: false, error: "Phone and password are required" }, { status: 400 });

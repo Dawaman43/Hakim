@@ -39,7 +39,7 @@ export function NearestHospitalsPage({
   onSelectHospital,
 }: NearestHospitalsPageProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted/40">
       <Navigation
         currentView={currentView}
         isAuthenticated={isAuthenticated}
@@ -48,7 +48,7 @@ export function NearestHospitalsPage({
         onLogout={onLogout}
       />
 
-      <section className="pt-24 pb-8 bg-gradient-to-br from-blue-50 via-white to-[#2D4B32]">
+      <section className="pt-24 pb-8 bg-gradient-to-br from-blue-50 via-white to-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -56,7 +56,7 @@ export function NearestHospitalsPage({
           >
             <button
               onClick={() => onNavigate('landing')}
-              className="flex items-center gap-2 text-gray-600 hover:text-[#2D4B32] transition mb-6"
+              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition mb-6"
             >
               <ArrowLeft size={20} />
               Back to Home
@@ -67,10 +67,10 @@ export function NearestHospitalsPage({
                 <Crosshair size={24} className="text-blue-600" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                   Nearest Hospitals
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   Hospitals sorted by distance from your location
                 </p>
               </div>
@@ -83,10 +83,10 @@ export function NearestHospitalsPage({
                 <span>{locationNotice}</span>
               </div>
             ) : userLocation && (
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#2D4B32] text-white rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium">
                 <MapPin size={16} />
                 <span>Location detected</span>
-                <span className="text-[#2D4B32]">
+                <span className="text-primary">
                   ({userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)})
                 </span>
               </div>
@@ -122,7 +122,7 @@ export function NearestHospitalsPage({
 function LoadingSpinner() {
   return (
     <div className="flex items-center justify-center p-8">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2D4B32]"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
     </div>
   );
 }
@@ -133,16 +133,16 @@ function LoadingSpinner() {
 function EmptyState({ onNavigate }: { onNavigate: (view: string) => void }) {
   return (
     <div className="text-center py-16">
-      <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <Hospital size={40} className="text-gray-400" />
+      <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+        <Hospital size={40} className="text-muted-foreground" />
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">No Hospitals Found</h3>
-      <p className="text-gray-600 mb-6">
+      <h3 className="text-xl font-semibold text-foreground mb-2">No Hospitals Found</h3>
+      <p className="text-muted-foreground mb-6">
         Unable to find hospitals near your location. Please try searching manually.
       </p>
       <button
         onClick={() => onNavigate('hospitals')}
-        className="px-6 py-3 bg-[#2D4B32] text-white rounded-xl font-medium hover:bg-[#2D4B32] transition"
+        className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition"
       >
         Browse All Hospitals
       </button>
@@ -166,7 +166,7 @@ function HospitalsList({
     <div className="space-y-4">
       {/* Top 3 Nearest - Featured Cards */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
           <NavigationArrow size={20} className="text-blue-600" />
           Closest to You
         </h2>
@@ -183,10 +183,10 @@ function HospitalsList({
       </div>
 
       {/* All Hospitals List */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <Hospital size={20} className="text-[#2D4B32]" />
+      <div className="bg-card rounded-2xl shadow-lg overflow-hidden">
+        <div className="p-4 border-b border-border">
+          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <Hospital size={20} className="text-primary" />
             All Nearby Hospitals ({nearestHospitals.length})
           </h2>
         </div>
@@ -206,7 +206,7 @@ function HospitalsList({
       <div className="mt-6 text-center">
         <button
           onClick={() => onNavigate('map')}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-[#2D4B32] text-[#2D4B32] rounded-xl font-medium hover:bg-[#2D4B32] hover:border-[#2D4B32] transition"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-card border-2 border-primary text-primary rounded-xl font-medium hover:bg-primary hover:border-primary transition"
         >
           <MapPin size={20} />
           View All on Map
@@ -234,20 +234,20 @@ function FeaturedHospitalCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: rank * 0.1 }}
       onClick={onClick}
-      className="bg-gradient-to-br from-[#2D4B32] to-teal-600 rounded-2xl p-6 text-left text-white shadow-xl shadow-[#2D4B32]/20 hover:shadow-2xl hover:shadow-[#2D4B32]/20 transition-all group relative overflow-hidden"
+      className="bg-gradient-to-br from-primary to-teal-600 rounded-2xl p-6 text-left text-foreground shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/20 transition-all group relative overflow-hidden"
     >
       {/* Rank Badge */}
-      <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold">
+      <div className="absolute top-4 right-4 w-8 h-8 bg-card/20 rounded-full flex items-center justify-center text-lg font-bold">
         {rank}
       </div>
 
-      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+      <div className="w-12 h-12 bg-card/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
         <Hospital size={24} />
       </div>
 
       <h3 className="text-lg font-bold mb-1">{hospital.name}</h3>
 
-      <div className="flex items-center gap-2 text-[#2D4B32] text-sm mb-3">
+      <div className="flex items-center gap-2 text-primary text-sm mb-3">
         <MapPin size={14} />
         <span>{hospital.region}</span>
       </div>
@@ -281,22 +281,22 @@ function HospitalListItem({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.03 }}
       onClick={onClick}
-      className="w-full p-4 flex items-center gap-4 hover:bg-[#2D4B32] transition text-left group"
+      className="w-full p-4 flex items-center gap-4 hover:bg-primary transition text-left group"
     >
-      <div className="w-12 h-12 bg-[#2D4B32] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#2D4B32] transition text-white">
+      <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition text-foreground">
         <Hospital size={24} className="text-current" />
       </div>
 
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-900 group-hover:text-[#2D4B32] transition truncate">
+        <h3 className="font-semibold text-foreground group-hover:text-primary transition truncate">
           {hospital.name}
         </h3>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <MapPin size={14} />
           <span>{hospital.region}</span>
           {hospital.address && (
             <>
-              <span className="text-gray-300">•</span>
+              <span className="text-muted-foreground">•</span>
               <span className="truncate">{hospital.address}</span>
             </>
           )}
@@ -304,14 +304,14 @@ function HospitalListItem({
       </div>
 
       <div className="text-right flex-shrink-0">
-        <div className="flex items-center gap-1 text-[#2D4B32] font-bold">
+        <div className="flex items-center gap-1 text-primary font-bold">
           <NavigationArrow size={14} />
           <span>{formatDistance(hospital.distance)}</span>
         </div>
-        <p className="text-xs text-gray-400">away</p>
+        <p className="text-xs text-muted-foreground">away</p>
       </div>
 
-      <CaretRight size={20} className="text-gray-300 group-hover:text-[#2D4B32] transition flex-shrink-0" />
+      <CaretRight size={20} className="text-muted-foreground group-hover:text-primary transition flex-shrink-0" />
     </motion.button>
   );
 }

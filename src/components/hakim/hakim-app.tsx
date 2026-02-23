@@ -88,6 +88,13 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
 
   useEffect(() => {
     if (!authHydrated) return;
+    if (!isAuthenticated && view === "assistant") {
+      navigateTo("auth");
+    }
+  }, [authHydrated, isAuthenticated, view, navigateTo]);
+
+  useEffect(() => {
+    if (!authHydrated) return;
     if (isAuthenticated && view === "landing") {
       navigateTo("dashboard");
     }
@@ -211,6 +218,8 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     setDashboardStats,
     dashboardQueues,
     setDashboardQueues,
+    dashboardAppointments,
+    setDashboardAppointments,
     showAddDepartment,
     setShowAddDepartment,
     newDepartment,
@@ -383,6 +392,11 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
         signIn: tr.signIn,
         bookQueue: tr.bookQueue,
         dashboard: tr.dashboard,
+        hospitals: tr.hospitals,
+        appointments: tr.appointments,
+        notifications: tr.notifications,
+        emergencyAssist: tr.emergencyAssist,
+        aiDoctor: tr.aiDoctor,
       }}
     />
   );
@@ -511,6 +525,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     view,
     darkMode,
     loading,
+    token,
     hospitals,
     departments,
     selectedHospital,
@@ -523,6 +538,8 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     onNavigate: navigateTo,
     onLogin: login,
     navigation: <AppNavigation />,
+    apiGet: api.get,
+    apiPost: api.post,
   });
 
   const hospitalProps = useHospitalViewProps({
@@ -531,6 +548,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     language,
     t: tr,
     user,
+    token,
     onNavigate: navigateTo,
     onLogout: logout,
     onToggleLanguage: toggleLanguage,
@@ -552,16 +570,20 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     setDashboardStats,
     dashboardQueues,
     setDashboardQueues,
+    dashboardAppointments,
+    setDashboardAppointments,
     showAddDepartment,
     setShowAddDepartment,
     newDepartment,
     setNewDepartment,
+    apiGet: api.get,
+    apiPost: api.post,
   });
 
   if (!authHydrated) {
     return (
       <div
-        className={`${darkMode ? 'dark bg-gray-950' : ''} min-h-screen transition-colors duration-300`}
+        className={`${darkMode ? 'dark bg-background' : ''} min-h-screen transition-colors duration-300`}
         suppressHydrationWarning
       />
     );
@@ -569,7 +591,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
 
   return (
     <div
-      className={`${darkMode ? 'dark bg-gray-950' : ''} min-h-screen transition-colors duration-300`}
+      className={`${darkMode ? 'dark bg-background' : ''} min-h-screen transition-colors duration-300`}
       suppressHydrationWarning
     >
       <HakimViewProvider value={{ publicProps, adminProps, hospitalProps }}>

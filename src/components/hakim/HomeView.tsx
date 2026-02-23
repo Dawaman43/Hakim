@@ -138,7 +138,7 @@ export function HomeView() {
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <div className={`${feature.color} p-3 rounded-lg`}>
-                    <Icon className="h-6 w-6 text-white" />
+                    <Icon className="h-6 w-6 text-foreground" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-foreground mb-1">{feature.title}</h3>
@@ -166,7 +166,7 @@ export function HomeView() {
               { step: '4', title: 'Track Position', desc: 'Get real-time updates' },
             ].map((item, i) => (
               <div key={i} className="text-center">
-                <div className="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center mx-auto mb-3 font-bold">
+                <div className="w-10 h-10 rounded-full bg-teal-600 text-foreground flex items-center justify-center mx-auto mb-3 font-bold">
                   {item.step}
                 </div>
                 <h4 className="font-medium text-foreground">{item.title}</h4>
@@ -182,8 +182,8 @@ export function HomeView() {
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="bg-gray-600 p-3 rounded-lg">
-                <Shield className="h-6 w-6 text-white" />
+              <div className="bg-muted p-3 rounded-lg">
+                <Shield className="h-6 w-6 text-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Hospital Administrator?</h3>

@@ -3,6 +3,8 @@ import { db } from "@/db/client";
 import { otpCodes, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
+import { normalizeEthiopianPhone } from "@/lib/phone";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -23,9 +25,16 @@ async function sendTelegramOtp(telegramId: string, code: string) {
 
 export async function POST(req: Request) {
   try {
-    const { phone, purpose } = await req.json();
+    const ip = getClientIp(req);
+    const limit = rateLimit(`send-otp:${ip}`, 5, 60_000);
+    if (!limit.allowed) {
+      return NextResponse.json({ success: false, error: "Too many requests. Try again shortly." }, { status: 429 });
+    }
 
-    if (!phone) {
+    const { phone, purpose } = await req.json();
+    const normalizedPhone = normalizeEthiopianPhone(phone);
+
+    if (!normalizedPhone) {
       return NextResponse.json({ success: false, error: "Phone number is required" }, { status: 400 });
     }
 
@@ -34,17 +43,17 @@ export async function POST(req: Request) {
     expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
     const newId = uuidv4();
-    console.log("Inserting OTP", { newId, phone, code, purpose, expiresAt });
+    console.log("Inserting OTP", { newId, phone: normalizedPhone, code, purpose, expiresAt });
 
     await db.insert(otpCodes).values({
       id: newId,
-      phone,
+      phone: normalizedPhone,
       code,
       purpose: purpose || "LOGIN",
       expiresAt,
     });
 
-    const user = (await db.select().from(users).where(eq(users.phone, phone)).limit(1))[0];
+    const user = (await db.select().from(users).where(eq(users.phone, normalizedPhone)).limit(1))[0];
     if (user?.telegramId) {
       await sendTelegramOtp(user.telegramId, code);
     }

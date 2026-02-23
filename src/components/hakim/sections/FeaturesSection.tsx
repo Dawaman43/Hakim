@@ -31,10 +31,10 @@ export function FeaturesSection({ darkMode, t }: FeaturesSectionProps) {
           ].map((feature, index) => (
             <div
               key={index}
-              className="group p-8 rounded-3xl transition-all duration-300 border bg-card border-border hover:border-[#2D4B32]/60"
+              className="group p-8 rounded-3xl transition-all duration-300 border bg-card border-border hover:border-primary/60"
             >
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform bg-[#E7EDDF] border border-[#2D4B32]/30">
-                <feature.icon size={28} className="text-[#2D4B32]" />
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform bg-muted border border-primary/30">
+                <feature.icon size={28} className="text-primary" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-foreground">{feature.title}</h3>
               <p className="leading-relaxed text-muted-foreground">{feature.description}</p>

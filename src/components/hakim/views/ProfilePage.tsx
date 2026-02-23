@@ -39,7 +39,7 @@ export function ProfilePage({
   t,
 }: ProfilePageProps) {
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       {navigation}
 
       <section className="pt-8 pb-8">
@@ -49,18 +49,18 @@ export function ProfilePage({
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            <div className="bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-3xl p-8 text-white text-center shadow-xl shadow-[#2D4B32]/20">
+            <div className="bg-gradient-to-br from-primary to-primary rounded-3xl p-8 text-foreground text-center shadow-xl shadow-primary/20">
               <div className="w-20 h-20 bg-background rounded-full flex items-center justify-center mx-auto mb-4">
                 <User size={40} />
               </div>
               <h2 className="text-2xl font-bold">{user?.name || "User"}</h2>
-              <p className="text-[#2D4B32]">{formatPhoneDisplay(user?.phone || "")}</p>
+              <p className="text-primary">{formatPhoneDisplay(user?.phone || "")}</p>
               <span className="inline-block mt-4 px-4 py-1 bg-background rounded-full text-sm">
                 {user?.role === "HOSPITAL_ADMIN" ? "Hospital Admin" : "Patient"}
               </span>
             </div>
 
-            <div className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${darkMode ? "bg-gray-950" : "bg-background"}`}>
+            <div className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
               <button
                 onClick={async () => {
                   if (currentAppointment) {
@@ -85,44 +85,44 @@ export function ProfilePage({
                   }
                   alert(res?.error || "No active appointments found");
                 }}
-                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-gray-950 border-gray-800" : "hover:bg-gray-50 border-gray-100"}`}
+                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-background border-border" : "hover:bg-muted/40 border-border"}`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-primary/10 text-primary" : "bg-primary text-primary-foreground"}`}>
                   <Ticket size={20} className="text-current" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>My Active Token</p>
-                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>View your current queue position</p>
+                  <p className={`font-medium ${darkMode ? "text-foreground" : "text-foreground"}`}>My Active Token</p>
+                  <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>View your current queue position</p>
                 </div>
-                <CaretRight size={20} className={darkMode ? "text-gray-600" : "text-gray-400"} />
+                <CaretRight size={20} className={darkMode ? "text-muted-foreground" : "text-muted-foreground"} />
               </button>
 
               <button
                 onClick={() => onNavigate("appointments")}
-                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-gray-950 border-gray-800" : "hover:bg-gray-50 border-gray-100"}`}
+                className={`w-full p-4 flex items-center gap-4 transition border-b ${darkMode ? "hover:bg-background border-border" : "hover:bg-muted/40 border-border"}`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-primary/10 text-primary" : "bg-primary text-primary-foreground"}`}>
                   <Clock size={20} className="text-current" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>{t.appointmentHistory}</p>
-                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>View past appointments</p>
+                  <p className={`font-medium ${darkMode ? "text-foreground" : "text-foreground"}`}>{t.appointmentHistory}</p>
+                  <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>View past appointments</p>
                 </div>
-                <CaretRight size={20} className={darkMode ? "text-gray-600" : "text-gray-400"} />
+                <CaretRight size={20} className={darkMode ? "text-muted-foreground" : "text-muted-foreground"} />
               </button>
 
               <button
                 onClick={() => onNavigate("notifications")}
-                className={`w-full p-4 flex items-center gap-4 transition ${darkMode ? "hover:bg-gray-950" : "hover:bg-gray-50"}`}
+                className={`w-full p-4 flex items-center gap-4 transition ${darkMode ? "hover:bg-background" : "hover:bg-muted/40"}`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32]" : "bg-[#2D4B32] text-white"}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? "bg-primary/10 text-primary" : "bg-primary text-primary-foreground"}`}>
                   <Bell size={20} className="text-current" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>{t.notifications}</p>
-                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{t.notificationHistoryDesc}</p>
+                  <p className={`font-medium ${darkMode ? "text-foreground" : "text-foreground"}`}>{t.notifications}</p>
+                  <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.notificationHistoryDesc}</p>
                 </div>
-                <CaretRight size={20} className={darkMode ? "text-gray-600" : "text-gray-400"} />
+                <CaretRight size={20} className={darkMode ? "text-muted-foreground" : "text-muted-foreground"} />
               </button>
             </div>
 

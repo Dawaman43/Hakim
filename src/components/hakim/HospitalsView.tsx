@@ -77,17 +77,17 @@ export function HospitalsView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Select Hospital</h1>
-          <p className="text-gray-600">Choose a hospital to view departments and book tokens</p>
+          <h1 className="text-2xl font-bold text-foreground">Select Hospital</h1>
+          <p className="text-muted-foreground">Choose a hospital to view departments and book tokens</p>
         </div>
       </div>
 
       {/* Search */}
-      <Card className="border-gray-200">
+      <Card className="border-border">
         <CardContent className="p-4">
           <div className="flex gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search hospitals..."
                 value={search}
@@ -130,10 +130,10 @@ export function HospitalsView() {
           <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
         </div>
       ) : filteredHospitals.length === 0 ? (
-        <Card className="border-gray-200">
+        <Card className="border-border">
           <CardContent className="py-12 text-center">
-            <Building2 className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No hospitals found</p>
+            <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground">No hospitals found</p>
             <Button variant="link" onClick={() => { setSearch(''); setSelectedRegion(''); fetchHospitals(); }}>
               Clear filters
             </Button>
@@ -144,14 +144,14 @@ export function HospitalsView() {
           {filteredHospitals.map((hospital) => (
             <Card 
               key={hospital.id} 
-              className="cursor-pointer hover:shadow-lg transition-all border-gray-200 hover:border-teal-200"
+              className="cursor-pointer hover:shadow-lg transition-all border-border hover:border-teal-200"
               onClick={() => handleSelectHospital(hospital)}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{hospital.name}</h3>
+                      <h3 className="text-lg font-semibold text-foreground">{hospital.name}</h3>
                       {hospital.isActive && (
                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                           Open
@@ -159,7 +159,7 @@ export function HospitalsView() {
                       )}
                     </div>
                     
-                    <div className="space-y-1 text-sm text-gray-600">
+                    <div className="space-y-1 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
                         <span>{hospital.address}</span>
@@ -184,7 +184,7 @@ export function HospitalsView() {
                     </div>
                   </div>
 
-                  <ChevronRight className="h-6 w-6 text-gray-400" />
+                  <ChevronRight className="h-6 w-6 text-muted-foreground" />
                 </div>
               </CardContent>
             </Card>

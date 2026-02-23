@@ -31,6 +31,7 @@ export function Sidebar({
     { id: "profile", icon: Hospital, label: tr.profile },
     { id: "location", icon: MapPin, label: tr.location },
     { id: "queues", icon: Users, label: tr.queues },
+    { id: "appointments", icon: Users, label: tr.appointments },
     { id: "departments", icon: Stethoscope, label: tr.departments },
     { id: "staff", icon: IdentificationCard, label: tr.staff },
     { id: "analytics", icon: ChartBar, label: tr.analytics },
@@ -38,13 +39,13 @@ export function Sidebar({
   ] as const;
 
   return (
-    <aside className={`w-64 fixed left-0 top-0 h-full z-40 flex flex-col transition-colors duration-300 ${darkMode ? "bg-gray-950 border-r border-gray-800" : "bg-white border-r border-gray-200"}`}>
+    <aside className={`w-64 fixed left-0 top-0 h-full z-40 flex flex-col transition-colors duration-300 ${darkMode ? "bg-background border-r border-border" : "bg-card border-r border-border"}`}>
       <div className="p-6">
         <button onClick={() => onNavigate("landing")} className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-xl flex items-center justify-center shadow-lg">
-            <Heart weight="fill" className="text-white" size={22} />
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center shadow-lg">
+            <Heart weight="fill" className="text-foreground" size={22} />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">
+          <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
             Hakim
           </span>
         </button>
@@ -57,8 +58,8 @@ export function Sidebar({
             onClick={() => setDashboardSection(item.id as DashboardSection)}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl mb-1 transition-all ${
               dashboardSection === item.id
-                ? darkMode ? "bg-[#2D4B32]/10 text-[#2D4B32] font-medium" : "bg-[#2D4B32] text-white font-medium"
-                : darkMode ? "text-gray-400 hover:text-white hover:bg-gray-950" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                ? darkMode ? "bg-primary/10 text-primary font-medium" : "bg-primary text-primary-foreground font-medium"
+                : darkMode ? "text-muted-foreground hover:text-foreground hover:bg-background" : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
             <item.icon size={20} />
@@ -67,14 +68,14 @@ export function Sidebar({
         ))}
       </nav>
 
-      <div className={`p-4 border-t ${darkMode ? "border-gray-800" : "border-gray-200"}`}>
+      <div className={`p-4 border-t ${darkMode ? "border-border" : "border-border"}`}>
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#2D4B32] to-[#2D4B32] rounded-full flex items-center justify-center shadow-sm">
-            <User size={16} className="text-white" />
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center shadow-sm">
+            <User size={16} className="text-foreground" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className={`font-medium truncate ${darkMode ? "text-white" : "text-gray-900"}`}>{user?.name || "Admin"}</p>
-            <p className={`text-xs truncate ${darkMode ? "text-gray-500" : "text-gray-500"}`}>{hospitalProfile?.name}</p>
+            <p className={`font-medium truncate ${darkMode ? "text-foreground" : "text-foreground"}`}>{user?.name || "Admin"}</p>
+            <p className={`text-xs truncate ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{hospitalProfile?.name}</p>
           </div>
         </div>
         <button

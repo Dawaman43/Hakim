@@ -32,7 +32,7 @@ export function FeaturesPage({
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-foreground">
               {t.featuresPageTitle}
-              <span className="bg-gradient-to-r from-[#2D4B32] to-[#2D4B32] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
                 {' '}{t.featuresPageTitleHighlight}
               </span>
             </h1>
@@ -47,7 +47,7 @@ export function FeaturesPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-white'}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-primary/10 text-primary' : 'bg-primary text-primary-foreground'}`}>
                 <Ticket size={16} weight="fill" />
                 {t.queueManagement}
               </div>
@@ -65,13 +65,13 @@ export function FeaturesPage({
                   t.multipleDepts,
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <CheckCircle size={20} className="text-[#2D4B32]" weight="fill" />
+                    <CheckCircle size={20} className="text-primary" weight="fill" />
                     <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-[#2D4B32]/30 to-[#2D4B32]/30' : 'bg-gradient-to-br from-[#2D4B32] to-[#2D4B32]'}`}>
+            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-primary/30 to-primary/30' : 'bg-gradient-to-br from-primary to-primary'}`}>
               <div className="rounded-2xl shadow-xl p-6 bg-card text-card-foreground">
                 <div className="text-center mb-6">
                   <p className="text-sm text-muted-foreground">{t.tokenNumber}</p>
@@ -80,7 +80,7 @@ export function FeaturesPage({
                 <div className="space-y-3">
                   <div className="flex justify-between items-center p-3 rounded-lg bg-muted/60">
                     <span className="text-muted-foreground">{t.position}</span>
-                    <span className="font-bold text-[#2D4B32]">{t.fifthInLine}</span>
+                    <span className="font-bold text-primary">{t.fifthInLine}</span>
                   </div>
                   <div className="flex justify-between items-center p-3 rounded-lg bg-muted/60">
                     <span className="text-muted-foreground">{t.estWaitShort}</span>
@@ -92,7 +92,7 @@ export function FeaturesPage({
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className={`order-2 lg:order-1 rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-[#2D4B32]/30 to-[#2D4B32]/30' : 'bg-gradient-to-br from-[#2D4B32] to-[#2D4B32]'}`}>
+            <div className={`order-2 lg:order-1 rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-primary/30 to-primary/30' : 'bg-gradient-to-br from-primary to-primary'}`}>
               <div className="space-y-4">
                 {[
                   { title: t.tokenConfirmed, message: t.tokenConfirmedMsg },
@@ -104,7 +104,7 @@ export function FeaturesPage({
                     className="rounded-xl shadow-lg p-4 bg-card text-card-foreground"
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-white'}`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-primary/10 text-primary' : 'bg-primary text-primary-foreground'}`}>
                         <CellTower size={20} className="text-current" />
                       </div>
                       <div>
@@ -117,7 +117,7 @@ export function FeaturesPage({
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-[#2D4B32]/10 text-[#2D4B32]' : 'bg-[#2D4B32] text-white'}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${darkMode ? 'bg-primary/10 text-primary' : 'bg-primary text-primary-foreground'}`}>
                 <CellTower size={16} weight="fill" className="text-current" />
                 {t.smsSystem}
               </div>
@@ -135,7 +135,7 @@ export function FeaturesPage({
                   t.emergencyAlerts,
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <CheckCircle size={20} className="text-[#2D4B32]" weight="fill" />
+                    <CheckCircle size={20} className="text-primary" weight="fill" />
                     <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}
@@ -158,7 +158,7 @@ export function FeaturesPage({
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { level: t.critical, color: 'bg-red-500', desc: t.criticalDesc },
-                  { level: t.high, color: 'bg-[#2D4B32]', desc: t.highDesc },
+                  { level: t.high, color: 'bg-primary', desc: t.highDesc },
                   { level: t.medium, color: 'bg-yellow-500', desc: t.mediumDesc },
                   { level: t.low, color: 'bg-green-500', desc: t.lowDesc },
                 ].map((severity, i) => (
@@ -180,7 +180,7 @@ export function FeaturesPage({
                 </div>
               </div>
             </div>
-            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-red-900/20 to-[#2D4B32]/20' : 'bg-gradient-to-br from-red-50 to-[#2D4B32]'}`}>
+            <div className={`rounded-3xl p-8 ${darkMode ? 'bg-gradient-to-br from-red-900/20 to-primary/20' : 'bg-gradient-to-br from-red-50 to-primary'}`}>
               <div className="rounded-2xl shadow-xl p-6 bg-card text-card-foreground">
                 <h4 className="font-semibold mb-4 text-foreground">{t.describeSymptoms}</h4>
                 <div className="rounded-lg p-4 mb-4 bg-muted/60">

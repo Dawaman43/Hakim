@@ -40,7 +40,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-teal-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-card/95 backdrop-blur border-b border-teal-100 shadow-sm">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -67,7 +67,7 @@ export function Header() {
               <>
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 text-teal-600" />
-                  <span className="text-sm font-medium text-gray-700">{user.name}</span>
+                  <span className="text-sm font-medium text-muted-foreground">{user.name}</span>
                   <Badge variant="outline" className="text-xs">
                     {user.role === 'PATIENT' ? 'Patient' : user.role === 'HOSPITAL_ADMIN' ? 'Admin' : 'Super Admin'}
                   </Badge>
@@ -105,11 +105,11 @@ export function Header() {
                   <>
                     <div className="flex items-center gap-3 p-3 bg-teal-50 rounded-lg">
                       <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
+                        <User className="h-5 w-5 text-foreground" />
                       </div>
                       <div>
                         <p className="font-medium">{user.name}</p>
-                        <p className="text-xs text-gray-500">{user.phone}</p>
+                        <p className="text-xs text-muted-foreground">{user.phone}</p>
                       </div>
                     </div>
                     <Button 

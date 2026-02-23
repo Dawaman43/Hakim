@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 export const runtime = 'nodejs';
 
@@ -8,6 +9,12 @@ function isLikelyEmail(value: string) {
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const limit = rateLimit(`waitlist:${ip}`, 5, 60_000);
+    if (!limit.allowed) {
+      return Response.json({ success: false, error: 'Too many requests. Try again shortly.' }, { status: 429 });
+    }
+
     const { contact } = await req.json();
     const value = String(contact || '').trim();
     if (!value) {

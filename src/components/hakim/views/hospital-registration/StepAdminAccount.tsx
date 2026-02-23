@@ -30,44 +30,44 @@ export function StepAdminAccount({
 
   return (
     <div className="space-y-6">
-      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>
         {tr.adminAccount}
       </h3>
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.adminName} *
           </label>
           <div className="relative">
-            <User size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
+            <User size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
             <input
               type="text"
               placeholder="Full name"
               value={registrationData.adminName}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, adminName: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
             />
           </div>
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.adminPhone} *
           </label>
           <div className="relative">
-            <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-500" : "text-gray-400"}`} />
+            <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
             <input
               type="tel"
               placeholder="09XXXXXXXXX"
               value={registrationData.adminPhone}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, adminPhone: e.target.value }))}
-              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
             />
           </div>
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.adminPassword} *
           </label>
           <div className="relative">
@@ -76,12 +76,12 @@ export function StepAdminAccount({
               placeholder="Minimum 8 characters"
               value={registrationData.adminPassword}
               onChange={(e) => setRegistrationData(prev => ({ ...prev, adminPassword: e.target.value }))}
-              className={`w-full pr-12 pl-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+              className={`w-full pr-12 pl-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className={`absolute right-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-gray-400 hover:text-gray-200" : "text-gray-400 hover:text-gray-600"}`}
+              className={`absolute right-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground hover:text-muted-foreground"}`}
             >
               {showPassword ? <EyeSlash size={20} /> : <Eye size={20} />}
             </button>
@@ -89,7 +89,7 @@ export function StepAdminAccount({
         </div>
 
         <div>
-          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
             {tr.confirmPassword} *
           </label>
           <input
@@ -97,7 +97,7 @@ export function StepAdminAccount({
             placeholder="Re-enter password"
             value={registrationData.confirmPassword}
             onChange={(e) => setRegistrationData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2D4B32] focus:border-transparent transition ${darkMode ? "bg-gray-950 border-gray-700 text-white placeholder-gray-500" : "border-gray-200"}`}
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
           />
         </div>
       </div>
@@ -109,7 +109,7 @@ export function StepAdminAccount({
           onChange={(e) => setRegistrationData(prev => ({ ...prev, agreeToTerms: e.target.checked }))}
           className="mt-1"
         />
-        <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+        <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
           {tr.agreeTerms}
         </p>
       </div>
@@ -117,7 +117,7 @@ export function StepAdminAccount({
       <div className="flex justify-between">
         <button
           onClick={onBack}
-          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-gray-950 text-gray-300 hover:bg-gray-700" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${darkMode ? "bg-background text-muted-foreground hover:bg-card" : "bg-muted text-muted-foreground hover:bg-muted/60"}`}
         >
           <ArrowLeft size={20} />
           {tr.back}
@@ -125,7 +125,7 @@ export function StepAdminAccount({
         <button
           onClick={onSubmit}
           disabled={loading || !registrationData.adminName || !registrationData.adminPhone || !registrationData.adminPassword}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#2D4B32] text-white rounded-xl font-medium hover:bg-[#2D4B32] transition disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition disabled:opacity-50"
         >
           {loading ? (
             <ArrowClockwise className="animate-spin" size={20} />
