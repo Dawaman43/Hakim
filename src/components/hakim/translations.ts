@@ -156,7 +156,7 @@ export const translations = {
       // Auth
       verifyOTP: 'Verify OTP',
       weSentCode: 'We sent a code to',
-      signInPhone: 'Sign in with your phone number',
+      signInPhone: 'Sign in with your phone number or email',
       signUpPhone: 'Create an account with your phone number',
       enterOTP: 'Enter OTP Code',
       verifySignIn: 'Verify & Sign In',
@@ -607,7 +607,7 @@ export const translations = {
       // Auth
       verifyOTP: 'OTP አረጋግጥ',
       weSentCode: 'ኮዱን ወደ ላኩት',
-      signInPhone: 'በስልክ ቁጥርዎ ይግቡ',
+      signInPhone: 'በስልክ ቁጥርዎ ወይም ኢሜይል ይግቡ',
       signUpPhone: 'በስልክ ቁጥርዎ መዝግብ',
       enterOTP: 'OTP ኮድ አስገባ',
       verifySignIn: 'አረጋግጥ እና ግባ',

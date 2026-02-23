@@ -48,6 +48,8 @@ export function PublicViews(props: PublicViewProps) {
     otpSent,
     phone,
     setPhone,
+    email,
+    setEmail,
     password,
     setPassword,
     name,
@@ -178,6 +180,8 @@ export function PublicViews(props: PublicViewProps) {
         otpSent={otpSent}
         phone={phone}
         setPhone={setPhone}
+        email={email}
+        setEmail={setEmail}
         password={password}
         setPassword={setPassword}
         name={name}

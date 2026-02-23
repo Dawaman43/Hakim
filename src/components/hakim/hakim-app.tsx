@@ -186,6 +186,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
   const [notes, setNotes] = useState('');
   const [symptoms, setSymptoms] = useState('');
   const [triageResult, setTriageResult] = useState<TriageResult | null>(null);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   // Admin states
@@ -353,10 +354,10 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     setLoading,
   });
 
-  const loginWithPassword = async (phoneValue: string, passwordValue: string) => {
+  const loginWithPassword = async (payload: { phone?: string; email?: string; password: string }) => {
     setLoading(true);
     try {
-      const res = await api.post("/api/auth/login", { phone: phoneValue, password: passwordValue });
+      const res = await api.post("/api/auth/login", payload);
       if (res?.success) {
         login(res.user, res.token);
         if (res.user?.role === "SUPER_ADMIN") {
@@ -367,6 +368,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
           navigateTo("dashboard");
         }
         setPassword("");
+        setEmail("");
         setOtpSent(false);
         setOtp("");
       } else {
@@ -476,6 +478,8 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     otpSent,
     phone,
     setPhone,
+    email,
+    setEmail,
     password,
     setPassword,
     name,

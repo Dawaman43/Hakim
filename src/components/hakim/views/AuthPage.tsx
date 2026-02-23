@@ -21,6 +21,8 @@ interface AuthPageProps {
   otpSent: boolean;
   phone: string;
   setPhone: (value: string) => void;
+  email: string;
+  setEmail: (value: string) => void;
   password: string;
   setPassword: (value: string) => void;
   name: string;
@@ -30,7 +32,7 @@ interface AuthPageProps {
   setOtpSent: (value: boolean) => void;
   sendOtp: (type: "REGISTRATION" | "LOGIN") => void;
   verifyOtp: () => void;
-  loginWithPassword: (phone: string, password: string) => Promise<void>;
+  loginWithPassword: (payload: { phone?: string; email?: string; password: string }) => Promise<void>;
   onNavigate: (view: ViewType) => void;
   t: Record<string, string>;
 }
@@ -41,6 +43,8 @@ export function AuthPage({
   otpSent,
   phone,
   setPhone,
+  email,
+  setEmail,
   password,
   setPassword,
   name,
@@ -101,6 +105,20 @@ export function AuthPage({
                 <TabsTrigger value="signup">{t.signUp}</TabsTrigger>
               </TabsList>
               <TabsContent value="signin" className="space-y-6">
+                <p className="text-sm text-muted-foreground">
+                  Use either email or phone. Only one is required.
+                </p>
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Email</label>
+                  <input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={!!phone}
+                    className={`w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                  />
+                </div>
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{t.phoneNumberLabel}</label>
                   <div className="relative">
@@ -110,6 +128,7 @@ export function AuthPage({
                       placeholder="09XXXXXXXXX"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
+                      disabled={!!email}
                       className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
                     />
                   </div>
@@ -126,27 +145,24 @@ export function AuthPage({
                 </div>
                 <button
                   onClick={() => {
-                    if (password) {
-                      loginWithPassword(phone, password);
-                      return;
-                    }
-                    sendOtp("LOGIN");
+                    loginWithPassword({
+                      phone: phone || undefined,
+                      email: email || undefined,
+                      password,
+                    });
                   }}
-                  disabled={loading || !phone || (!!password && password.length < 6)}
+                  disabled={loading || (!phone && !email) || password.length < 6}
                   className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <ArrowClockwise className="animate-spin" size={20} />
                   ) : (
                     <>
-                      {password ? "Sign In" : t.continue}
+                      Sign In
                       <ArrowRight size={20} />
                     </>
                   )}
                 </button>
-                <p className="text-sm text-muted-foreground text-center">
-                  {password ? "Or remove password to use OTP sign in." : "Or enter a password to sign in directly."}
-                </p>
               </TabsContent>
               <TabsContent value="signup" className="space-y-6">
                 <div>
