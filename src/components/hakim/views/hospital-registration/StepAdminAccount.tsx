@@ -110,7 +110,18 @@ export function StepAdminAccount({
           className="mt-1"
         />
         <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
-          {tr.agreeTerms}
+          {tr.agreeToTerms}
+        </p>
+      </div>
+      <div className="flex items-start gap-3">
+        <input
+          type="checkbox"
+          checked={registrationData.agreeToPrivacy}
+          onChange={(e) => setRegistrationData(prev => ({ ...prev, agreeToPrivacy: e.target.checked }))}
+          className="mt-1"
+        />
+        <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
+          {tr.agreeToPrivacy}
         </p>
       </div>
 
@@ -124,7 +135,14 @@ export function StepAdminAccount({
         </button>
         <button
           onClick={onSubmit}
-          disabled={loading || !registrationData.adminName || !registrationData.adminPhone || !registrationData.adminPassword}
+          disabled={
+            loading ||
+            !registrationData.adminName ||
+            !registrationData.adminPhone ||
+            !registrationData.adminPassword ||
+            !registrationData.agreeToTerms ||
+            !registrationData.agreeToPrivacy
+          }
           className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition disabled:opacity-50"
         >
           {loading ? (

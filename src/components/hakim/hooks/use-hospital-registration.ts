@@ -18,6 +18,7 @@ const DEFAULT_REGISTRATION: HospitalRegistrationData = {
   operatingHours: "24/7",
   services: [],
   agreeToTerms: false,
+  agreeToPrivacy: false,
 };
 
 export function useHospitalRegistration() {

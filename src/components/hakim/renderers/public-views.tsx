@@ -235,6 +235,7 @@ export function PublicViews(props: PublicViewProps) {
       <MapPage
         darkMode={darkMode}
         hospitals={hospitals}
+        totalHospitals={totalHospitals}
         selectedHospital={selectedHospital}
         setSelectedHospital={setSelectedHospital}
         loadDepartments={loadDepartments}

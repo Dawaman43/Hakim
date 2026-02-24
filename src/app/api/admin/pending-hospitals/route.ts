@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { hospitals, users } from "@/db/schema";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { verifyToken } from "@/lib/jwt";
 
 export async function GET(request: Request) {
@@ -23,7 +23,8 @@ export async function GET(request: Request) {
       })
       .from(hospitals)
       .leftJoin(users, eq(hospitals.adminId, users.id))
-      .where(and(eq(hospitals.isActive, false)));
+      .where(and(eq(hospitals.isActive, false)))
+      .orderBy(desc(hospitals.createdAt));
 
     return NextResponse.json({ success: true, data: rows });
   } catch (error) {

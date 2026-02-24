@@ -411,9 +411,9 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
       if (prevPageSizeRef.current === null) {
         prevPageSizeRef.current = pageSize;
       }
-      if (pageSize < 500) {
+      if (pageSize < 4000) {
         setPage(1);
-        setPageSize(500);
+        setPageSize(4000);
       }
       return;
     }

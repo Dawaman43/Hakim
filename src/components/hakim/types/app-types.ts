@@ -26,6 +26,7 @@ export interface HospitalRegistrationData {
   operatingHours: string;
   services: string[];
   agreeToTerms: boolean;
+  agreeToPrivacy: boolean;
 }
 
 export interface HospitalProfile {

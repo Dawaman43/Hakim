@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 interface MapPageProps {
   darkMode: boolean;
   hospitals: Hospital[];
+  totalHospitals?: number;
   selectedHospital: Hospital | null;
   setSelectedHospital: (hospital: Hospital | null) => void;
   loadDepartments: (hospitalId: string) => void;
@@ -27,6 +28,7 @@ interface MapPageProps {
 export function MapPage({
   darkMode,
   hospitals,
+  totalHospitals,
   selectedHospital,
   setSelectedHospital,
   loadDepartments,
@@ -101,7 +103,7 @@ export function MapPage({
                   Find Hospitals Near You
                 </h1>
                 <p className="text-muted-foreground">
-                  Interactive map of {filteredHospitals.length} facilities across Ethiopia
+                  Interactive map of {totalHospitals ?? filteredHospitals.length} facilities across Ethiopia
                 </p>
               </div>
               {userLocation && (

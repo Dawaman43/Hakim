@@ -5,6 +5,7 @@ import type { HospitalRegistrationData } from "./hospital-registration/types";
 import { StepHospitalInfo } from "./hospital-registration/StepHospitalInfo";
 import { StepServices } from "./hospital-registration/StepServices";
 import { StepAdminAccount } from "./hospital-registration/StepAdminAccount";
+import { api } from "../api";
 
 interface HospitalRegistrationPageProps {
   darkMode: boolean;
@@ -67,18 +68,36 @@ export function HospitalRegistrationPage({
       alert("Password must be at least 8 characters");
       return;
     }
-    if (!registrationData.agreeToTerms) {
+    if (!registrationData.agreeToTerms || !registrationData.agreeToPrivacy) {
       alert("Please agree to the terms and conditions");
       return;
     }
 
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await api.post("/api/hospital/register", {
+        hospitalName: registrationData.hospitalName,
+        region: registrationData.region,
+        city: registrationData.city,
+        address: registrationData.address,
+        phone: registrationData.phone,
+        email: registrationData.email,
+        adminName: registrationData.adminName,
+        adminPhone: registrationData.adminPhone,
+        adminPassword: registrationData.adminPassword,
+        services: registrationData.services,
+      });
+
+      if (res?.success) {
+        alert(tr.registrationSuccess);
+        onNavigate("auth");
+        setRegistrationStep(1);
+      } else {
+        alert(res?.error || "Registration failed");
+      }
+    } finally {
       setLoading(false);
-      alert(tr.registrationSuccess);
-      onNavigate("auth");
-      setRegistrationStep(1);
-    }, 1500);
+    }
   };
 
   return (
@@ -87,7 +106,7 @@ export function HospitalRegistrationPage({
         <div className="text-center mb-8">
           <button onClick={() => onNavigate("landing")} className="inline-flex items-center gap-2 mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center shadow-lg">
-              <Heart weight="fill" className="text-foreground" size={28} />
+              <Heart weight="fill" className="text-primary-foreground" size={28} />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
               Hakim
@@ -107,13 +126,15 @@ export function HospitalRegistrationPage({
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                 registrationStep >= step
                   ? "bg-primary text-primary-foreground"
-                  : darkMode ? "bg-background text-muted-foreground" : "bg-muted text-muted-foreground"
+                  : darkMode
+                    ? "bg-card text-foreground/80 border border-border"
+                    : "bg-muted/70 text-foreground/80 border border-border"
               }`}>
                 {step}
               </div>
               {step < 3 && (
                 <div className={`w-12 h-1 mx-1 rounded transition-all ${
-                  registrationStep > step ? "bg-primary" : darkMode ? "bg-background" : "bg-muted"
+                  registrationStep > step ? "bg-primary" : darkMode ? "bg-card/70" : "bg-muted/70"
                 }`} />
               )}
             </div>
