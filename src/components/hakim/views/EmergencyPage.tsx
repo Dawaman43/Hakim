@@ -69,6 +69,7 @@ export function EmergencyPage({
   const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const sendChat = async () => {
     const content = chatInput.trim();
@@ -92,6 +93,16 @@ export function EmergencyPage({
       alert("Failed to get AI response.");
     } finally {
       setChatLoading(false);
+    }
+  };
+
+  const handleReportEmergency = async () => {
+    if (submitLoading) return;
+    setSubmitLoading(true);
+    try {
+      await reportEmergency();
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -212,13 +223,13 @@ export function EmergencyPage({
                 </div>
 
                 <Button
-                  onClick={reportEmergency}
-                  disabled={loading || symptoms.length < 10}
+                  onClick={handleReportEmergency}
+                  disabled={submitLoading || symptoms.length < 10}
                   variant="destructive"
                   size="lg"
                   className="w-full rounded-xl text-lg flex items-center justify-center gap-2"
                 >
-                  {loading ? (
+                  {submitLoading ? (
                     <ArrowClockwise className="animate-spin" size={20} />
                   ) : (
                     <>

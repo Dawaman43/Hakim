@@ -106,15 +106,8 @@ export default function HospitalMap({
 }: HospitalMapProps) {
   const [isMounted, setIsMounted] = useState(false);
 
-  const iconCache = useMemo(() => new Map<string, L.DivIcon>(), []);
-  const getIcon = (facilityType: string | undefined, isSelected: boolean) => {
-    const key = `${facilityType ?? 'default'}:${isSelected ? 'selected' : 'base'}`;
-    const cached = iconCache.get(key);
-    if (cached) return cached;
-    const icon = createCustomIcon(facilityType, isSelected);
-    iconCache.set(key, icon);
-    return icon;
-  };
+  const getIcon = (facilityType: string | undefined, isSelected: boolean) =>
+    createCustomIcon(facilityType, isSelected);
 
   const validHospitals = useMemo(
     () => hospitals.filter(h => h.latitude && h.longitude),

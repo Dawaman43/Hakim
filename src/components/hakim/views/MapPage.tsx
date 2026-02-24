@@ -75,7 +75,8 @@ export function MapPage({
   });
 
   const MAX_MAP_MARKERS = 400;
-  const visibleHospitals = filteredHospitals.length > MAX_MAP_MARKERS
+  const regionFiltered = !!mapSelectedRegion && mapSelectedRegion !== 'ALL';
+  const visibleHospitals = filteredHospitals.length > MAX_MAP_MARKERS && !regionFiltered
     ? filteredHospitals.slice(0, MAX_MAP_MARKERS)
     : filteredHospitals;
 
@@ -155,7 +156,7 @@ export function MapPage({
               )}
             </Button>
           </div>
-          {filteredHospitals.length > MAX_MAP_MARKERS && (
+          {filteredHospitals.length > MAX_MAP_MARKERS && !regionFiltered && (
             <div className="mt-4 flex items-center gap-2 text-sm text-primary bg-primary/10 border border-primary/20 rounded-lg px-3 py-2">
               <Warning size={16} />
               <span>Showing the first {MAX_MAP_MARKERS} facilities. Use search or region to narrow results.</span>

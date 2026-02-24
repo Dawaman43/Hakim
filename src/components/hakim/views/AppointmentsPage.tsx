@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Appointment } from "@/types";
 import type { ViewType } from "../routes";
 
@@ -27,15 +27,20 @@ export function AppointmentsPage({
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<Appointment[]>([]);
 
-  useEffect(() => {
+  const loadAppointments = useCallback(async () => {
     if (!token) return;
     setLoading(true);
-    apiGet("/api/patient/appointments", token)
-      .then((res) => {
-        if (res?.success) setItems(res.data || []);
-      })
-      .finally(() => setLoading(false));
+    try {
+      const res = await apiGet("/api/patient/appointments", token);
+      if (res?.success) setItems(res.data || []);
+    } finally {
+      setLoading(false);
+    }
   }, [apiGet, token]);
+
+  useEffect(() => {
+    void loadAppointments();
+  }, [loadAppointments]);
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>

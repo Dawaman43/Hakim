@@ -193,6 +193,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
   const [adminStats, setAdminStats] = useState<unknown>(null);
   const { viewMode, setViewMode, facilityTypeFilter, setFacilityTypeFilter, searchTerm, setSearchTerm, regionFilter, setRegionFilter } = useListFilters();
   const { page, setPage, pageSize, setPageSize } = usePagination();
+  const prevPageSizeRef = useRef<number | null>(null);
 
   // Location states
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number; city?: string } | null>(null);
@@ -404,6 +405,24 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
       loadAdminQueue();
     }
   }, [view, selectedHospital, loadAdminQueue]);
+
+  useEffect(() => {
+    if (view === "map") {
+      if (prevPageSizeRef.current === null) {
+        prevPageSizeRef.current = pageSize;
+      }
+      if (pageSize < 500) {
+        setPage(1);
+        setPageSize(500);
+      }
+      return;
+    }
+    if (prevPageSizeRef.current !== null && prevPageSizeRef.current !== pageSize) {
+      setPage(1);
+      setPageSize(prevPageSizeRef.current);
+      prevPageSizeRef.current = null;
+    }
+  }, [pageSize, setPage, setPageSize, view]);
 
   const AppNavigation = ({ transparent = false }: { transparent?: boolean }) => (
     <Navigation

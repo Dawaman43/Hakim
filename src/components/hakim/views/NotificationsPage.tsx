@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, Bell } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Appointment, Notification } from "@/types";
 import type { ViewType } from "../routes";
 
@@ -33,15 +33,20 @@ export function NotificationsPage({
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<NotificationItem[]>([]);
 
-  useEffect(() => {
+  const loadNotifications = useCallback(async () => {
     if (!token) return;
     setLoading(true);
-    apiGet("/api/patient/notifications", token)
-      .then((res) => {
-        if (res?.success) setItems(res.data || []);
-      })
-      .finally(() => setLoading(false));
+    try {
+      const res = await apiGet("/api/patient/notifications", token);
+      if (res?.success) setItems(res.data || []);
+    } finally {
+      setLoading(false);
+    }
   }, [apiGet, token]);
+
+  useEffect(() => {
+    void loadNotifications();
+  }, [loadNotifications]);
 
   const statusClass = (status?: string) => {
     if (status === "SENT") return darkMode ? "bg-emerald-900/30 text-emerald-300" : "bg-emerald-50 text-emerald-700";
