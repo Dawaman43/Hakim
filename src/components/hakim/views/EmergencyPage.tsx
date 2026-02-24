@@ -148,9 +148,11 @@ export function EmergencyPage({
                     rows={5}
                     className="w-full px-4 py-3 rounded-xl"
                   />
-                  <p className="text-sm mt-2 text-muted-foreground">
-                    Be as specific as possible for better triage assessment.
-                  </p>
+                  {isAuthenticated && (
+                    <p className="text-sm mt-2 text-muted-foreground">
+                      Be as specific as possible for better triage assessment.
+                    </p>
+                  )}
                 </div>
 
                 {!isAuthenticated && (
@@ -291,51 +293,53 @@ export function EmergencyPage({
               </div>
             )}
 
-            <div className="mt-8 rounded-2xl border border-border bg-card p-6 transition-colors duration-300">
-              <h3 className="text-lg font-semibold mb-3 text-foreground">
-                AI Emergency Chat
-              </h3>
-              <p className="text-sm mb-4 text-muted-foreground">
-                Ask follow-up questions about your symptoms or next steps.
-              </p>
-              <div className="rounded-xl p-4 mb-4 h-56 overflow-y-auto bg-background border border-border">
-                {chatMessages.length === 0 ? (
-                  <p className="text-muted-foreground">Start a conversation...</p>
-                ) : (
-                  <div className="space-y-3">
-                    {chatMessages.map((msg, idx) => (
-                      <div key={idx} className={`text-sm ${msg.role === "assistant" ? "text-foreground" : "text-foreground"}`}>
-                        <span className={`font-semibold ${msg.role === "assistant" ? "text-emerald-700 dark:text-emerald-300" : "text-primary"}`}>
-                          {msg.role === "assistant" ? "Assistant" : "You"}:
-                        </span>{" "}
-                        {msg.content}
-                      </div>
-                    ))}
-                  </div>
-                )}
+            {isAuthenticated && (
+              <div className="mt-8 rounded-2xl border border-border bg-card p-6 transition-colors duration-300">
+                <h3 className="text-lg font-semibold mb-3 text-foreground">
+                  AI Emergency Chat
+                </h3>
+                <p className="text-sm mb-4 text-muted-foreground">
+                  Ask follow-up questions about your symptoms or next steps.
+                </p>
+                <div className="rounded-xl p-4 mb-4 h-56 overflow-y-auto bg-background border border-border">
+                  {chatMessages.length === 0 ? (
+                    <p className="text-muted-foreground">Start a conversation...</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {chatMessages.map((msg, idx) => (
+                        <div key={idx} className={`text-sm ${msg.role === "assistant" ? "text-foreground" : "text-foreground"}`}>
+                          <span className={`font-semibold ${msg.role === "assistant" ? "text-emerald-700 dark:text-emerald-300" : "text-primary"}`}>
+                            {msg.role === "assistant" ? "Assistant" : "You"}:
+                          </span>{" "}
+                          {msg.content}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        sendChat();
+                      }
+                    }}
+                    placeholder="Ask about your symptoms..."
+                    className="flex-1 px-4 py-3 rounded-xl"
+                  />
+                  <Button
+                    onClick={sendChat}
+                    disabled={chatLoading || chatInput.trim().length === 0}
+                    className="px-4 py-3 rounded-xl font-semibold"
+                  >
+                    {chatLoading ? <ArrowClockwise className="animate-spin" size={18} /> : "Send"}
+                  </Button>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <Input
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      sendChat();
-                    }
-                  }}
-                  placeholder="Ask about your symptoms..."
-                  className="flex-1 px-4 py-3 rounded-xl"
-                />
-                <Button
-                  onClick={sendChat}
-                  disabled={chatLoading || chatInput.trim().length === 0}
-                  className="px-4 py-3 rounded-xl font-semibold"
-                >
-                  {chatLoading ? <ArrowClockwise className="animate-spin" size={18} /> : "Send"}
-                </Button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
