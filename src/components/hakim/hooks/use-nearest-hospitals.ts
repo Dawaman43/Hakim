@@ -34,16 +34,10 @@ export function useNearestHospitals({ userLocation }: UseNearestHospitalsParams)
     setNearestLoading(true);
     setNearestError(null);
     try {
-      const res = await api.get(`/api/hospitals/nearby?lat=${userLocation.lat}&lng=${userLocation.lng}&limit=50`);
-      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
-        setNearestHospitals(res.data || []);
-        return;
-      }
-
-      // Fallback: fetch a larger sample and compute distances client-side
-      const fallback = await api.get(`/api/hospitals?limit=200&page=1`);
-      if (fallback.success && Array.isArray(fallback.data)) {
-        const computed = fallback.data
+      // Prefer full dataset for accurate nearest results
+      const all = await api.get(`/api/hospitals/all`);
+      if (all.success && Array.isArray(all.data) && all.data.length > 0) {
+        const computed = all.data
           .filter((h: Hospital) => h.latitude && h.longitude)
           .map((h: Hospital) => ({
             ...h,
@@ -51,10 +45,17 @@ export function useNearestHospitals({ userLocation }: UseNearestHospitalsParams)
           }))
           .sort((a: any, b: any) => a.distance - b.distance);
         setNearestHospitals(computed.slice(0, 50));
-      } else {
-        setNearestHospitals([]);
-        setNearestError(res.error || "Unable to load nearby hospitals.");
+        return;
       }
+
+      const res = await api.get(`/api/hospitals/nearby?lat=${userLocation.lat}&lng=${userLocation.lng}&limit=50`);
+      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+        setNearestHospitals(res.data || []);
+        return;
+      }
+
+      setNearestHospitals([]);
+      setNearestError(res.error || "Unable to load nearby hospitals.");
     } catch {
       setNearestHospitals([]);
       setNearestError("Unable to load nearby hospitals.");

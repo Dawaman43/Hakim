@@ -43,6 +43,7 @@ export function MapPage({
   const [mapSelectedRegion, setMapSelectedRegion] = useState<string>('');
   const [regions, setRegions] = useState<{ name: string; count: number }[]>([]);
   const [mapMounted, setMapMounted] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(0);
   const [MapComponent, setMapComponent] = useState<React.ComponentType<{
     hospitals: Hospital[];
     selectedHospital: Hospital | null;
@@ -81,6 +82,31 @@ export function MapPage({
   const visibleHospitals = filteredHospitals.length > MAX_MAP_MARKERS && !regionFiltered
     ? filteredHospitals.slice(0, MAX_MAP_MARKERS)
     : filteredHospitals;
+  const lazyHospitals = visibleHospitals.slice(0, visibleCount);
+
+  useEffect(() => {
+    setVisibleCount(0);
+    const targetLen = visibleHospitals.length;
+    if (targetLen === 0) return;
+    let cancelled = false;
+    let current = 0;
+    const step = () => {
+      if (cancelled) return;
+      current = Math.min(current + 120, targetLen);
+      setVisibleCount(current);
+      if (!cancelled && current < targetLen) {
+        if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+          (window as any).requestIdleCallback(step, { timeout: 200 });
+        } else {
+          setTimeout(step, 120);
+        }
+      }
+    };
+    step();
+    return () => {
+      cancelled = true;
+    };
+  }, [visibleHospitals.length]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -184,7 +210,7 @@ export function MapPage({
           </div>
         ) : (
           <MapComponent
-            hospitals={visibleHospitals}
+            hospitals={lazyHospitals}
             selectedHospital={selectedHospital}
             onHospitalSelect={(hospital) => {
               setSelectedHospital(hospital);
