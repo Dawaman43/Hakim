@@ -65,8 +65,72 @@ export function AuthPage({
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showSignupConfirm, setShowSignupConfirm] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showReset, setShowReset] = useState(false);
+  const [resetStep, setResetStep] = useState<"request" | "verify">("request");
+  const [resetPhone, setResetPhone] = useState("");
+  const [resetOtp, setResetOtp] = useState("");
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetConfirmPassword, setResetConfirmPassword] = useState("");
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const telegramBotUsername = "Hakim_bet_bot";
   const telegramLink = `https://t.me/${telegramBotUsername}?start=${encodeURIComponent(normalizeEthiopianPhone(phone) || "")}`;
+  const resetTelegramLink = `https://t.me/${telegramBotUsername}?start=${encodeURIComponent(normalizeEthiopianPhone(resetPhone) || "")}`;
+
+  const requestPasswordReset = async () => {
+    const normalized = normalizeEthiopianPhone(resetPhone);
+    if (!normalized) return;
+    setResetLoading(true);
+    try {
+      const res = await fetch("/api/auth/request-password-reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: normalized }),
+      });
+      const data = await res.json();
+      if (data?.success) {
+        setResetStep("verify");
+      } else {
+        alert(data?.error || "Failed to request reset");
+      }
+    } catch (error) {
+      console.error("Reset request error:", error);
+      alert("Failed to request reset");
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
+  const submitPasswordReset = async () => {
+    const normalized = normalizeEthiopianPhone(resetPhone);
+    if (!normalized || resetOtp.length !== 6 || resetPassword.length < 6 || resetPassword !== resetConfirmPassword) return;
+    setResetLoading(true);
+    try {
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: normalized, otpCode: resetOtp, newPassword: resetPassword }),
+      });
+      const data = await res.json();
+      if (data?.success) {
+        alert("Password updated. You can now sign in.");
+        setShowReset(false);
+        setResetStep("request");
+        setResetPhone("");
+        setResetOtp("");
+        setResetPassword("");
+        setResetConfirmPassword("");
+      } else {
+        alert(data?.error || "Failed to reset password");
+      }
+    } catch (error) {
+      console.error("Reset submit error:", error);
+      alert("Failed to reset password");
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
@@ -81,10 +145,12 @@ export function AuthPage({
             {t.backToHome}
           </button>
           <h2 className={`text-2xl font-bold ${darkMode ? "text-foreground" : "text-foreground"}`}>
-            {otpSent ? "Check Telegram" : authMode === "signin" ? t.signIn : t.signUp}
+            {showReset ? "Reset Password" : otpSent ? "Check Telegram" : authMode === "signin" ? t.signIn : t.signUp}
           </h2>
           <p className={`mt-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
-            {otpSent 
+            {showReset
+              ? "We will send a reset OTP to your Telegram-linked account."
+              : otpSent 
               ? (
                 <>
                   We&apos;ve prepared your verification flow. <br />
@@ -96,7 +162,138 @@ export function AuthPage({
         </div>
 
         <div className={`rounded-3xl shadow-xl p-8 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
-          {!otpSent ? (
+          {showReset ? (
+            <div className="space-y-6">
+              {resetStep === "request" ? (
+                <>
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Phone Number</label>
+                    <div className="relative">
+                      <Phone size={20} className={`absolute left-4 top-1/2 -translate-y-1/2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
+                      <input
+                        type="tel"
+                        placeholder="09XXXXXXXXX"
+                        value={resetPhone}
+                        onChange={(e) => setResetPhone(e.target.value)}
+                        className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={requestPasswordReset}
+                    disabled={resetLoading || !normalizeEthiopianPhone(resetPhone)}
+                    className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {resetLoading ? (
+                      <ArrowClockwise className="animate-spin" size={20} />
+                    ) : (
+                      <>
+                        Send Reset OTP
+                        <ArrowRight size={20} />
+                      </>
+                    )}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>
+                    Open the Telegram bot to get your reset OTP, then enter it below.
+                  </p>
+                  <a
+                    href={resetTelegramLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block w-full py-3 rounded-xl bg-primary text-primary-foreground text-center font-semibold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                  >
+                    Open Telegram Bot
+                  </a>
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>OTP Code</label>
+                    <input
+                      type="text"
+                      placeholder="000000"
+                      value={resetOtp}
+                      onChange={(e) => setResetOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                      className={`w-full text-center text-3xl tracking-widest py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition font-mono ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                      maxLength={6}
+                    />
+                  </div>
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>New Password</label>
+                    <div className="relative">
+                      <input
+                        type={showResetPassword ? "text" : "password"}
+                        placeholder="Create a new password"
+                        value={resetPassword}
+                        onChange={(e) => setResetPassword(e.target.value)}
+                        className={`w-full pl-4 pr-12 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowResetPassword((prev) => !prev)}
+                        className={`absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg ${darkMode ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                        aria-label={showResetPassword ? "Hide password" : "Show password"}
+                      >
+                        {showResetPassword ? <EyeSlash size={20} /> : <Eye size={20} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Confirm Password</label>
+                    <div className="relative">
+                      <input
+                        type={showResetConfirm ? "text" : "password"}
+                        placeholder="Confirm your password"
+                        value={resetConfirmPassword}
+                        onChange={(e) => setResetConfirmPassword(e.target.value)}
+                        className={`w-full pl-4 pr-12 py-4 border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-lg ${darkMode ? "bg-background border-border text-foreground placeholder:text-muted-foreground" : "border-border"}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowResetConfirm((prev) => !prev)}
+                        className={`absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg ${darkMode ? "text-muted-foreground hover:text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                        aria-label={showResetConfirm ? "Hide password" : "Show password"}
+                      >
+                        {showResetConfirm ? <EyeSlash size={20} /> : <Eye size={20} />}
+                      </button>
+                    </div>
+                    {resetConfirmPassword && resetConfirmPassword !== resetPassword && (
+                      <p className="mt-2 text-sm text-destructive">Passwords do not match.</p>
+                    )}
+                  </div>
+                  <button
+                    onClick={submitPasswordReset}
+                    disabled={
+                      resetLoading ||
+                      resetOtp.length !== 6 ||
+                      resetPassword.length < 6 ||
+                      resetPassword !== resetConfirmPassword
+                    }
+                    className="w-full py-4 bg-gradient-to-r from-primary to-primary text-primary-foreground rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {resetLoading ? (
+                      <ArrowClockwise className="animate-spin" size={20} />
+                    ) : (
+                      <>
+                        Update Password
+                        <Check size={20} />
+                      </>
+                    )}
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => {
+                  setShowReset(false);
+                  setResetStep("request");
+                }}
+                className="w-full py-3 rounded-xl border border-border text-muted-foreground hover:text-foreground hover:bg-muted/40 transition flex items-center justify-center gap-2"
+              >
+                <ArrowCounterClockwise size={18} />
+                Back to Sign In
+              </button>
+            </div>
+          ) : !otpSent ? (
             <Tabs
               value={authMode}
               onValueChange={(value) => {
@@ -176,6 +373,19 @@ export function AuthPage({
                       <ArrowRight size={20} />
                     </>
                   )}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowReset(true);
+                    setResetStep("request");
+                    setResetPhone(phone || "");
+                    setResetOtp("");
+                    setResetPassword("");
+                    setResetConfirmPassword("");
+                  }}
+                  className="w-full py-2 text-sm text-primary hover:text-primary/80 transition"
+                >
+                  Forgot password?
                 </button>
               </TabsContent>
               <TabsContent value="signup" className="space-y-6">
