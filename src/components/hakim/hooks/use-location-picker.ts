@@ -190,9 +190,8 @@ export function useLocationPicker({
       // ignore
     }
     setUserLocation(null);
-    setLocationError("Please select your region below.");
-    setShowLocationModal(true);
-  }, [requestLocation]);
+    requestLocation(false, shouldNavigate);
+  }, [requestLocation, setUserLocation]);
 
   const useSelectedRegion = useCallback(() => {
     if (!selectedRegion) {
