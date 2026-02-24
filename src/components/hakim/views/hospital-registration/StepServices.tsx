@@ -37,7 +37,7 @@ export function StepServices({
             onClick={() => onToggleService(service.id)}
             className={`flex items-center justify-between p-3 rounded-xl border transition ${
               registrationData.services.includes(service.id)
-                ? darkMode ? "bg-primary/10 border-primary/50 text-primary" : "bg-primary border-primary text-primary"
+                ? darkMode ? "bg-primary/10 border-primary/50 text-primary-foreground" : "bg-primary border-primary text-primary-foreground"
                 : darkMode ? "bg-background border-border text-muted-foreground hover:bg-card" : "bg-background border-border text-muted-foreground hover:bg-muted/40"
             }`}
           >

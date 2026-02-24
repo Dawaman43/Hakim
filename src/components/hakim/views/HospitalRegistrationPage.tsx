@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Heart } from "@phosphor-icons/react";
+import { ArrowLeft } from "@phosphor-icons/react";
 import type { HospitalRegistrationData } from "./hospital-registration/types";
 import { StepHospitalInfo } from "./hospital-registration/StepHospitalInfo";
 import { StepServices } from "./hospital-registration/StepServices";
@@ -104,14 +104,6 @@ export function HospitalRegistrationPage({
     <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? "bg-background" : "bg-background"}`}>
       <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
-          <button onClick={() => onNavigate("landing")} className="inline-flex items-center gap-2 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center shadow-lg">
-              <Heart weight="fill" className="text-primary-foreground" size={28} />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
-              Hakim
-            </span>
-          </button>
           <h2 className={`text-2xl font-bold ${darkMode ? "text-foreground" : "text-foreground"}`}>
             {tr.registerHospital}
           </h2>
