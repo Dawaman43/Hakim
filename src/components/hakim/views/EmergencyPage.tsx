@@ -234,9 +234,9 @@ export function EmergencyPage({
                   <div className="text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 bg-black/10 border border-black/20">
                       {triageResult.isEmergency ? (
-                        <Warning size={32} weight="fill" className="text-current" />
+                        <Warning size={32} weight="fill" className="text-white" />
                       ) : (
-                        <FirstAid size={32} weight="fill" className="text-current" />
+                        <FirstAid size={32} weight="fill" className="text-white" />
                       )}
                     </div>
                     <p className="text-sm opacity-80">Severity Level</p>
