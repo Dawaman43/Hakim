@@ -44,7 +44,17 @@ export function useNearestHospitals({ userLocation }: UseNearestHospitalsParams)
             distance: calculateDistance(userLocation.lat, userLocation.lng, h.latitude!, h.longitude!),
           }))
           .sort((a: any, b: any) => a.distance - b.distance);
-        setNearestHospitals(computed.slice(0, 50));
+        if (userLocation.city) {
+          const city = userLocation.city.toLowerCase();
+          const inCity = computed.filter((h: Hospital & { distance: number }) => (h.city || "").toLowerCase() === city);
+          if (inCity.length > 0) {
+            setNearestHospitals(inCity.slice(0, 50));
+          } else {
+            setNearestHospitals(computed.slice(0, 50));
+          }
+        } else {
+          setNearestHospitals(computed.slice(0, 50));
+        }
         return;
       }
 
