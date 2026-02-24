@@ -114,6 +114,16 @@ export function setupBot(bot: Bot) {
       .resized();
   };
 
+  const getGuestKeyboard = (lang: "en" | "am") => {
+    const s = strings[lang];
+    return new Keyboard()
+      .text(s.emergencyBtn).text(s.hospitalsBtn).row()
+      .text(s.nearbyBtn).text(s.aiBtn).row()
+      .text(s.langBtn).row()
+      .requestContact(s.shareContactBtn).row()
+      .resized();
+  };
+
   const scrubPhone = (phone: string) => normalizeEthiopianPhone(phone);
 
   const getHospKeyboard = async (page = 0) => {
@@ -237,11 +247,23 @@ export function setupBot(bot: Bot) {
 
     const lang = await getLang(tid);
     const s = strings[lang];
+    const linkedUser = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
+    const isLinked = !!linkedUser[0];
     
     // Handle Menu Buttons
-    if (text === s.bookBtn) return ctx.reply(s.chooseHosp, { reply_markup: await getHospKeyboard() });
+    if (text === s.bookBtn) {
+      if (!isLinked) {
+        return ctx.reply(s.shareContact, { reply_markup: getGuestKeyboard(lang) });
+      }
+      return ctx.reply(s.chooseHosp, { reply_markup: await getHospKeyboard() });
+    }
     if (text === s.hospitalsBtn) return showHospitalsPage(ctx, 0);
-    if (text === s.statusBtn) return showStatus(ctx, lang);
+    if (text === s.statusBtn) {
+      if (!isLinked) {
+        return ctx.reply(s.shareContact, { reply_markup: getGuestKeyboard(lang) });
+      }
+      return showStatus(ctx, lang);
+    }
     if (text === s.nearbyBtn) return ctx.reply(lang === "en" ? "Send location" : "ቦታዎን ይላኩ", { reply_markup: { keyboard: [[{ text: "📍 Share Location", request_location: true }]], resize_keyboard: true, one_time_keyboard: true } });
     if (text === s.emergencyBtn) {
       emergencySessions.set(tid, true);
@@ -249,8 +271,16 @@ export function setupBot(bot: Bot) {
     }
     if (text === s.aiBtn) return ctx.reply(s.aiStart);
     if (text === s.langBtn) return toggleLanguage(ctx);
-    if (text === s.meBtn) return showMe(ctx);
+    if (text === s.meBtn) {
+      if (!isLinked) {
+        return ctx.reply(s.shareContact, { reply_markup: getGuestKeyboard(lang) });
+      }
+      return showMe(ctx);
+    }
     if (text === s.logoutBtn) {
+      if (!isLinked) {
+        return ctx.reply(s.shareContact, { reply_markup: getGuestKeyboard(lang) });
+      }
       const u = await db.select().from(users).where(eq(users.telegramId, tid)).limit(1);
       if (u[0]) await db.update(users).set({ telegramId: null }).where(eq(users.id, u[0].id));
       emergencySessions.delete(tid);
@@ -342,13 +372,10 @@ export function setupBot(bot: Bot) {
       return;
     }
 
-    await ctx.reply(s.welcome + "\n\n" + s.shareContact, {
-      reply_markup: {
-        keyboard: [[{ text: s.shareContactBtn, request_contact: true }]],
-        resize_keyboard: true,
-        one_time_keyboard: true,
-      },
-    });
+    await ctx.reply(
+      s.welcome + "\n\n" + s.shareContact + "\n\n" + (lang === "en" ? "Emergency is available without registration." : "የአደጋ እርዳታ ያለ መመዝገብ ይጠቀሙ።"),
+      { reply_markup: getGuestKeyboard(lang) }
+    );
   });
 
   bot.on("message:contact", async (ctx) => {
