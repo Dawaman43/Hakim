@@ -41,7 +41,7 @@ export function Sidebar({
   return (
     <aside className={`w-64 fixed left-0 top-0 h-full z-40 flex flex-col transition-colors duration-300 ${darkMode ? "bg-background border-r border-border" : "bg-card border-r border-border"}`}>
       <div className="p-6">
-        <button onClick={() => onNavigate("landing")} className="flex items-center gap-2">
+        <button onClick={() => onNavigate("hospital-dashboard")} className="flex items-center gap-2">
           <img
             src="/logo.png"
             alt="Hakim"
