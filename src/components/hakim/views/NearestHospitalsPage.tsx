@@ -19,6 +19,7 @@ interface NearestHospitalsPageProps {
   onSelectHospital: (hospital: Hospital) => void;
   onLoadDepartments: (hospitalId: string) => void;
   onChangeLocation: () => void;
+  onFindNearest: (shouldNavigate?: boolean) => void;
   navigation: React.ReactNode;
   footer: React.ReactNode;
 }
@@ -35,6 +36,7 @@ export function NearestHospitalsPage({
   onSelectHospital,
   onLoadDepartments,
   onChangeLocation,
+  onFindNearest,
   navigation,
   footer,
 }: NearestHospitalsPageProps) {
@@ -76,7 +78,10 @@ export function NearestHospitalsPage({
                   <Info size={16} />
                   <span>{locationNotice}</span>
                 </Badge>
-                <Button onClick={onChangeLocation} variant="link" className="text-sm font-medium px-0">Change Location</Button>
+                <div className="flex items-center gap-2">
+                  <Button onClick={() => onFindNearest(true)} variant="link" className="text-sm font-medium px-0">Use Current Location</Button>
+                  <Button onClick={onChangeLocation} variant="link" className="text-sm font-medium px-0">Change Location</Button>
+                </div>
               </div>
             ) : userLocation && (
               <div className="flex items-center gap-3">
@@ -87,7 +92,10 @@ export function NearestHospitalsPage({
                     ({userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)})
                   </span>
                 </Badge>
-                <Button onClick={onChangeLocation} variant="link" className="text-sm font-medium px-0">Change Location</Button>
+                <div className="flex items-center gap-2">
+                  <Button onClick={() => onFindNearest(true)} variant="link" className="text-sm font-medium px-0">Refresh GPS</Button>
+                  <Button onClick={onChangeLocation} variant="link" className="text-sm font-medium px-0">Change Location</Button>
+                </div>
               </div>
             )}
           </div>

@@ -76,6 +76,7 @@ export function useLocationPicker({
           setLocationLoading(false);
           setShowLocationModal(false);
           setLocationNotice(null);
+          setSelectedRegion("");
           if (shouldNavigate) onNavigate("nearest-hospitals");
           resolve(true);
         },
@@ -100,6 +101,7 @@ export function useLocationPicker({
 
       setLocationLoading(true);
       setLocationError(null);
+      setSelectedRegion("");
 
       if (!navigator.geolocation) {
         setLocationLoading(false);
@@ -124,6 +126,7 @@ export function useLocationPicker({
           setLocationLoading(false);
           setShowLocationModal(false);
           setLocationNotice(null);
+          setSelectedRegion("");
           if (shouldNavigate) onNavigate("nearest-hospitals");
         },
         (error) => {

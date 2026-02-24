@@ -262,6 +262,7 @@ export function PublicViews(props: PublicViewProps) {
         onNavigate={onNavigate}
         onSelectHospital={setSelectedHospital}
         onLoadDepartments={loadDepartments}
+        onFindNearest={onFindNearest}
         navigation={navigation}
         footer={footer}
       />
