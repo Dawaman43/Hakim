@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import {
   ArrowLeft, MagnifyingGlass, GridFour, List, MapPin, Hospital as HospitalIcon,
-  Buildings, FirstAid, Stethoscope, Heart, Brain, CaretRight,
+  Buildings, FirstAid, Stethoscope, Heart, Brain, CaretRight, NavigationArrow,
 } from '@phosphor-icons/react';
 import type { Hospital } from '@/types';
 import type { ViewType } from '../routes';
@@ -13,6 +14,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { HospitalRouteDialog } from '@/components/hakim/components/HospitalRouteDialog';
 
 interface HospitalsPageProps {
   darkMode: boolean;
@@ -37,6 +39,7 @@ interface HospitalsPageProps {
   onNavigate: (view: ViewType) => void;
   onSelectHospital: (hospital: Hospital) => void;
   onLoadDepartments: (hospitalId: string) => void;
+  userLocation: { lat: number; lng: number } | null;
   navigation: React.ReactNode;
   footer: React.ReactNode;
   t: Record<string, string>;
@@ -65,11 +68,14 @@ export function HospitalsPage({
   onNavigate,
   onSelectHospital,
   onLoadDepartments,
+  userLocation,
   navigation,
   footer,
   t,
 }: HospitalsPageProps) {
   const totalPages = Math.max(1, Math.ceil(totalHospitals / pageSize));
+  const [routeOpen, setRouteOpen] = useState(false);
+  const [routeHospital, setRouteHospital] = useState<Hospital | null>(null);
 
   const getFacilityBadge = (type: string | undefined) => {
     switch (type) {
@@ -321,6 +327,22 @@ export function HospitalsPage({
                             </div>
                             <CaretRight size={20} className="transition-all text-muted-foreground group-hover:text-primary group-hover:translate-x-1" />
                           </div>
+                          <div className="mt-4 flex items-center gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="h-9 rounded-xl text-sm"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                setRouteHospital(hospital);
+                                setRouteOpen(true);
+                              }}
+                            >
+                              <NavigationArrow size={16} className="mr-2" />
+                              Map & Route
+                            </Button>
+                          </div>
                         </>
                       ) : (
                         <>
@@ -338,6 +360,20 @@ export function HospitalsPage({
                             </div>
                             <p className="text-sm truncate text-muted-foreground">{hospital.address}</p>
                           </div>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-9 rounded-xl text-sm"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              event.stopPropagation();
+                              setRouteHospital(hospital);
+                              setRouteOpen(true);
+                            }}
+                          >
+                            <NavigationArrow size={16} className="mr-2" />
+                            Map & Route
+                          </Button>
                         </>
                       )}
                     </button>
@@ -369,6 +405,24 @@ export function HospitalsPage({
           )}
         </div>
       </section>
+
+      <HospitalRouteDialog
+        open={routeOpen}
+        onOpenChange={setRouteOpen}
+        hospital={routeHospital}
+        userLocation={userLocation}
+        primaryActionLabel="Continue to Departments"
+        onPrimaryAction={() => {
+          if (!routeHospital) return;
+          onSelectHospital(routeHospital);
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('hakim_selected_hospital', JSON.stringify(routeHospital));
+          }
+          onLoadDepartments(routeHospital.id);
+          onNavigate('departments');
+          setRouteOpen(false);
+        }}
+      />
 
       {footer}
     </div>

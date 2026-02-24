@@ -1,9 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, CaretRight, MapPin, Stethoscope } from '@phosphor-icons/react';
+import { ArrowLeft, CaretRight, MapPin, NavigationArrow, Phone, Stethoscope } from '@phosphor-icons/react';
 import type { Hospital, Department } from '@/types';
 import type { ViewType } from '../routes';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import HospitalRouteMap from '@/components/map/HospitalRouteMap';
 
 interface DepartmentsPageProps {
   darkMode: boolean;
@@ -11,6 +14,7 @@ interface DepartmentsPageProps {
   isAuthenticated: boolean;
   selectedHospital: Hospital | null;
   departments: Department[];
+  userLocation: { lat: number; lng: number } | null;
   onNavigate: (view: ViewType) => void;
   onSelectDepartment: (department: Department) => void;
   navigation: React.ReactNode;
@@ -24,6 +28,7 @@ export function DepartmentsPage({
   isAuthenticated,
   selectedHospital,
   departments,
+  userLocation,
   onNavigate,
   onSelectDepartment,
   navigation,
@@ -90,6 +95,79 @@ export function DepartmentsPage({
 
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {selectedHospital && (
+            <div className="mb-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-lg font-semibold text-foreground">Location & Route</h2>
+                    <p className="text-sm text-muted-foreground">See the facility on the map and plan your route.</p>
+                  </div>
+                  <Badge variant="secondary" className="bg-primary/10 text-primary border border-primary/10">
+                    {facilityBadge.label}
+                  </Badge>
+                </div>
+                <div className="mt-4">
+                  <HospitalRouteMap hospital={selectedHospital} userLocation={userLocation} height={280} />
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">
+                    <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                    Facility
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">
+                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+                    Your location
+                  </span>
+                  <span>Route line is approximate. Use Maps for turn-by-turn directions.</span>
+                </div>
+              </div>
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <h3 className="text-lg font-semibold text-foreground">Directions</h3>
+                <p className="text-sm text-muted-foreground mt-1">Open your preferred maps app for full navigation.</p>
+                <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+                  <div className="flex items-start gap-2">
+                    <MapPin size={16} className="mt-0.5 text-primary" />
+                    <div>
+                      <p className="text-foreground font-medium">{selectedHospital.address || selectedHospital.region}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {selectedHospital.region}{selectedHospital.city ? ` • ${selectedHospital.city}` : ''}
+                      </p>
+                    </div>
+                  </div>
+                  {selectedHospital.emergencyContactNumber && (
+                    <div className="flex items-center gap-2">
+                      <Phone size={16} className="text-primary" />
+                      <span>{selectedHospital.emergencyContactNumber}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Button
+                    variant="outline"
+                    className="rounded-xl"
+                    onClick={() => {
+                      if (!selectedHospital.latitude || !selectedHospital.longitude) return;
+                      const destination = `${selectedHospital.latitude},${selectedHospital.longitude}`;
+                      const origin = userLocation ? `${userLocation.lat},${userLocation.lng}` : '';
+                      const url = origin
+                        ? `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`
+                        : `https://www.google.com/maps/search/?api=1&query=${destination}`;
+                      window.open(url, '_blank', 'noopener,noreferrer');
+                    }}
+                  >
+                    <NavigationArrow size={16} className="mr-2" />
+                    Open in Maps
+                  </Button>
+                  {!userLocation && (
+                    <Button className="rounded-xl" onClick={() => onNavigate('nearest-hospitals')}>
+                      Use My Location
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
           {!selectedHospital ? (
             <div className="rounded-2xl border border-border bg-card p-8 text-center">
               <p className="text-lg font-semibold text-foreground">Select a hospital first</p>

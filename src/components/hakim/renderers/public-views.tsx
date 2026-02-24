@@ -215,6 +215,7 @@ export function PublicViews(props: PublicViewProps) {
         onNavigate={onNavigate}
         onSelectHospital={setSelectedHospital}
         onLoadDepartments={loadDepartments}
+        userLocation={userLocation}
         totalHospitals={totalHospitals}
         facilityCounts={facilityCounts}
         totalDepartments={totalDepartments}
@@ -277,6 +278,7 @@ export function PublicViews(props: PublicViewProps) {
         isAuthenticated={isAuthenticated}
         selectedHospital={selectedHospital}
         departments={departments}
+        userLocation={userLocation}
         onNavigate={onNavigate}
         onSelectDepartment={setSelectedDepartment}
         navigation={navigation}
