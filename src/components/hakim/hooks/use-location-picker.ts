@@ -95,7 +95,6 @@ export function useLocationPicker({
           "Location is only available on HTTPS or localhost. Please use a secure connection or select your region below.",
         );
         setLocationLoading(false);
-        tryIpFallback(shouldNavigate);
         return;
       }
 
@@ -104,7 +103,8 @@ export function useLocationPicker({
 
       if (!navigator.geolocation) {
         setLocationLoading(false);
-        tryIpFallback(shouldNavigate);
+        setLocationError("Location is not supported on this device. Please select your region below.");
+        setShowLocationModal(true);
         return;
       }
 
@@ -141,42 +141,33 @@ export function useLocationPicker({
             return;
           }
           if (error.code === error.PERMISSION_DENIED) {
-            tryIpFallback(shouldNavigate).then((didFallback) => {
-              if (didFallback) return;
-              setLocationLoading(false);
-              setLocationError(
-                "Location permission was denied. Please allow location access in your browser and device settings, or select your region below.",
-              );
-              setShowLocationModal(true);
-            });
+            setLocationLoading(false);
+            setLocationError(
+              "Location permission was denied. Please allow location access in your browser and device settings, or select your region below.",
+            );
+            setShowLocationModal(true);
             return;
           }
 
           if (error.code === error.POSITION_UNAVAILABLE || error.code === error.TIMEOUT) {
             tryWatchPosition(shouldNavigate).then((didWatch) => {
               if (didWatch) return;
-              tryIpFallback(shouldNavigate).then((didFallback) => {
-                if (didFallback) return;
-                setLocationLoading(false);
-                let errorMsg = "Could not get your location. ";
-                if (error.code === error.POSITION_UNAVAILABLE) {
-                  errorMsg = "Your device could not determine its location. Please select your region below.";
-                } else {
-                  errorMsg = "Location request timed out. Please try again or select your region below.";
-                }
-                setLocationError(errorMsg);
-                setShowLocationModal(true);
-              });
+              setLocationLoading(false);
+              let errorMsg = "Could not get your location. ";
+              if (error.code === error.POSITION_UNAVAILABLE) {
+                errorMsg = "Your device could not determine its location. Please select your region below.";
+              } else {
+                errorMsg = "Location request timed out. Please try again or select your region below.";
+              }
+              setLocationError(errorMsg);
+              setShowLocationModal(true);
             });
             return;
           }
 
-          tryIpFallback(shouldNavigate).then((didFallback) => {
-            if (didFallback) return;
-            setLocationLoading(false);
-            setLocationError("Could not get your location. Please select your region below.");
-            setShowLocationModal(true);
-          });
+          setLocationLoading(false);
+          setLocationError("Could not get your location. Please select your region below.");
+          setShowLocationModal(true);
         },
         forceLowAccuracy
           ? { enableHighAccuracy: false, timeout: 12000, maximumAge: 0 }
@@ -201,7 +192,7 @@ export function useLocationPicker({
     setUserLocation(null);
     setLocationError("Please select your region below.");
     setShowLocationModal(true);
-  }, [requestLocation, tryIpFallback]);
+  }, [requestLocation]);
 
   const useSelectedRegion = useCallback(() => {
     if (!selectedRegion) {
@@ -229,6 +220,12 @@ export function useLocationPicker({
     setLocationNotice("Using Addis Ababa as your location");
     onNavigate("nearest-hospitals");
   }, [defaultLocation, onNavigate, setUserLocation]);
+
+  const useApproximateLocation = useCallback(async () => {
+    setLocationLoading(true);
+    setLocationError(null);
+    await tryIpFallback(true);
+  }, [tryIpFallback]);
 
   const searchCustomLocation = useCallback(async (query: string) => {
     if (!query.trim()) return;
@@ -269,6 +266,7 @@ export function useLocationPicker({
     requestLocation,
     useSelectedRegion,
     useDefaultLocation,
+    useApproximateLocation,
     searchCustomLocation,
     setLocationError,
   };

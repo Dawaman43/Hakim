@@ -540,5 +540,70 @@ export function setupBot(bot: Bot) {
     }
   });
 
+  bot.on("inline_query", async (ctx) => {
+    const q = (ctx.inlineQuery.query || "").trim();
+    if (!q || q.length < 2) {
+      return ctx.answerInlineQuery([], { cache_time: 5, is_personal: true });
+    }
+
+    try {
+      const tokens = q.split(/\s+/).filter(Boolean);
+      const fuzzyPattern = `%${q.replace(/\s+/g, "%")}%`;
+      const tokenClauses =
+        tokens.length > 0
+          ? sql`(${sql.join(
+              tokens.map((token) => sql`${hospitals.name} ILIKE ${`%${token}%`}`),
+              sql` AND `
+            )})`
+          : sql`true`;
+
+      const rows = await db
+        .select()
+        .from(hospitals)
+        .where(
+          and(
+            eq(hospitals.isActive, true),
+            sql`(${hospitals.name} ILIKE ${`%${q}%`} OR ${hospitals.name} ILIKE ${fuzzyPattern} OR ${tokenClauses})`
+          )
+        )
+        .limit(10);
+
+      const results = rows.map((h) => {
+        const mapLink =
+          h.latitude && h.longitude
+            ? `https://www.google.com/maps?q=${h.latitude},${h.longitude}`
+            : null;
+        const lines = [
+          `*${h.name}*`,
+          h.facilityType ? `Type: ${h.facilityType}` : null,
+          h.region ? `Region: ${h.region}` : null,
+          h.city ? `City: ${h.city}` : null,
+          h.address ? `Address: ${h.address}` : null,
+          h.emergencyContactNumber ? `Emergency: ${h.emergencyContactNumber}` : null,
+          mapLink ? `[Open in Maps](${mapLink})` : null,
+        ]
+          .filter(Boolean)
+          .join("\n");
+
+        return {
+          type: "article",
+          id: h.id,
+          title: h.name,
+          description: [h.region, h.city, h.facilityType].filter(Boolean).join(" • "),
+          input_message_content: {
+            message_text: lines,
+            parse_mode: "Markdown",
+            disable_web_page_preview: true,
+          },
+        };
+      });
+
+      return ctx.answerInlineQuery(results, { cache_time: 5, is_personal: true });
+    } catch (err) {
+      console.error("Inline search error:", err);
+      return ctx.answerInlineQuery([], { cache_time: 5, is_personal: true });
+    }
+  });
+
   bot.catch((err) => console.error("Bot Error:", err));
 }

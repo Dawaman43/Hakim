@@ -289,6 +289,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
     requestLocation,
     useSelectedRegion,
     useDefaultLocation,
+    useApproximateLocation,
     searchCustomLocation,
     setLocationError,
   } = useLocationPicker({
@@ -649,6 +650,7 @@ export function HakimApp({ initialView = 'landing', initialTheme = "light", init
         onSelectRegion={setSelectedRegion}
         onUseSelectedRegion={useSelectedRegion}
         onUseDefaultLocation={useDefaultLocation}
+        onUseApproximateLocation={useApproximateLocation}
         onSearchLocation={searchCustomLocation}
         onClose={() => {
           setShowLocationModal(false);

@@ -15,6 +15,7 @@ interface LocationPermissionModalProps {
   onSelectRegion: (region: string) => void;
   onUseSelectedRegion: () => void;
   onUseDefaultLocation: () => void;
+  onUseApproximateLocation: () => void;
   onSearchLocation: (query: string) => void;
   onClose: () => void;
 }
@@ -30,6 +31,7 @@ export function LocationPermissionModal({
   onSelectRegion,
   onUseSelectedRegion,
   onUseDefaultLocation,
+  onUseApproximateLocation,
   onSearchLocation,
   onClose,
 }: LocationPermissionModalProps) {
@@ -147,6 +149,12 @@ export function LocationPermissionModal({
               className={`w-full px-4 py-2 rounded-xl text-sm font-medium transition border mb-2 ${darkMode ? "bg-background border-border text-muted-foreground hover:border-primary" : "bg-muted/40 border-border text-muted-foreground hover:border-primary"}`}
             >
               Use Addis Ababa Instead
+            </button>
+            <button
+              onClick={onUseApproximateLocation}
+              className={`w-full px-4 py-2 rounded-xl text-sm font-medium transition border mb-2 ${darkMode ? "bg-background border-border text-muted-foreground hover:border-primary" : "bg-muted/40 border-border text-muted-foreground hover:border-primary"}`}
+            >
+              Use Approximate Location (IP)
             </button>
 
             <button

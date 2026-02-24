@@ -2,6 +2,10 @@ import { Bot, webhookCallback } from "grammy";
 import { setupBot } from "@/lib/telegram-bot";
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // This is the production webhook endpoint
 // It will only be active if TELEGRAM_BOT_TOKEN is set
 
@@ -71,7 +75,7 @@ export async function GET(req: NextRequest) {
     try {
       const host = req.headers.get("host") || "hakim-gray.vercel.app";
       const protocol = host.includes("localhost") ? "http" : "https";
-      const webhookUrl = `${protocol}://${host}/api/webhook/telegram`;
+      const webhookUrl = process.env.TELEGRAM_WEBHOOK_URL || `${protocol}://${host}/api/webhook/telegram`;
       
       console.log(`📡 Attempting to register webhook: ${webhookUrl}`);
       await bot.api.setWebhook(webhookUrl);
@@ -97,4 +101,3 @@ export async function GET(req: NextRequest) {
     tip: "Add ?register=true to this URL to link your bot to this endpoint"
   });
 }
-

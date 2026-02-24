@@ -4,6 +4,7 @@ import { eq, and, desc } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { verifyToken } from "@/lib/jwt";
+import { sendTelegramMessage } from "@/lib/telegram-notify";
 
 export async function POST(req: NextRequest) {
   try {
@@ -61,6 +62,13 @@ export async function POST(req: NextRequest) {
 
     // Get hospital name for response
     const hospList = await db.select().from(hospitals).where(eq(hospitals.id, hospitalId)).limit(1);
+
+    if (userList[0]?.telegramId) {
+      await sendTelegramMessage(
+        userList[0].telegramId,
+        `✅ Token booked: ${dept.name} at ${hospList[0]?.name || "Hospital"}.\nToken #${tokenNumber}. Estimated wait: ${tokenNumber * dept.averageServiceTimeMin} mins.`,
+      );
+    }
 
     return NextResponse.json({
       success: true,
