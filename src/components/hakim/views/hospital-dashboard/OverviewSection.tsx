@@ -25,9 +25,9 @@ export function OverviewSection({
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-      <div className="bg-gradient-to-r from-primary to-primary rounded-2xl p-6 text-foreground shadow-xl">
-        <h2 className="text-2xl font-bold mb-2">{tr.welcomeBack}, {user?.name?.split(" ")[0] || "Admin"}!</h2>
-        <p className="text-primary">{tr.manageYourHospital}</p>
+      <div className="bg-gradient-to-r from-primary to-primary rounded-2xl p-6 text-primary-foreground shadow-xl">
+        <h2 className="text-2xl font-bold mb-2 text-primary-foreground">{tr.welcomeBack}, {user?.name?.split(" ")[0] || "Admin"}!</h2>
+        <p className="text-primary-foreground/80">{tr.manageYourHospital}</p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

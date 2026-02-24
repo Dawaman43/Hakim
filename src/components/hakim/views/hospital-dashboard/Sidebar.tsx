@@ -43,9 +43,9 @@ export function Sidebar({
       <div className="p-6">
         <button onClick={() => onNavigate("landing")} className="flex items-center gap-2">
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="Hakim"
-            className="w-10 h-10 rounded-xl bg-background/80 border border-border p-1 shadow-sm"
+            className="w-10 h-10 rounded-xl bg-background/80 border border-border p-1 shadow-sm object-cover"
           />
         </button>
       </div>
