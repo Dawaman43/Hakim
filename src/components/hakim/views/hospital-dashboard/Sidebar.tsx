@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartBar, Gear, Heart, Hospital, House, IdentificationCard, MapPin, SignOut, Stethoscope, User, Users } from "@phosphor-icons/react";
+import { ChartBar, Gear, Hospital, House, IdentificationCard, MapPin, SignOut, Stethoscope, User, Users } from "@phosphor-icons/react";
 import type { DashboardSection, HospitalProfile } from "./types";
 
 interface SidebarProps {
@@ -42,12 +42,11 @@ export function Sidebar({
     <aside className={`w-64 fixed left-0 top-0 h-full z-40 flex flex-col transition-colors duration-300 ${darkMode ? "bg-background border-r border-border" : "bg-card border-r border-border"}`}>
       <div className="p-6">
         <button onClick={() => onNavigate("landing")} className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center shadow-lg">
-            <Heart weight="fill" className="text-foreground" size={22} />
-          </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
-            Hakim
-          </span>
+          <img
+            src="/logo.svg"
+            alt="Hakim"
+            className="w-10 h-10 rounded-xl bg-background/80 border border-border p-1 shadow-sm"
+          />
         </button>
       </div>
 

@@ -3,6 +3,16 @@
 import { motion } from "framer-motion";
 import { Crosshair, MapPin } from "@phosphor-icons/react";
 import type { HospitalProfile } from "./types";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+delete (L.Icon.prototype as unknown as Record<string, unknown>)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+});
 
 interface LocationSectionProps {
   darkMode: boolean;
@@ -22,6 +32,38 @@ export function LocationSection({
   saving,
 }: LocationSectionProps) {
   const tr = t;
+  const center: [number, number] = [
+    hospitalProfile?.latitude ?? 9.145,
+    hospitalProfile?.longitude ?? 40.4897,
+  ];
+
+  const updateLocation = (lat: number, lng: number) => {
+    setHospitalProfile((prev) =>
+      prev ? { ...prev, latitude: lat, longitude: lng } : prev
+    );
+  };
+
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        updateLocation(position.coords.latitude, position.coords.longitude);
+      },
+      () => {
+        // ignore errors here, user can click map
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  };
+
+  const ClickHandler = () => {
+    useMapEvents({
+      click: (event) => {
+        updateLocation(event.latlng.lat, event.latlng.lng);
+      },
+    });
+    return null;
+  };
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
@@ -29,12 +71,22 @@ export function LocationSection({
         <h3 className={`text-lg font-semibold mb-4 ${darkMode ? "text-foreground" : "text-foreground"}`}>{tr.hospitalLocation}</h3>
         <p className={`mb-4 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>{tr.clickMapToSet}</p>
 
-        <div className={`w-full h-80 rounded-xl flex items-center justify-center ${darkMode ? "bg-card" : "bg-background"}`}>
-          <div className="text-center">
-            <MapPin size={48} className={`mx-auto mb-2 ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`} />
-            <p className={darkMode ? "text-muted-foreground" : "text-muted-foreground"}>Interactive Map</p>
-            <p className={`text-sm ${darkMode ? "text-muted-foreground" : "text-muted-foreground"}`}>Click to set hospital location</p>
-          </div>
+        <div className={`w-full h-80 rounded-xl overflow-hidden border ${darkMode ? "bg-card border-border" : "bg-background border-border"}`}>
+          <MapContainer
+            center={center}
+            zoom={hospitalProfile?.latitude && hospitalProfile?.longitude ? 14 : 6}
+            style={{ width: "100%", height: "100%" }}
+            scrollWheelZoom
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <ClickHandler />
+            {hospitalProfile?.latitude && hospitalProfile?.longitude ? (
+              <Marker position={[hospitalProfile.latitude, hospitalProfile.longitude]} />
+            ) : null}
+          </MapContainer>
         </div>
 
         <div className="grid md:grid-cols-2 gap-4 mt-4">
@@ -61,12 +113,19 @@ export function LocationSection({
         </div>
 
         <button
-          onClick={onSave}
-          className="mt-4 w-full py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition flex items-center justify-center gap-2 disabled:opacity-60"
+          onClick={useCurrentLocation}
+          className="mt-4 w-full py-3 border border-border rounded-xl font-medium hover:bg-muted/40 transition flex items-center justify-center gap-2 disabled:opacity-60"
           disabled={saving}
         >
           <Crosshair size={20} />
-          {saving ? `${tr.saveChanges}...` : tr.useCurrentLocation}
+          {tr.useCurrentLocation}
+        </button>
+        <button
+          onClick={onSave}
+          className="mt-3 w-full py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary transition flex items-center justify-center gap-2 disabled:opacity-60"
+          disabled={saving}
+        >
+          {saving ? `${tr.saveChanges}...` : tr.saveChanges}
         </button>
       </div>
     </motion.div>
