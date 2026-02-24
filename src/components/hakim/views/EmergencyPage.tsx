@@ -232,11 +232,11 @@ export function EmergencyPage({
               <div className="space-y-6">
                 <div className={`rounded-2xl p-6 ${getSeverityColor(triageResult.severityLevel)}`}>
                   <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-background rounded-2xl mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 bg-black/10 border border-black/20">
                       {triageResult.isEmergency ? (
-                        <Warning size={32} weight="fill" />
+                        <Warning size={32} weight="fill" className="text-current" />
                       ) : (
-                        <FirstAid size={32} weight="fill" />
+                        <FirstAid size={32} weight="fill" className="text-current" />
                       )}
                     </div>
                     <p className="text-sm opacity-80">Severity Level</p>
@@ -255,7 +255,7 @@ export function EmergencyPage({
                       <p className="text-sm mb-2 text-muted-foreground">Identified keywords:</p>
                       <div className="flex flex-wrap gap-2">
                         {triageResult.keywords.map((keyword, i) => (
-                          <Badge key={i} variant="secondary">
+                          <Badge key={i} variant="outline" className="bg-background/40 text-foreground border-border">
                             {keyword}
                           </Badge>
                         ))}
@@ -273,7 +273,7 @@ export function EmergencyPage({
                     className="w-full rounded-xl text-lg"
                   >
                     <a>
-                      <Phone size={20} className="inline mr-2" />
+                      <Phone size={20} className="inline mr-2 text-white" />
                       Call Emergency Services (911)
                     </a>
                   </Button>
@@ -287,7 +287,7 @@ export function EmergencyPage({
                   variant="outline"
                   className="w-full rounded-xl flex items-center justify-center gap-2"
                 >
-                  <ArrowCounterClockwise size={16} />
+                  <ArrowCounterClockwise size={16} className="text-foreground" />
                   Report Another Symptom
                 </Button>
               </div>
